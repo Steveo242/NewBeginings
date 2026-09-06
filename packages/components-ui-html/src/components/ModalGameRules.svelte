@@ -19,8 +19,7 @@
 	<Popup zIndex={zIndex.modal} onclose={() => (stateModal.modal = null)}>
 		<BaseContent maxWidth="100%">
 			<BaseScrollable type="column">
-				<span>ADD YOUR GAME RULES</span>
-				{@render props.children()}
+								{@render props.children()}
 			</BaseScrollable>
 		</BaseContent>
 	</Popup>

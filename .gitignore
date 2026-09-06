@@ -57,3 +57,8 @@ packages/e2e/math-testing/*/*.json
 packages/e2e/math-testing/*/*.png
 packages/e2e/math-testing/*/*.txt
 packages/e2e/math-testing/__pycache__/*
+# local backups
+*.bak
+*.unused
+*.pre-fish.bak
+*.pre-lows.bak
