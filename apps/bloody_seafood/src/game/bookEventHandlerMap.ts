@@ -91,7 +91,10 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		}
 	},
 	updateGrid: async (bookEvent: BookEventOfType<'updateGrid'>) => {
-  // TODO: render gridMultipliers on the board
+  eventEmitter.broadcast({
+  	type: 'globalMultiplierUpdate',
+  	multiplier: bookEvent.globalMultiplier,
+  });
  },
 	setTotalWin: async (bookEvent: BookEventOfType<'setTotalWin'>) => {
 		stateBet.winBookEventAmount = bookEvent.amount;

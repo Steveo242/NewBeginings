@@ -34,6 +34,13 @@ type BookEventSetTumbleWin = {
 	amount: number;
 };
 
+type BookEventUpdateGrid = {
+	index: number;
+	type: 'updateGrid';
+	gridMultipliers: number[][];
+	globalMultiplier: number;
+};
+
 type BookEventSetTotalWin = {
 	index: number;
 	type: 'setTotalWin';
@@ -112,6 +119,7 @@ export type BookEvent =
 	| BookEventWinInfo
 	| BookEventBoardMultiplierInfo
 	| BookEventSetTumbleWin
+	| BookEventUpdateGrid
 	| BookEventSetTotalWin
 	| BookEventFreeSpinTrigger
 	| BookEventUpdateFreeSpin
