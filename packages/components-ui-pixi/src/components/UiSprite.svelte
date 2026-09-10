@@ -1,28 +1,17 @@
 <script lang="ts" module>
 	import { Rectangle, type RectangleProps } from 'pixi-svelte';
 
-	export type Props = RectangleProps;
+	export type Props = RectangleProps & { key?: string };
 </script>
 
 <script lang="ts">
-	const props: Props = $props();
+	import { Sprite } from 'pixi-svelte';
+
+	const { key, backgroundColor, borderWidth, borderColor, ...rest }: Props = $props();
 </script>
 
-<Rectangle borderRadius={50} {...props} />
-
-<!-- ADD YOUR DESIGN -->
-
-<!-- <script lang="ts" module>
-	import { Sprite, type SpriteProps } from 'pixi-svelte';
-	import type { sharedAssetsPixi } from 'constants-shared/assets';
-
-	export type Props = SpriteProps & {
-		key: keyof typeof sharedAssetsPixi;
-	};
-</script>
-
-<script lang="ts">
-	const props: Props = $props();
-</script>
-
-<Sprite {...props} /> -->
+{#if key}
+	<Sprite {key} {...rest} tint={backgroundColor ?? 0xffffff} />
+{:else}
+	<Rectangle borderRadius={50} {backgroundColor} {borderWidth} {borderColor} {...rest} />
+{/if}

@@ -34,6 +34,41 @@ export default {
 		src: new URL('../../assets/sprites/bgLayers/bg_land_overlay.png', import.meta.url).href,
 		preload: true,
 	},
+	sortingTable: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/table/sorting_table.png', import.meta.url).href,
+		preload: true,
+	},
+	betUp: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/ui/bet_up.png', import.meta.url).href,
+		preload: true,
+	},
+	betDown: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/ui/bet_down.png', import.meta.url).href,
+		preload: true,
+	},
+	btnInfo: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/ui/btn_info.png', import.meta.url).href,
+		preload: true,
+	},
+	btnPayTable: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/ui/btn_paytable.png', import.meta.url).href,
+		preload: true,
+	},
+	bet: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/ui/spin_bs.png', import.meta.url).href,
+		preload: true,
+	},
+	buyBonus: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/ui/mode_kiss.png', import.meta.url).href,
+		preload: true,
+	},
 	titlePlaque: {
 		type: 'sprite',
 		src: new URL('../../assets/sprites/bgLayers/title_plaque.png', import.meta.url).href,

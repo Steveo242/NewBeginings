@@ -47,6 +47,7 @@ const _wrap = (m) => m;
 export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContext> = _wrap({
 	reveal: async (bookEvent: BookEventOfType<'reveal'>, { bookEvents }: BookEventContext) => {
 		eventEmitter.broadcast({ type: 'tumbleWinAmountReset' });
+		eventEmitter.broadcast({ type: 'boardShow' });
 		const isBonusGame = checkIsMultipleRevealEvents({ bookEvents });
 		if (isBonusGame) {
 			eventEmitter.broadcast({ type: 'stopButtonEnable' });
@@ -144,6 +145,7 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		eventEmitter.broadcast({ type: 'globalMultiplierShow' });
 		if (bookEvent.globalMult === 1) {
 			eventEmitter.broadcast({ type: 'tumbleWinAmountReset' });
+			eventEmitter.broadcast({ type: 'boardShow' });
 		}
 		await eventEmitter.broadcastAsync({
 			type: 'globalMultiplierUpdate',

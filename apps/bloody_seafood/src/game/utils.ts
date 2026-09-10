@@ -73,7 +73,8 @@ export const getSymbolInfo = ({
 	state: SymbolState;
 }) => {
 	const symbolKey = getSymbolKey({ rawSymbol });
-	return SYMBOL_INFO_MAP[symbolKey][state];
+	const resolvedState = state === 'win' || state === 'postWinStatic' ? 'static' : state;
+	return SYMBOL_INFO_MAP[symbolKey][resolvedState];
 };
 
 export const getSymbolBackgroundInfo = ({

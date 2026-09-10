@@ -17,7 +17,7 @@
 	const labelStyle = {
 		fontFamily: 'proxima-nova',
 		fontSize: UI_BASE_FONT_SIZE * 0.72,
-		fill: 0xE8B84B,
+		fill: 0xC8102E,
 	} as const;
 
 	const valueStyle = {

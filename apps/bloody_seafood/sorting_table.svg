@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900">
+<defs>
+<linearGradient id="wood" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#6b5236"/><stop offset="0.5" stop-color="#4e3b27"/><stop offset="1" stop-color="#3a2b1c"/></linearGradient>
+<linearGradient id="iron" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#5a5f63"/><stop offset="0.45" stop-color="#33383c"/><stop offset="1" stop-color="#1e2225"/></linearGradient>
+<radialGradient id="stain" cx="0.5" cy="0.5" r="0.75">
+<stop offset="0.55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#120a06" stop-opacity="0.55"/></radialGradient>
+</defs>
+<rect x="14" y="14" width="872" height="872" rx="18" fill="url(#wood)"/>
+<rect x="14" y="109.4" width="872" height="3" fill="#2c2015" opacity="0.55"/>
+<rect x="14" y="206.3" width="872" height="3" fill="#2c2015" opacity="0.55"/>
+<rect x="14" y="303.2" width="872" height="3" fill="#2c2015" opacity="0.55"/>
+<rect x="14" y="400.1" width="872" height="3" fill="#2c2015" opacity="0.55"/>
+<rect x="14" y="496.9" width="872" height="3" fill="#2c2015" opacity="0.55"/>
+<rect x="14" y="593.8" width="872" height="3" fill="#2c2015" opacity="0.55"/>
+<rect x="14" y="690.7" width="872" height="3" fill="#2c2015" opacity="0.55"/>
+<rect x="14" y="787.6" width="872" height="3" fill="#2c2015" opacity="0.55"/>
+<rect x="14" y="14" width="872" height="872" rx="18" fill="none" stroke="url(#iron)" stroke-width="26"/>
+<rect x="30" y="30" width="840" height="840" rx="10" fill="none" stroke="#151a1d" stroke-width="4" opacity="0.7"/>
+<rect x="0" y="0" width="900" height="900" fill="url(#stain)"/>
+<rect x="94" y="94" width="712" height="712" rx="8" fill="#120c08" opacity="0.85"/>
+<rect x="94" y="94" width="712" height="712" rx="8" fill="none" stroke="#0a0705" stroke-width="8"/>
+</svg>

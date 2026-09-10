@@ -29,6 +29,18 @@
 
 		border-radius: 10px;
 		background: rgba(0, 0, 0, 0.5);
+
+		border: 8px solid transparent;
+		border-image-source: repeating-linear-gradient(
+			45deg,
+			#8a6a2f 0px,
+			#d9b45c 3px,
+			#f2dd9a 5px,
+			#d9b45c 7px,
+			#8a6a2f 10px
+		);
+		border-image-slice: 8;
+		border-image-repeat: repeat;
 		text-align: left;
 		min-width: 155px;
 		max-width: 180px;

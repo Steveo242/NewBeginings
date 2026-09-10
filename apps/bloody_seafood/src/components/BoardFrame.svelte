@@ -11,9 +11,9 @@
 
 	const context = getContext();
 	const SPINE_SCALE = { width: 0.59, height: 0.62 };
-	const SPRITE_SCALE = { width: 1.07, height: 1 };
-	const BG_RATIO = 937 / 806;
-	const POSITION_ADJUSTMENT = 1.01;
+	const SPRITE_SCALE = { width: 880 / 700, height: 880 / 700 };
+	const BG_RATIO = 1;
+	const POSITION_ADJUSTMENT = 1;
 
 	type AnimationName = 'reelhouse_glow_start' | 'reelhouse_glow_idle' | 'reelhouse_glow_exit';
 
