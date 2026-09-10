@@ -17,3 +17,4 @@
 </script>
 
 <UiButton {...props} {sizes} {onpress} icon="menuExit" />
+	bare

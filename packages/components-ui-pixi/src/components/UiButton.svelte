@@ -26,6 +26,7 @@
 	const {
 		icon,
 		active,
+		bare = false,
 		variant = 'dark',
 		children: childrenFromParent,
 		...buttonProps
@@ -36,6 +37,7 @@
 
 <Button {...buttonProps}>
 	{#snippet children({ center, hovered, pressed })}
+		{#if !bare}
 		<UiSprite
 			key={assetKey}
 			{...center}
@@ -48,6 +50,7 @@
 				? { borderWidth: 10, borderColor: variant === 'dark' ? 0xffffff : 0x000000 }
 				: {}}
 		/>
+		{/if}
 
 		{#if !assetKey}
 			<Text
@@ -61,7 +64,7 @@
 					fontFamily: 'proxima-nova',
 					fontWeight: '600',
 					fontSize: UI_BASE_FONT_SIZE * 0.9,
-					fill: variant === 'dark' ? 0xffffff : 0x000000,
+					fill: bare ? 0x14375E : variant === 'dark' ? 0xffffff : 0x000000,
 				}}
 			/>
 		{/if}

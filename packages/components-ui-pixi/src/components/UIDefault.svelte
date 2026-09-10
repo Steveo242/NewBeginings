@@ -45,6 +45,8 @@
 </script>
 
 <EnableSpaceHold />
+{console.log('LAYOUT TYPE:', stateLayoutDerived.layoutType())}
+{console.log('LAYOUT TYPE:', stateLayoutDerived.layoutType())}
 
 <UiFadeContainer>
 	<LayoutComponent>

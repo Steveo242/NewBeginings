@@ -16,4 +16,4 @@
 	};
 </script>
 
-<UiButton {...props} {sizes} {onpress} icon="menu" />
+<UiButton {...props} {sizes} {onpress} bare icon="menu" />

@@ -210,19 +210,11 @@ export default {
 	},
 	goldFont: {
 		type: 'font',
-		src: new URL('../../assets/fonts/goldFont/mm_gold.xml', import.meta.url).href,
+		src: new URL('../../assets/fonts/goldFont/bs_gold.xml', import.meta.url).href,
 	},
 	goldBlur: {
 		type: 'font',
-		src: new URL('../../assets/fonts/goldBlur/miningfont_gold_blur.xml', import.meta.url).href,
-	},
-	silverFont: {
-		type: 'font',
-		src: new URL('../../assets/fonts/silverFont/mm_silver.xml', import.meta.url).href,
-	},
-	purpleFont: {
-		type: 'font',
-		src: new URL('../../assets/fonts/purpleFont/mm_purple.xml', import.meta.url).href,
+		src: new URL('../../assets/fonts/goldBlur/bs_gold_blur.xml', import.meta.url).href,
 	},
 	bigwin: {
 		type: 'spine',
@@ -314,10 +306,6 @@ export default {
 	freeSpins: {
 		type: 'sprites',
 		src: new URL('../../assets/sprites/freeSpins/freeSpins.json', import.meta.url).href,
-	},
-	winSmall: {
-		type: 'sprites',
-		src: new URL('../../assets/sprites/winSmall/MM_Localisation_winsmall.json', import.meta.url).href,
 	},
 	clusterWin: {
 		type: 'spine',

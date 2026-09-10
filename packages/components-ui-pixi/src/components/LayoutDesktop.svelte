@@ -21,6 +21,9 @@
 </Container>
 
 <MainContainer standard>
+{#if typeof window !== 'undefined'}
+{(() => { const c = context.stateLayoutDerived; console.log('PROBE canvas', JSON.stringify(c.canvasSizes()), 'main', JSON.stringify(c.mainLayoutStandard())); return ''; })()}
+{/if}
 	<Container x={200} y={context.stateLayoutDerived.mainLayoutStandard().height * 0.5}>
 		<Container y={-170} scale={0.8}>
 			{@render props.buttonMenu({ anchor: 0.5 })}
@@ -43,27 +46,27 @@
 			{@render props.amountBalance({ stacked: true })}
 		</Container>
 
-		<Container y={-260} scale={0.72}>
+		<Container y={-250} scale={0.72}>
 			{@render props.amountWin({ stacked: true })}
 		</Container>
 
-		<Container y={-190} scale={0.72}>
+		<Container y={-170} scale={0.72}>
 			{@render props.amountBet({ stacked: true })}
 		</Container>
 
-		<Container y={-100} scale={0.7}>
+		<Container y={-40} scale={0.7}>
 			{@render props.buttonIncrease({ anchor: 0.5 })}
 		</Container>
 
-		<Container y={40} scale={0.7}>
+		<Container y={110} scale={0.7}>
 			{@render props.buttonBet({ anchor: 0.5 })}
 		</Container>
 
-		<Container y={180} scale={0.7}>
+		<Container y={260} scale={0.7}>
 			{@render props.buttonDecrease({ anchor: 0.5 })}
 		</Container>
 
-		<Container y={320} scale={0.7}>
+		<Container y={410} scale={0.7}>
 			{@render props.buttonTurbo({ anchor: 0.5 })}
 		</Container>
 	</Container>

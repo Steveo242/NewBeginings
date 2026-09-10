@@ -23,7 +23,7 @@
 	const valueStyle = {
 		fontFamily: 'proxima-nova',
 		fontSize: UI_BASE_FONT_SIZE,
-		fill: WHITE,
+		fill: 0x14375E,
 	} as const;
 </script>
 

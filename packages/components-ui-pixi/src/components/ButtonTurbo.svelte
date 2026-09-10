@@ -23,4 +23,4 @@
 	});
 </script>
 
-<UiButton {...props} {sizes} {active} {onpress} {disabled} icon="turbo" />
+<UiButton {...props} {sizes} {active} {onpress} {disabled} bare icon="turbo" />
