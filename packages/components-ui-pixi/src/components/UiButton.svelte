@@ -61,7 +61,7 @@
 					align: 'center',
 					wordWrap: true,
 					wordWrapWidth: 200,
-					fontFamily: 'proxima-nova',
+					fontFamily: 'Georgia, serif', fontWeight: 'bold',
 					fontWeight: '600',
 					fontSize: UI_BASE_FONT_SIZE * 0.9,
 					fill: bare ? 0x14375E : variant === 'dark' ? 0xffffff : 0x000000,

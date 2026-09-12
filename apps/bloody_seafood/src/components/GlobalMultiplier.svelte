@@ -6,6 +6,7 @@
 </script>
 
 <script lang="ts">
+ import WinAmountText from "./WinAmountText.svelte";
 	import { Tween } from 'svelte/motion';
 
 	import {
@@ -75,7 +76,7 @@
 
 <FadeContainer {show}>
 	<BoardContainer>
-		<Container {...position} {scale}>
+		<Container x={context.stateLayoutDerived.mainLayoutStandard().width - 610} y={context.stateLayoutDerived.mainLayoutStandard().height * 0.5 - 430} {scale}>
 			<SpineProvider key="globalMultiplier" width={PANEL_WIDTH}>
 				<SpineTrack
 					trackIndex={0}
@@ -89,7 +90,7 @@
 				/>
 				<SpineEventEmitterProvider>
 					<SpineSlot slotName="slot_multi">
-						<BitmapText
+						<WinAmountText
 							anchor={0.5}
 							text={`${Math.round(previousMultiplier.current)}×`}
 							style={{
@@ -99,7 +100,7 @@
 						/>
 					</SpineSlot>
 					<SpineSlot slotName="slot_multi_next">
-						<BitmapText
+						<WinAmountText
 							anchor={0.5}
 							text={`${multiplier}×`}
 							style={{

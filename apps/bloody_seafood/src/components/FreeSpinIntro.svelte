@@ -6,6 +6,10 @@
 </script>
 
 <script lang="ts">
+ import { Container } from "pixi-svelte";
+ import { MainContainer } from "components-layout";
+ import WinBanner from "./WinBanner.svelte";
+ import WinAmountText from "./WinAmountText.svelte";
 	import { CanvasSizeRectangle } from 'components-layout';
 	import { stateUrlDerived } from 'state-shared';
 	import { FadeContainer } from 'components-pixi';
@@ -42,40 +46,13 @@
 <FadeContainer {show}>
 	<CanvasSizeRectangle backgroundColor={0x000000} backgroundAlpha={0.5} />
 
-	<FreeSpinAnimation>
-		{#snippet children({ sizes })}
-			<Sprite
-				anchor={{ x: 0.5, y: 1.2 }}
-				width={500 * 2.2}
-				height={156 * 2.2}
-				key="freespins_{stateUrlDerived.lang()}.png"
-			/>
-
-			<SpineProvider key="fsIntroNumber" width={sizes.width * 0.4}>
-				<SpineTrack
-					trackIndex={0}
-					{animationName}
-					loop={animationName === 'idle'}
-					listener={{
-						complete: () => (animationName = 'idle'),
-					}}
-				/>
-				<SpineSlot slotName="slot_number">
-					<BitmapText
-						anchor={{ x: 0.5, y: 0.5 }}
-						text={freeSpinsFromEvent}
-						style={{
-							fontFamily: 'gold',
-							fontSize: sizes.width * 0.15,
-							fontWeight: 'bold',
-						}}
-					/>
-				</SpineSlot>
-			</SpineProvider>
-
-			<Sprite anchor={{ x: 0.5, y: -3 }} width={183 * 2.2} height={42 * 2.2} key="freespins.png" />
-		{/snippet}
-	</FreeSpinAnimation>
+	<MainContainer>
+ <Container x={context.stateGameDerived.boardLayout().x} y={context.stateGameDerived.boardLayout().y}>
+ <WinBanner text="FREE SPINS" alias="big">
+ <WinAmountText anchor={0.5} text={freeSpinsFromEvent} style={{ fontSize: 120 }} />
+ </WinBanner>
+ </Container>
+</MainContainer>
 
 	<PressToContinue onpress={() => oncomplete()} />
 </FadeContainer>

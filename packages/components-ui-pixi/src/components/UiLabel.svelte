@@ -15,13 +15,13 @@
 	const props: Props = $props();
 
 	const labelStyle = {
-		fontFamily: 'proxima-nova',
+		fontFamily: 'Georgia, serif', fontWeight: 'bold',
 		fontSize: UI_BASE_FONT_SIZE * 0.72,
 		fill: 0xC8102E,
 	} as const;
 
 	const valueStyle = {
-		fontFamily: 'proxima-nova',
+		fontFamily: 'Georgia, serif', fontWeight: 'bold',
 		fontSize: UI_BASE_FONT_SIZE,
 		fill: 0x14375E,
 	} as const;
@@ -38,8 +38,8 @@
 			borderRadius={35}
 		/>
 	{/if}
-	<Text anchor={{ x: 0.5, y: 0 }} text={props.label} style={labelStyle} />
-	<Text anchor={{ x: 0.5, y: 0 }} text={props.value} style={valueStyle} y={UI_BASE_FONT_SIZE} />
+	<Text anchor={{ x: 0.5, y: 0 }} text={props.label} style={{ ...labelStyle, fontFamily: "Georgia, serif", fontWeight: "bold" }} />
+	<Text anchor={{ x: 0.5, y: 0 }} text={props.value} style={{ ...valueStyle, fontFamily: "Georgia, serif", fontWeight: "bold", fontSize: (valueStyle?.fontSize ?? 28) * 1.25 }} y={UI_BASE_FONT_SIZE} />
 {:else}
 	{#if props.tiled}
 		<UiSprite
@@ -51,11 +51,11 @@
 			borderRadius={35}
 		/>
 	{/if}
-	<Text anchor={{ x: 0, y: 0.5 }} text={props.label} style={labelStyle} />
+	<Text anchor={{ x: 0, y: 0.5 }} text={props.label} style={{ ...labelStyle, fontFamily: "Georgia, serif", fontWeight: "bold" }} />
 	<Text
 		anchor={{ x: 1, y: 0.5 }}
 		text={props.value}
-		style={valueStyle}
+		style={{ ...valueStyle, fontFamily: "Georgia, serif", fontWeight: "bold", fontSize: (valueStyle?.fontSize ?? 28) * 1.25 }}
 		x={UI_BASE_FONT_SIZE * 10}
 	/>
 {/if}

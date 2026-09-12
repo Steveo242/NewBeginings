@@ -30,7 +30,7 @@
 		</Container>
 
 		<Container y={0} scale={0.8}>
-			{@render props.buttonBuyBonus({ anchor: 0.5 })}
+			{#if !stateUi.freeSpinCounterShow}{@render props.buttonBuyBonus({ anchor: 0.5 })}{/if}
 		</Container>
 
 		<Container y={170} scale={0.8}>

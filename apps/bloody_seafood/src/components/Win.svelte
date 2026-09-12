@@ -16,7 +16,9 @@
 	import { OnMount } from 'components-shared';
 
 	import WinCoins from './WinCoins.svelte';
-	import WinAnimation from './WinAnimation.svelte';
+	import WinBanner from "./WinBanner.svelte";
+ import WinAmountText from "./WinAmountText.svelte";
+ import WinAnimation from './WinAnimation.svelte';
 	import PressToContinue from './PressToContinue.svelte';
 	import { SYMBOL_SIZE } from '../game/constants';
 	import { getContext } from '../game/context';
@@ -64,8 +66,8 @@
 						y={context.stateGameDerived.boardLayout().y}
 					>
 						{#if winLevelData?.animation}
-							<WinAnimation animationMap={winLevelData.animation}>
-								<ResponsiveBitmapText
+							<WinBanner text={winLevelData.text} alias={winLevelData.alias}>
+								<WinAmountText
 									anchor={0.5}
 									maxWidth={2130}
 									text={bookEventAmountToCurrencyString(countUpAmount)}
@@ -77,9 +79,9 @@
 										letterSpacing: 0,
 									}}
 								/>
-							</WinAnimation>
+							</WinBanner>
 						{:else}
-							<ResponsiveBitmapText
+							<WinAmountText
 								anchor={0.5}
 								maxWidth={context.stateLayoutDerived.canvasSizes().width /
 									context.stateLayoutDerived.mainLayout().scale}
@@ -96,7 +98,7 @@
 					</Container>
 				</MainContainer>
 
-				<WinCoins emit={!countUpCompleted} levelAlias={winLevelData?.alias} />
+				{#if false}<WinCoins emit={!countUpCompleted} levelAlias={winLevelData?.alias} />{/if}
 
 				<PressToContinue onpress={() => (countUpCompleted ? oncomplete() : finishCountUp())} />
 			{/snippet}

@@ -56,9 +56,12 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 
 		stateGame.gameType = bookEvent.gameType;
 		await stateGameDerived.enhancedBoard.spin({ revealEvent: bookEvent });
+		eventEmitter.broadcast({ type: 'boardBump' } as any);
 		eventEmitter.broadcast({ type: 'soundScatterCounterClear' });
 	},
 	winInfo: async (bookEvent: BookEventOfType<'winInfo'>) => {
+		const gm = Math.max(1, ...bookEvent.wins.map((w: any) => Number(w?.meta?.globalMult ?? 1)));
+		eventEmitter.broadcast({ type: 'globalMultiplierUpdate', multiplier: gm });
 		const promise1 = async () => {
 			eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_winlevel_small' });
 			await animateSymbols({ positions: _.flatten(bookEvent.wins.map((win) => win.positions)) });
@@ -92,10 +95,7 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		}
 	},
 	updateGrid: async (bookEvent: BookEventOfType<'updateGrid'>) => {
-  eventEmitter.broadcast({
-  	type: 'globalMultiplierUpdate',
-  	multiplier: bookEvent.globalMultiplier,
-  });
+  if (bookEvent.globalMultiplier != null) eventEmitter.broadcast({ type: 'globalMultiplierUpdate', multiplier: bookEvent.globalMultiplier });
  },
 	setTotalWin: async (bookEvent: BookEventOfType<'setTotalWin'>) => {
 		stateBet.winBookEventAmount = bookEvent.amount;

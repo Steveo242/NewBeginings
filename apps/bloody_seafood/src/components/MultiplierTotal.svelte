@@ -7,6 +7,7 @@
 </script>
 
 <script lang="ts">
+ import WinAmountText from "./WinAmountText.svelte";
 	import { BitmapText, SpineProvider, SpineSlot, SpineTrack } from 'pixi-svelte';
 	import { waitForResolve } from 'utils-shared/wait';
 	import { stateBetDerived } from 'state-shared';
@@ -36,7 +37,7 @@
 </script>
 
 {#snippet multiplierSnippet()}
-	<BitmapText
+	<WinAmountText
 		scale={3}
 		anchor={0.5}
 		text={`${totalMultiplier} X`}

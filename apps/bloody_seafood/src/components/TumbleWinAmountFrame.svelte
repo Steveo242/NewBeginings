@@ -1,4 +1,5 @@
 <script lang="ts">
+ import WinAmountText from "./WinAmountText.svelte";
 	import type { Snippet } from 'svelte';
 
 	import { BitmapText, Container, Sprite, type Sizes } from 'pixi-svelte';
@@ -31,7 +32,7 @@
 
 <Container y={-TITLE_HEIGHT * 1.2}>
 	<Sprite anchor={0.5} key={TITLE_KEY} {...TITLE_SIZES} />
-	<BitmapText
+	<WinAmountText
 		anchor={0.5}
 		y={-TITLE_HEIGHT * 0.025}
 		text="TUMBLE WIN"

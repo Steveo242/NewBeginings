@@ -6,6 +6,8 @@
 </script>
 
 <script lang="ts">
+ import WinAmountText from "./WinAmountText.svelte";
+import { stateUi } from 'state-shared';
 	import { MainContainer } from 'components-layout';
 	import { FadeContainer } from 'components-pixi';
 
@@ -49,8 +51,8 @@
 	const counterPosition = $derived({ x: titleSizes.width / 2, y: titleSizes.height });
 
 	context.eventEmitter.subscribeOnMount({
-		freeSpinCounterShow: () => (show = true),
-		freeSpinCounterHide: () => (show = false),
+		freeSpinCounterShow: () => (show = stateUi.freeSpinCounterShow = true),
+		freeSpinCounterHide: () => (show = stateUi.freeSpinCounterShow = false),
 		freeSpinCounterUpdate: (emitterEvent) => {
 			if (emitterEvent.current !== undefined) current = emitterEvent.current;
 			if (emitterEvent.total !== undefined) total = emitterEvent.total;
@@ -69,7 +71,7 @@
 				anchor: { x: 0.5, y: 0.5 },
 			})}
 		>
-			<BitmapText
+			<WinAmountText
 				text={'FREE SPIN'}
 				style={{
 					fontFamily: 'gold',
@@ -78,7 +80,7 @@
 				}}
 				onresize={(sizes) => (titleSizes = sizes)}
 			/>
-			<BitmapText
+			<WinAmountText
 				text={`${current} OF ${total}`}
 				{...counterPosition}
 				anchor={{ x: 0.5, y: 0 }}

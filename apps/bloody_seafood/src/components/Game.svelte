@@ -75,7 +75,7 @@
 			<Board />
 			<Anticipations />
 			<TumbleWinAmount />
-			<GlobalMultiplier />
+			
 		</MainContainer>
 
 		<MainContainer>
@@ -107,6 +107,7 @@
 				/>
 			{/snippet}
 		</UI>
+		<MainContainer standard><GlobalMultiplier /></MainContainer>
 		<Win />
 		<FreeSpinIntro />
 		{#if ['desktop', 'landscape'].includes(context.stateLayoutDerived.layoutType())}

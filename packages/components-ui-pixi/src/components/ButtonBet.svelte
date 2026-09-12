@@ -31,7 +31,7 @@
 								}
 							: {}}
 					/>
-					<Text
+					{#if false}<Text
 						anchor={0.5}
 						text={['spin_default', 'spin_disabled'].includes(key)
 							? i18nDerived.bet()
@@ -40,12 +40,12 @@
 							align: 'center',
 							wordWrap: true,
 							wordWrapWidth: 200,
-							fontFamily: 'proxima-nova',
+							fontFamily: 'Georgia, serif', fontWeight: 'bold',
 							fontWeight: '600',
 							fontSize: UI_BASE_FONT_SIZE * 0.9,
 							fill: 0xffffff,
 						}}
-					/>
+					/>{/if}
 				</Container>
 			{/snippet}
 		</Button>

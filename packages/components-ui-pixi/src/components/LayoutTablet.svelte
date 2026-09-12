@@ -50,7 +50,7 @@
 		</Container>
 
 		<Container y={DESKTOP_BASE_SIZE * 0.5} x={20 + 180}>
-			{@render props.buttonBuyBonus({ anchor: 0.5 })}
+			{#if !stateUi.freeSpinCounterShow}{@render props.buttonBuyBonus({ anchor: 0.5 })}{/if}
 		</Container>
 
 		<Container y={DESKTOP_BASE_SIZE * 0.5} x={-10 + 180 * 4}>

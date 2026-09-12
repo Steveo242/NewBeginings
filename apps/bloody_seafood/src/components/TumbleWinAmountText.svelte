@@ -1,4 +1,5 @@
 <script lang="ts">
+ import WinAmountText from "./WinAmountText.svelte";
 	import { Tween } from 'svelte/motion';
 
 	import { SpineProvider, SpineTrack, SpineSlot } from 'pixi-svelte';
@@ -46,7 +47,7 @@
 		}}
 	/>
 	<SpineSlot slotName="slot_win">
-		<ResponsiveBitmapText
+		<WinAmountText
 			anchor={0.5}
 			style={{
 				fontFamily: 'gold',
@@ -57,7 +58,7 @@
 		/>
 	</SpineSlot>
 	<!-- <SpineSlot slotName="slot_win_add">
-		<ResponsiveBitmapText
+		<WinAmountText
 			alpha={alphaAmount}
 			text={$formatAmount({ amount: $getRealWin($countUpAmount), numberingSystem: 'latn'})}
 			maxWidth={width}

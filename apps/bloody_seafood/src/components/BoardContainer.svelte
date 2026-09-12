@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { stateGame } from '../game/stateGame.svelte';
 	import type { Snippet } from 'svelte';
 
 	import { Container, Sprite } from 'pixi-svelte';
@@ -16,16 +17,17 @@
 	let settleOffset = $state(0);
 	let t = 0;
 	let running = false;
-	const DUR = 420;
+	const DUR = 280;
 	const tick = () => {
 		if (!running) return;
 		t += context.stateApp.pixiApplication!.ticker.deltaMS;
 		const k = Math.min(t / DUR, 1);
-		settleOffset = k >= 1 ? 0 : Math.sin(k * Math.PI * 3) * 26 * (1 - k) * (1 - k);
+		settleOffset = k >= 1 ? 0 : Math.sin(k * Math.PI) * 16;
+			stateGame.boardBump = settleOffset;
 		if (k >= 1) { running = false; context.stateApp.pixiApplication?.ticker.remove(tick); }
 	};
 	context.eventEmitter.subscribeOnMount({
-		boardSettle: () => {
+		boardBump: () => {
 			t = 0;
 			if (!running) { running = true; context.stateApp.pixiApplication!.ticker.add(tick); }
 		},

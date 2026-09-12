@@ -10,6 +10,7 @@
 </script>
 
 <script lang="ts">
+ import WinAmountText from "./WinAmountText.svelte";
 	import { onMount } from 'svelte';
 	import { Tween } from 'svelte/motion';
 
@@ -62,7 +63,7 @@
 		if (!show) props.win.oncomplete();
 	}}
 >
-	<BitmapText
+	<WinAmountText
 		x={SYMBOL_SIZE * (props.win.reel + 0.5)}
 		y={SYMBOL_SIZE * (props.win.row - 0.5) + y.current}
 		scale={scale.current}

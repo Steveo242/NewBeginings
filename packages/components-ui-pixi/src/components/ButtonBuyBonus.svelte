@@ -68,7 +68,7 @@
 				: {}}
 		/>
 
-		<Text
+		{#if false}<Text
 			{...center}
 			anchor={0.5}
 			text={state === 'active' ? i18nDerived.disable() : i18nDerived.buyBonus()}
@@ -76,11 +76,11 @@
 				align: 'center',
 				wordWrap: true,
 				wordWrapWidth: 200,
-				fontFamily: 'proxima-nova',
+				fontFamily: 'Georgia, serif', fontWeight: 'bold',
 				fontWeight: '600',
 				fontSize: UI_BASE_FONT_SIZE * 0.9,
 				fill: 0xffffff,
 			}}
-		/>
+		/>{/if}
 	{/snippet}
 </Button>

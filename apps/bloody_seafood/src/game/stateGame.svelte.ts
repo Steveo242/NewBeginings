@@ -80,6 +80,7 @@ export type MultiplierSymbol = {
 };
 
 export const stateGame = $state({
+	boardBump: 0,
 	board,
 	gameType: 'basegame' as GameType,
 	tumbleBoardAdding: [] as TumbleSymbol[][],
