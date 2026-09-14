@@ -76,16 +76,16 @@
    "frame": {
     "x": 1,
     "y": 1185,
-    "w": 200,
-    "h": 188
+    "w": 188,
+    "h": 200
    },
-   "rotated": true,
+   "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
     "x": 0,
     "y": 6,
-    "w": 200,
-    "h": 188
+    "w": 188,
+    "h": 200
    },
    "sourceSize": {
     "w": 200,
@@ -100,16 +100,16 @@
    "frame": {
     "x": 191,
     "y": 1263,
-    "w": 190,
-    "h": 194
+    "w": 194,
+    "h": 190
    },
-   "rotated": true,
+   "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
     "x": 5,
     "y": 3,
-    "w": 190,
-    "h": 194
+    "w": 194,
+    "h": 190
    },
    "sourceSize": {
     "w": 200,
@@ -124,16 +124,16 @@
    "frame": {
     "x": 1,
     "y": 1455,
-    "w": 189,
-    "h": 192
+    "w": 192,
+    "h": 189
    },
-   "rotated": true,
+   "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
     "x": 5,
     "y": 4,
-    "w": 189,
-    "h": 192
+    "w": 192,
+    "h": 189
    },
    "sourceSize": {
     "w": 200,
@@ -148,16 +148,16 @@
    "frame": {
     "x": 203,
     "y": 1,
-    "w": 200,
-    "h": 175
+    "w": 175,
+    "h": 200
    },
-   "rotated": true,
+   "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
     "x": 0,
     "y": 20,
-    "w": 200,
-    "h": 175
+    "w": 175,
+    "h": 200
    },
    "sourceSize": {
     "w": 200,
@@ -196,16 +196,16 @@
    "frame": {
     "x": 203,
     "y": 777,
-    "w": 166,
-    "h": 171
+    "w": 171,
+    "h": 166
    },
-   "rotated": true,
+   "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
     "x": 17,
     "y": 14,
-    "w": 166,
-    "h": 171
+    "w": 171,
+    "h": 166
    },
    "sourceSize": {
     "w": 200,
@@ -220,16 +220,16 @@
    "frame": {
     "x": 198,
     "y": 1106,
-    "w": 155,
-    "h": 173
+    "w": 173,
+    "h": 155
    },
-   "rotated": true,
+   "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
     "x": 24,
     "y": 15,
-    "w": 155,
-    "h": 173
+    "w": 173,
+    "h": 155
    },
    "sourceSize": {
     "w": 200,
