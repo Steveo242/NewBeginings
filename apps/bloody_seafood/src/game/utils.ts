@@ -73,8 +73,17 @@ export const getSymbolInfo = ({
 	state: SymbolState;
 }) => {
 	const symbolKey = getSymbolKey({ rawSymbol });
+	const symbolInfoMap = SYMBOL_INFO_MAP[symbolKey];
+	// 'win' is force-resolved to 'static' everywhere except spriteSheet-driven
+	// symbols (see utils.ts history: this suppressed the old spine win
+	// animations game-wide). Symbols still on spine keep that suppressed
+	// behaviour until they're converted; spriteSheet symbols get their real
+	// win animation.
+	if (state === 'win' && symbolInfoMap.win.type === 'spriteSheet') {
+		return symbolInfoMap.win;
+	}
 	const resolvedState = state === 'win' || state === 'postWinStatic' ? 'static' : state;
-	return SYMBOL_INFO_MAP[symbolKey][resolvedState];
+	return symbolInfoMap[resolvedState];
 };
 
 export const getSymbolBackgroundInfo = ({

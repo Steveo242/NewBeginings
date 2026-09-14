@@ -83,11 +83,6 @@ export default {
 		},
 		preload: true,
 	},
-	pressToContinueText: {
-		type: 'sprites',
-		src: new URL('../../assets/sprites/pressToContinueText/MM_pressanywhere.json', import.meta.url).href,
-		preload: true,
-	},
 	H1: {
 		type: 'spine',
 		src: {
@@ -326,6 +321,10 @@ export default {
 	symbolsStatic: {
 		type: 'sprites',
 		src: new URL('../../assets/sprites/symbolsStatic/symbolsStatic.json', import.meta.url).href,
+	},
+	L3_win: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/L3_win.json', import.meta.url).href,
 	},
 	coins: {
 		type: 'spriteSheet',

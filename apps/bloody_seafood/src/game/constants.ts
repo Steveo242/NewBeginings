@@ -383,9 +383,8 @@ export const SYMBOL_INFO_MAP = {
 	L3: {
 		explosion,
 		win: {
-			type: 'spine',
-			assetKey: 'L3',
-			animationName: 'l3',
+			type: 'spriteSheet',
+			assetKey: 'L3_win',
 			sizeRatios: { width: 0.5 * 0.75, height: LOW_SYMBOL_SIZE * 0.63 },
 		},
 		postWinStatic: l3Static,
