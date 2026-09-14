@@ -121,7 +121,7 @@
 
 <Modals>
 	{#snippet version()}
-		<GameVersion version="0.0.0" />
+		<GameVersion version="1.0.0" />
 	{/snippet}
 	{#snippet gameRules()}
 		<GameRules />

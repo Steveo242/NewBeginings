@@ -5,12 +5,12 @@
 	<h1 class="bs-title">Paytable</h1>
 
 	<p>
-		Values are multiplied by your total bet. Clusters of
-		<span class="bs-num">5</span> or more matching symbols pay.
+		Values are multiplied by your total play. Clusters of
+		<span class="bs-num">5</span> or more matching symbols win.
 	</p>
 
 	<table class="bs-table">
-		<caption>Cluster size &rarr; payout multiplier</caption>
+		<caption>Cluster size &rarr; win multiplier</caption>
 		<thead>
 			<tr>
 				<th>Symbol</th><th>5</th><th>6&ndash;8</th><th>9&ndash;12</th>
@@ -32,17 +32,17 @@
 	<ul>
 		<li>
 			<strong>WILD</strong> &mdash; substitutes for any paying symbol. Appears
-			during free spins only. Has no payout of its own.
+			during free spins only. Has no win of its own.
 		</li>
 		<li>
 			<strong>SCATTER</strong> &mdash; <span class="bs-num">3</span> or more
-			anywhere on the board award free spins. Has no cluster payout of its own.
+			anywhere on the board award free spins. Has no cluster win of its own.
 		</li>
 	</ul>
 
 	<div class="bs-note">
 		Theoretical RTP <span class="bs-num">96.70%</span> &middot; maximum win
-		<span class="bs-num bs-num--blood">10,000&times;</span> bet.
+		<span class="bs-num bs-num--blood">10,000&times;</span> play.
 	</div>
 </div>
 

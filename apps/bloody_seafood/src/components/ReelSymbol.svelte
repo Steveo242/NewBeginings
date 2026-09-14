@@ -16,7 +16,6 @@
 
  $effect(() => {
   if (props.reelIndex === 0) {
-   console.log('RS reel0 x=', getSymbolX(props.reelIndex), 'y=', props.reelSymbol.symbolY?.current, 'state=', props.reelSymbol.symbolState, 'raw=', props.reelSymbol.rawSymbol?.name);
   }
  });
 </script>

@@ -7,7 +7,7 @@
 	<p>
 		Bloody Seafood is a <span class="bs-num">7</span>&times;<span
 			class="bs-num">7</span
-		> cluster-pays slot. Symbols do not pay on lines &mdash; they pay in
+		> cluster-wins slot. Symbols do not win on lines &mdash; they win in
 		clusters.
 	</p>
 
@@ -22,7 +22,7 @@
 			symbols drop in to fill the gaps.
 		</li>
 		<li>
-			If the new symbols form another cluster, it pays too. This repeats until
+			If the new symbols form another cluster, it wins too. This repeats until
 			no new clusters form.
 		</li>
 		<li>All wins from a single spin are added together.</li>
@@ -68,7 +68,7 @@
 		</tbody>
 	</table>
 
-	<h2 class="bs-h2">Bet modes</h2>
+	<h2 class="bs-h2">Play modes</h2>
 	<table class="bs-table">
 		<thead>
 			<tr><th>Mode</th><th>Cost</th><th>What it does</th></tr>
@@ -87,11 +87,11 @@
 				<td>Improved chance of triggering the super bonus</td>
 			</tr>
 			<tr>
-				<th>Buy Bonus</th><td>100&times;</td>
+				<th>Play Bonus</th><td>100&times;</td>
 				<td>Starts free spins immediately from 3 or more scatters</td>
 			</tr>
 			<tr>
-				<th>Buy Super</th><td>500&times;</td>
+				<th>Play Super</th><td>500&times;</td>
 				<td>Starts free spins immediately from 5 or more scatters</td>
 			</tr>
 		</tbody>
@@ -100,23 +100,32 @@
 	<h2 class="bs-h2">Return to player &amp; max win</h2>
 	<p>
 		Theoretical RTP is <span class="bs-num">96.70%</span>. Maximum win is
-		<span class="bs-num bs-num--blood">10,000&times;</span> your bet. A round
+		<span class="bs-num bs-num--blood">10,000&times;</span> your play. A round
 		ends immediately once the maximum win is reached.
 	</p>
 
 	<h2 class="bs-h2">Playing the game</h2>
 	<ul>
-		<li>Press the bet button, or the space bar, to spin.</li>
-		<li>Use the bet menu to change your stake or switch bet mode.</li>
-		<li>Buy Bonus and Buy Super ask you to confirm before the bet is placed.</li>
-		<li>Auto play repeats your current bet; you can stop it at any time.</li>
+		<li>Press the play button, or the space bar, to spin.</li>
+		<li>Use the play menu to change your play amount or switch play mode.</li>
+		<li>Play Bonus and Play Super ask you to confirm before the play is placed.</li>
+		<li>Auto play repeats your current play; you can stop it at any time.</li>
 		<li>Sound can be turned off in settings.</li>
 	</ul>
 
 	<div class="bs-note">
-		Every result is determined the moment you place your bet, independently of
-		every other bet. Nothing you do during a round changes the outcome. Play
+		Every result is determined the moment you come and play, independently of
+		every other play. Nothing you do during a round changes the outcome. Play
 		responsibly.
+
+		<p class="bs-disclaimer">
+			Malfunction voids all wins and plays. A consistent internet connection is required.
+			In the event of a disconnection, reload the game to finish any uncompleted rounds.
+			The expected return is calculated over many plays. The game display is not
+			representative of any physical device and is for illustrative purposes only.
+			Winnings are settled according to the amount received from the Remote Game Server
+			and not from events within the web browser. TM and &copy; 2026 Engine.
+		</p>
 	</div>
 </div>
 
@@ -247,6 +256,13 @@
 		background: rgba(0, 0, 0, 0.28);
 		color: var(--bone);
 		font-weight: 800;
+	}
+
+	.bs-disclaimer {
+		margin-top: 0.9rem;
+		font-size: 0.82rem;
+		opacity: 0.85;
+		line-height: 1.45;
 	}
 
 	.bs-note {
