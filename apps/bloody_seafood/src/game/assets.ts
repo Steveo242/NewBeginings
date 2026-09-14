@@ -322,9 +322,49 @@ export default {
 		type: 'sprites',
 		src: new URL('../../assets/sprites/symbolsStatic/symbolsStatic.json', import.meta.url).href,
 	},
+	H1_win: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/H1_win.json', import.meta.url).href,
+	},
+	H2_win: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/H2_win.json', import.meta.url).href,
+	},
+	H3_win: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/H3_win.json', import.meta.url).href,
+	},
+	H4_win: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/H4_win.json', import.meta.url).href,
+	},
+	H5_win: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/H5_win.json', import.meta.url).href,
+	},
+	L1_win: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/L1_win.json', import.meta.url).href,
+	},
+	L2_win: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/L2_win.json', import.meta.url).href,
+	},
 	L3_win: {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/symbolsAnim/L3_win.json', import.meta.url).href,
+	},
+	L4_win: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/L4_win.json', import.meta.url).href,
+	},
+	S_win: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/S_win.json', import.meta.url).href,
+	},
+	W_win: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/W_win.json', import.meta.url).href,
 	},
 	coins: {
 		type: 'spriteSheet',
