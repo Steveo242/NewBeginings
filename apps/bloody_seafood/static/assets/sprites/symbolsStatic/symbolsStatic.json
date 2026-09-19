@@ -388,16 +388,16 @@
       "frame": {
         "x": 202,
         "y": 604,
-        "w": 169,
-        "h": 200
+        "w": 117,
+        "h": 152
       },
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
-        "x": 31,
-        "y": 0,
-        "w": 169,
-        "h": 200
+        "x": 43,
+        "y": 24,
+        "w": 117,
+        "h": 152
       },
       "sourceSize": {
         "w": 200,

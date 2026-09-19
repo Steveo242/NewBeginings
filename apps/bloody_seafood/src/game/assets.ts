@@ -1,37 +1,7 @@
 export default {
-	bgSky: {
-		type: 'sprite',
-		src: new URL('../../assets/sprites/bgLayers/bg_land_sky.png', import.meta.url).href,
-		preload: true,
-	},
-	bgBoats: {
-		type: 'sprite',
-		src: new URL('../../assets/sprites/bgLayers/bg_land_boats.png', import.meta.url).href,
-		preload: true,
-	},
 	bgWater: {
 		type: 'sprite',
-		src: new URL('../../assets/sprites/bgLayers/bg_land_water.png', import.meta.url).href,
-		preload: true,
-	},
-	bgNearBoats: {
-		type: 'sprite',
-		src: new URL('../../assets/sprites/bgLayers/bg_land_nearboats.png', import.meta.url).href,
-		preload: true,
-	},
-	bgDock: {
-		type: 'sprite',
-		src: new URL('../../assets/sprites/bgLayers/bg_land_dock.png', import.meta.url).href,
-		preload: true,
-	},
-	bgGulls: {
-		type: 'sprite',
-		src: new URL('../../assets/sprites/bgLayers/bg_land_gulls.png', import.meta.url).href,
-		preload: true,
-	},
-	bgOverlay: {
-		type: 'sprite',
-		src: new URL('../../assets/sprites/bgLayers/bg_land_overlay.png', import.meta.url).href,
+		src: new URL('../../assets/sprites/bgLayers/bg_water.png', import.meta.url).href,
 		preload: true,
 	},
 	sortingTable: {

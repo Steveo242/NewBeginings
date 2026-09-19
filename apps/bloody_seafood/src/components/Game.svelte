@@ -7,7 +7,8 @@
 	import { App, Text, REM } from 'pixi-svelte';
 	import { stateModal } from 'state-shared';
 
-	import { UI, UiGameName } from 'components-ui-pixi';
+	import { UiGameName } from 'components-ui-pixi';
+	import BetBarUI from './BetBarUI.svelte';
 	import { GameVersion, Modals } from 'components-ui-html';
 	import GameRules from './GameRules.svelte';
 	import PayTable from './PayTable.svelte';
@@ -19,6 +20,7 @@
 	import ResumeBet from './ResumeBet.svelte';
 	import Sound from './Sound.svelte';
 	import Background from './Background.svelte';
+	import Bubbles from './Bubbles.svelte';
 	import LoadingScreen from './LoadingScreen.svelte';
 	import BoardFrame from './BoardFrame.svelte';
 	import Board from './Board.svelte';
@@ -89,7 +91,12 @@
 			<MultiplierTotal />
 		</MainContainer>
 
-		<UI>
+		<!-- A sparse, faint layer in front of the reels so bubbles read as
+		     rising through the whole scene rather than only behind it. Kept
+		     low-alpha and low-count so it never competes with the symbols. -->
+		<Bubbles zIndex={40} count={10} opacity={0.35} sizeRange={[0.02, 0.06]} />
+
+		<BetBarUI>
 			{#snippet gameName()}
 				<UiGameName name="Bloody Seafood" />
 			{/snippet}
@@ -106,7 +113,7 @@
 					}}
 				/>
 			{/snippet}
-		</UI>
+		</BetBarUI>
 		<MainContainer standard><GlobalMultiplier /></MainContainer>
 		<Win />
 		<FreeSpinIntro />
