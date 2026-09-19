@@ -364,16 +364,16 @@
       "frame": {
         "x": 1,
         "y": 604,
-        "w": 189,
-        "h": 188
+        "w": 168,
+        "h": 121
       },
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 189,
-        "h": 188
+        "x": 20,
+        "y": 39,
+        "w": 168,
+        "h": 121
       },
       "sourceSize": {
         "w": 200,
@@ -388,16 +388,16 @@
       "frame": {
         "x": 202,
         "y": 604,
-        "w": 171,
-        "h": 195
+        "w": 163,
+        "h": 200
       },
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
-        "x": 12,
+        "x": 37,
         "y": 0,
-        "w": 171,
-        "h": 195
+        "w": 163,
+        "h": 200
       },
       "sourceSize": {
         "w": 200,
