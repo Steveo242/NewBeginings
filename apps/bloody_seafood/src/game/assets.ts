@@ -41,11 +41,6 @@ export default {
 		src: new URL('../../assets/sprites/bgLayers/bg_water.png', import.meta.url).href,
 		preload: true,
 	},
-	sortingTable: {
-		type: 'sprite',
-		src: new URL('../../assets/sprites/table/sorting_table.png', import.meta.url).href,
-		preload: true,
-	},
 	betUp: {
 		type: 'sprite',
 		src: new URL('../../assets/sprites/ui/bet_up.png', import.meta.url).href,
@@ -90,10 +85,6 @@ export default {
 		type: 'sprites',
 		src: new URL('../../assets/sprites/reelsFrame/reels_frame.json', import.meta.url).href,
 	},
-	payFrame: {
-		type: 'sprite',
-		src: new URL('../../assets/sprites/payFrame/payFrame.png', import.meta.url).href,
-	},
 	anticipation: {
 		type: 'spine',
 		src: {
@@ -101,14 +92,6 @@ export default {
 			skeleton: new URL('../../assets/spines/anticipation/anticipation.json', import.meta.url).href,
 			scale: 2,
 		},
-	},
-	goldFont: {
-		type: 'font',
-		src: new URL('../../assets/fonts/goldFont/bs_gold.xml', import.meta.url).href,
-	},
-	goldBlur: {
-		type: 'font',
-		src: new URL('../../assets/fonts/goldBlur/bs_gold_blur.xml', import.meta.url).href,
 	},
 	bigwin: {
 		type: 'spine',
@@ -131,22 +114,6 @@ export default {
 		src: {
 			atlas: new URL('../../assets/spines/fsIntro/fs_screen.atlas', import.meta.url).href,
 			skeleton: new URL('../../assets/spines/fsIntro/fs_screen.json', import.meta.url).href,
-			scale: 2,
-		},
-	},
-	fsIntroNumber: {
-		type: 'spine',
-		src: {
-			atlas: new URL('../../assets/spines/fsIntro/fs_screen.atlas', import.meta.url).href,
-			skeleton: new URL('../../assets/spines/fsIntro/fs_screen_number.json', import.meta.url).href,
-			scale: 2,
-		},
-	},
-	fsOutroNumber: {
-		type: 'spine',
-		src: {
-			atlas: new URL('../../assets/spines/fsIntro/fs_screen.atlas', import.meta.url).href,
-			skeleton: new URL('../../assets/spines/fsIntro/fs_total_number.json', import.meta.url).href,
 			scale: 2,
 		},
 	},
