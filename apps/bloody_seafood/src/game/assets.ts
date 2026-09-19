@@ -325,10 +325,6 @@ export default {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/symbolsAnim/H4_win.json', import.meta.url).href,
 	},
-	H5_win: {
-		type: 'spriteSheet',
-		src: new URL('../../assets/sprites/symbolsAnim/H5_win.json', import.meta.url).href,
-	},
 	L1_win: {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/symbolsAnim/L1_win.json', import.meta.url).href,
@@ -340,10 +336,6 @@ export default {
 	L3_win: {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/symbolsAnim/L3_win.json', import.meta.url).href,
-	},
-	L4_win: {
-		type: 'spriteSheet',
-		src: new URL('../../assets/sprites/symbolsAnim/L4_win.json', import.meta.url).href,
 	},
 	S_win: {
 		type: 'spriteSheet',

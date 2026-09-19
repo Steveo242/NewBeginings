@@ -327,11 +327,12 @@ export const SYMBOL_INFO_MAP = {
 	},
 	H5: {
 		explosion,
-		win: {
-			type: 'spriteSheet',
-			assetKey: 'H5_win',
-			sizeRatios: { width: 0.5 * 0.9, height: HIGH_SYMBOL_SIZE * 0.53 },
-		},
+		// H5 appears in no reel data and has no paytable entry in
+		// game/config.ts, so it can never land and never win - its win
+		// spritesheet was ~610KB of art that could never play and has been
+		// removed. Win falls back to the static frame so a symbol arriving
+		// unexpectedly still renders instead of failing on a missing asset.
+		win: h5Static,
 		postWinStatic: h5Static,
 		static: h5Static,
 		spin: h5Static,
@@ -375,11 +376,9 @@ export const SYMBOL_INFO_MAP = {
 	},
 	L4: {
 		explosion,
-		win: {
-			type: 'spriteSheet',
-			assetKey: 'L4_win',
-			sizeRatios: { width: 0.5 * 0.75, height: LOW_SYMBOL_SIZE * 0.63 },
-		},
+		// Same as H5 above: unreachable in the current math, so its ~456KB
+		// win spritesheet is gone and win falls back to the static frame.
+		win: l4Static,
 		postWinStatic: l4Static,
 		static: l4Static,
 		spin: l4Static,
