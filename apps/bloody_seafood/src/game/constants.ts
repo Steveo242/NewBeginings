@@ -197,22 +197,25 @@ const m10Static = { type: 'sprite', assetKey: 'm3_10x.png', sizeRatios: { width:
 const wSizeRatios = { width: 1.5 * 0.9, height: SPECIAL_SYMBOL_SIZE * 1.15 };
 const sSizeRatios = { width: 2.5, height: SPECIAL_SYMBOL_SIZE * 2.3 };
 
+// Static-only Rust radial glow (spec s3: "sits behind, static position...
+// no hard edges") - replaces the Spine 'low/mid/high_multiplier_static'
+// animations for the states that only ever show a static frame anyway
+// (static/spin/postWinStatic). 'win'/'land'/'explosion' stay on the Spine
+// skeleton below untouched - those are real, still-working animations
+// (the multiplier plate's landing flourish), not part of this redesign.
 const backgroundLowStatic = {
-	type: 'spine',
-	assetKey: 'M',
-	animationName: 'low_multiplier_static',
+	type: 'sprite',
+	assetKey: 'mBackgroundLow',
 	sizeRatios: { width: M_SIZE, height: M_SIZE },
 };
 const backgroundMidStatic = {
-	type: 'spine',
-	assetKey: 'M',
-	animationName: 'mid_multiplier_static',
+	type: 'sprite',
+	assetKey: 'mBackgroundMid',
 	sizeRatios: { width: M_SIZE, height: M_SIZE },
 };
 const backgroundHighStatic = {
-	type: 'spine',
-	assetKey: 'M',
-	animationName: 'high_multiplier_static',
+	type: 'sprite',
+	assetKey: 'mBackgroundHigh',
 	sizeRatios: { width: M_SIZE, height: M_SIZE },
 };
 
@@ -226,12 +229,7 @@ const backgroundLow = {
 	},
 	postWinStatic: backgroundLowStatic,
 	static: backgroundLowStatic,
-	spin: {
-		type: 'spine',
-		assetKey: 'M',
-		animationName: 'low_multiplier_static',
-		sizeRatios: { width: M_SIZE, height: M_SIZE },
-	},
+	spin: backgroundLowStatic,
 	land: {
 		type: 'spine',
 		assetKey: 'M',
@@ -250,12 +248,7 @@ const backgroundMid = {
 	},
 	postWinStatic: backgroundMidStatic,
 	static: backgroundMidStatic,
-	spin: {
-		type: 'spine',
-		assetKey: 'M',
-		animationName: 'mid_multiplier_static',
-		sizeRatios: { width: M_SIZE, height: M_SIZE },
-	},
+	spin: backgroundMidStatic,
 	land: {
 		type: 'spine',
 		assetKey: 'M',
@@ -274,12 +267,7 @@ const backgroundHigh = {
 	},
 	postWinStatic: backgroundHighStatic,
 	static: backgroundHighStatic,
-	spin: {
-		type: 'spine',
-		assetKey: 'M',
-		animationName: 'high_multiplier_static',
-		sizeRatios: { width: M_SIZE, height: M_SIZE },
-	},
+	spin: backgroundHighStatic,
 	land: {
 		type: 'spine',
 		assetKey: 'M',

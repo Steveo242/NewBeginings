@@ -322,6 +322,18 @@ export default {
 		type: 'sprites',
 		src: new URL('../../assets/sprites/symbolsStatic/symbolsStatic.json', import.meta.url).href,
 	},
+	mBackgroundLow: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/mBackground/m_bg_low.png', import.meta.url).href,
+	},
+	mBackgroundMid: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/mBackground/m_bg_mid.png', import.meta.url).href,
+	},
+	mBackgroundHigh: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/mBackground/m_bg_high.png', import.meta.url).href,
+	},
 	H1_win: {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/symbolsAnim/H1_win.json', import.meta.url).href,
