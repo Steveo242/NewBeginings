@@ -5,15 +5,18 @@
 </script>
 
 <script lang="ts">
-	import { Sprite, SpineProvider, SpineTrack } from 'pixi-svelte';
+	import { Container, Rectangle, Sprite, SpineProvider, SpineTrack } from 'pixi-svelte';
 
 	import { getContext } from '../game/context';
+	import Bubbles from './Bubbles.svelte';
 
 	const context = getContext();
 	const SPINE_SCALE = { width: 0.59, height: 0.62 };
 	const SPRITE_SCALE = { width: 880 / 700, height: 880 / 700 };
 	const BG_RATIO = 1;
 	const POSITION_ADJUSTMENT = 1;
+	// Keeps the water inside the frame's border rather than under it.
+	const WATER_INSET = 0.9;
 
 	type AnimationName = 'reelhouse_glow_start' | 'reelhouse_glow_idle' | 'reelhouse_glow_exit';
 
@@ -71,6 +74,34 @@
 	width={context.stateGameDerived.boardLayout().width * BG_RATIO * SPRITE_SCALE.width}
 	height={context.stateGameDerived.boardLayout().width * SPRITE_SCALE.height}
 />
+
+<!--
+	The reel window itself is water: the lit gradient plus a bubble field,
+	sandwiched between the board's backing and its frame edge so the frame
+	still draws over the top. Inset slightly so it fills the opening rather
+	than running under the frame's border, and masked to that opening so no
+	bubble escapes into the harbour scene behind.
+-->
+{#if true}
+	{@const layout = context.stateGameDerived.boardLayout()}
+	{@const w = layout.width * BG_RATIO * SPRITE_SCALE.width * WATER_INSET}
+	{@const h = layout.width * SPRITE_SCALE.height * WATER_INSET}
+	{@const left = layout.x * POSITION_ADJUSTMENT - w * 0.5}
+	{@const top = layout.y * POSITION_ADJUSTMENT - h * 0.5}
+	<Container>
+		<Rectangle isMask x={left} y={top} width={w} height={h} />
+		<Sprite key="boardWater" x={left} y={top} width={w} height={h} alpha={0.92} />
+		<Bubbles
+			x={left}
+			y={top}
+			width={w}
+			height={h}
+			count={22}
+			opacity={0.55}
+			sizeRange={[0.018, 0.055]}
+		/>
+	</Container>
+{/if}
 
 <Sprite
 	key="frame_edge.png"

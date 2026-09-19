@@ -20,7 +20,6 @@
 	import ResumeBet from './ResumeBet.svelte';
 	import Sound from './Sound.svelte';
 	import Background from './Background.svelte';
-	import Bubbles from './Bubbles.svelte';
 	import LoadingScreen from './LoadingScreen.svelte';
 	import BoardFrame from './BoardFrame.svelte';
 	import Board from './Board.svelte';
@@ -90,11 +89,6 @@
 			<MultiplierBoard />
 			<MultiplierTotal />
 		</MainContainer>
-
-		<!-- A sparse, faint layer in front of the reels so bubbles read as
-		     rising through the whole scene rather than only behind it. Kept
-		     low-alpha and low-count so it never competes with the symbols. -->
-		<Bubbles zIndex={40} count={10} opacity={0.35} sizeRange={[0.02, 0.06]} />
 
 		<BetBarUI>
 			{#snippet gameName()}
