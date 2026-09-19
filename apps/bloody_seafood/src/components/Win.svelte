@@ -73,7 +73,10 @@
 									measureText={bookEventAmountToCurrencyString(amount)}
 									style={{
 										fontFamily: 'gold',
-										fontSize: SYMBOL_SIZE * 3.6,
+										// Sized to the 120px of plaque below the ribbon band.
+										// At 3.6 the amount was 324px against a 290px plaque -
+										// taller than the banner containing it.
+										fontSize: SYMBOL_SIZE * 1.3,
 										align: 'center',
 										fontWeight: 'bold',
 										letterSpacing: 0,

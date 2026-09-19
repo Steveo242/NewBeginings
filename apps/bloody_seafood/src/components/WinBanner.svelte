@@ -19,8 +19,9 @@
 
   // The whole banner is drawn at its original dimensions and then scaled
   // down as a unit, so the plaque, wordmark and amount keep their
-  // proportions. It read far too large on the board at full size.
-  const BANNER_SCALE = 0.68;
+  // proportions. At 1x the plaque measures 755px against a 700px board -
+  // wider than the reels it sits over - which is why it read so large.
+  const BANNER_SCALE = 0.5;
 
   let t = $state(0);
   $effect(() => {
