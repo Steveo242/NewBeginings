@@ -20,6 +20,7 @@
 	import BoardContainer from './BoardContainer.svelte';
 	import BoardMask from './BoardMask.svelte';
 	import BoardBase from './BoardBase.svelte';
+	import ScatterShine from './ScatterShine.svelte';
 
 	const context = getContext();
 
@@ -70,6 +71,7 @@
 	<BoardContext animate={true}>
 		<BoardContainer>
 			<BoardBase />
+			<ScatterShine />
 		</BoardContainer>
 	</BoardContext>
 {/if}

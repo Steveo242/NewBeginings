@@ -10,6 +10,7 @@ import type { EmitterEventFreeSpinIntro } from '../components/FreeSpinIntro.svel
 import type { EmitterEventFreeSpinCounter } from '../components/FreeSpinCounter.svelte';
 import type { EmitterEventFreeSpinOutro } from '../components/FreeSpinOutro.svelte';
 import type { EmitterEventWin } from '../components/Win.svelte';
+import type { EmitterEventScatterShine } from '../components/ScatterShine.svelte';
 import type { EmitterEventSound } from '../components/Sound.svelte';
 import type { EmitterEventTransition } from '../components/Transition.svelte';
 
@@ -23,6 +24,7 @@ export type EmitterEventGame =
 	| EmitterEventMultiplierBoard
 	| EmitterEventMultiplierTotal
 	| EmitterEventWin
+	| EmitterEventScatterShine
 	| EmitterEventFreeSpinIntro
 	| EmitterEventFreeSpinCounter
 	| EmitterEventFreeSpinOutro
