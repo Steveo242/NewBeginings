@@ -5,7 +5,6 @@
 </script>
 
 <script lang="ts">
-	import { stateGame } from '../game/stateGame.svelte';
 	import { Sprite, SpineProvider, SpineTrack } from 'pixi-svelte';
 
 	import { getContext } from '../game/context';
@@ -37,7 +36,7 @@
 		zIndex={-1}
 		key="reelhouse"
 		x={context.stateGameDerived.boardLayout().x * POSITION_ADJUSTMENT}
-		y={context.stateGameDerived.boardLayout().y * POSITION_ADJUSTMENT + stateGame.boardBump}
+		y={context.stateGameDerived.boardLayout().y * POSITION_ADJUSTMENT}
 		width={context.stateGameDerived.boardLayout().width * SPINE_SCALE.width}
 		height={context.stateGameDerived.boardLayout().height * SPINE_SCALE.height}
 	>
@@ -68,7 +67,7 @@
 	key="frame_bg.png"
 	anchor={0.5}
 	x={context.stateGameDerived.boardLayout().x * POSITION_ADJUSTMENT}
-	y={context.stateGameDerived.boardLayout().y * POSITION_ADJUSTMENT + stateGame.boardBump}
+	y={context.stateGameDerived.boardLayout().y * POSITION_ADJUSTMENT}
 	width={context.stateGameDerived.boardLayout().width * BG_RATIO * SPRITE_SCALE.width}
 	height={context.stateGameDerived.boardLayout().width * SPRITE_SCALE.height}
 />
@@ -77,7 +76,7 @@
 	key="frame_edge.png"
 	anchor={0.5}
 	x={context.stateGameDerived.boardLayout().x * POSITION_ADJUSTMENT}
-	y={context.stateGameDerived.boardLayout().y * POSITION_ADJUSTMENT + stateGame.boardBump}
+	y={context.stateGameDerived.boardLayout().y * POSITION_ADJUSTMENT}
 	width={context.stateGameDerived.boardLayout().width * BG_RATIO * SPRITE_SCALE.width}
 	height={context.stateGameDerived.boardLayout().width * SPRITE_SCALE.height}
 />

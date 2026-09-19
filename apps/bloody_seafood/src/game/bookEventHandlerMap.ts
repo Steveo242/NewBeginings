@@ -56,7 +56,6 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 
 		stateGame.gameType = bookEvent.gameType;
 		await stateGameDerived.enhancedBoard.spin({ revealEvent: bookEvent });
-		eventEmitter.broadcast({ type: 'boardBump' } as any);
 		eventEmitter.broadcast({ type: 'scatterShine' });
 		eventEmitter.broadcast({ type: 'soundScatterCounterClear' });
 	},
