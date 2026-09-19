@@ -37,6 +37,17 @@
 		y={props.y}
 		oncomplete={props.oncomplete}
 		loop={props.loop}
+		onFrameChange={(frame) => {
+			// The wild's explode sound. It used to hang off a 'wildExplode'
+			// event on the old explosion spine (see the spine branch below),
+			// but that skeleton declared no events at all, so the cue never
+			// actually fired. Now that the explode is a spritesheet, it is
+			// triggered off the frame instead - early, so it lands with the
+			// burst rather than after it.
+			if (frame === 1 && props.state === 'explosion' && props.rawSymbol.name === 'W') {
+				context.eventEmitter?.broadcast({ type: 'soundOnce', name: 'sfx_wild_explode' });
+			}
+		}}
 	/>
 	{#if showWinFrame}
 		<SpineProvider x={props.x} y={props.y} key="anticipation" width={SYMBOL_SIZE * 0.19}>

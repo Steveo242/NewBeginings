@@ -159,11 +159,16 @@ export const zIndexes = {
 	},
 };
 
+// Shared by every symbol - TumbleBoard sets 'explosion' on all winning
+// symbols in a cascade, so this is a generic burst rather than the wild's
+// own art, despite the spec calling it the wild explode. Was Mining
+// Mayhem's dynamite spine; now a blood-and-brine splash spritesheet.
+// SymbolAnimatedSprite fires onComplete for it, which TumbleBoard awaits
+// per symbol - a burst that never completed would hang the cascade.
 const explosion = {
-	type: 'spine',
-	assetKey: 'explosion',
-	animationName: 'explosion',
-	sizeRatios: { width: 1, height: 1 },
+	type: 'spriteSheet',
+	assetKey: 'symbolExplode',
+	sizeRatios: { width: 1.25, height: 1.25 },
 };
 
 const h1Static = { type: 'sprite', assetKey: 'h1.webp', sizeRatios: { width: 1, height: 1 } };

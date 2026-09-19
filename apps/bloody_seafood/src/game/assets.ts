@@ -86,14 +86,6 @@ export default {
 		src: new URL('../../assets/sprites/bgLayers/title_plaque.png', import.meta.url).href,
 		preload: true,
 	},
-	explosion: {
-		type: 'spine',
-		src: {
-			atlas: new URL('../../assets/spines/symbols3/symbols3.atlas', import.meta.url).href,
-			skeleton: new URL('../../assets/spines/symbols3/explosion.json', import.meta.url).href,
-			scale: 2,
-		},
-	},
 	reelsFrame: {
 		type: 'sprites',
 		src: new URL('../../assets/sprites/reelsFrame/reels_frame.json', import.meta.url).href,
@@ -206,6 +198,10 @@ export default {
 	mBackgroundHigh: {
 		type: 'sprite',
 		src: new URL('../../assets/sprites/mBackground/m_bg_high.png', import.meta.url).href,
+	},
+	symbolExplode: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/symbol_explode.json', import.meta.url).href,
 	},
 	H1_win: {
 		type: 'spriteSheet',
