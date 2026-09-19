@@ -18,8 +18,7 @@
 	import WinCoins from './WinCoins.svelte';
 	import WinBanner from "./WinBanner.svelte";
  import WinAmountText from "./WinAmountText.svelte";
- import WinAnimation from './WinAnimation.svelte';
-	import PressToContinue from './PressToContinue.svelte';
+ 	import PressToContinue from './PressToContinue.svelte';
 	import { SYMBOL_SIZE } from '../game/constants';
 	import { getContext } from '../game/context';
 
@@ -71,6 +70,7 @@
 									anchor={0.5}
 									maxWidth={2130}
 									text={bookEventAmountToCurrencyString(countUpAmount)}
+									measureText={bookEventAmountToCurrencyString(amount)}
 									style={{
 										fontFamily: 'gold',
 										fontSize: SYMBOL_SIZE * 3.6,
@@ -86,6 +86,7 @@
 								maxWidth={context.stateLayoutDerived.canvasSizes().width /
 									context.stateLayoutDerived.mainLayout().scale}
 								text={bookEventAmountToCurrencyString(countUpAmount)}
+								measureText={bookEventAmountToCurrencyString(amount)}
 								style={{
 									fontFamily: 'gold',
 									fontSize: SYMBOL_SIZE,

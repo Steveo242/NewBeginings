@@ -17,6 +17,11 @@
   const tier = $derived(TIERS[props.alias ?? "big"] ?? TIERS.big);
   const W = $derived(context.stateGameDerived.boardLayout().width * 0.85);
 
+  // The whole banner is drawn at its original dimensions and then scaled
+  // down as a unit, so the plaque, wordmark and amount keep their
+  // proportions. It read far too large on the board at full size.
+  const BANNER_SCALE = 0.68;
+
   let t = $state(0);
   $effect(() => {
     const start = performance.now();
@@ -31,7 +36,6 @@
 
   const easeOutBack = (x: number) => 1 + 2.70158 * Math.pow(x - 1, 3) + 1.70158 * Math.pow(x - 1, 2);
   const pop = $derived(t < 0.4 ? easeOutBack(t / 0.4) : 1);
-  const pulse = $derived(t < 0.4 ? 1 : 1 + 0.04 * Math.sin((t - 0.4) * 5));
 
   const DRIPS = [[-0.38, 26], [-0.21, 38], [-0.05, 22], [0.12, 34], [0.29, 28], [0.4, 18]];
 
@@ -58,19 +62,23 @@
   };
 </script>
 
-<Container scale={pop}>
+<Container scale={pop * BANNER_SCALE}>
   <Graphics {draw} />
-  <Container y={-75} scale={pulse}>
+  <!-- y is the ribbon band's exact centre (band runs -125..-25), and the
+       text is anchor-centred, so the wordmark sits dead centre in the band.
+       It used to carry a permanent 4% sine pulse; that is gone - the size
+       is static once the intro pop settles. -->
+  <Container y={-75}>
     <Text
       anchor={0.5}
       text={props.text ?? ""}
       style={{
-        fontFamily: "Georgia, serif",
-        fontSize: 80,
+        fontFamily: "Impact, 'Arial Black', 'Trebuchet MS', sans-serif",
+        fontSize: 76,
         fontWeight: "bold",
-        letterSpacing: 4,
+        letterSpacing: 3,
         fill: tier.fill,
-        stroke: { color: 0x1a0004, width: 10 },
+        stroke: { color: 0x1a0004, width: 9 },
         dropShadow: { color: 0x000000, alpha: 0.7, blur: 6, distance: 5, angle: 1.57 },
       }}
     />
