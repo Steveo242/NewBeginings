@@ -197,12 +197,11 @@ const m10Static = { type: 'sprite', assetKey: 'm3_10x.png', sizeRatios: { width:
 const wSizeRatios = { width: 1.5 * 0.9, height: SPECIAL_SYMBOL_SIZE * 1.15 };
 const sSizeRatios = { width: 2.5, height: SPECIAL_SYMBOL_SIZE * 2.3 };
 
-// Static-only Rust radial glow (spec s3: "sits behind, static position...
-// no hard edges") - replaces the Spine 'low/mid/high_multiplier_static'
-// animations for the states that only ever show a static frame anyway
-// (static/spin/postWinStatic). 'win'/'land'/'explosion' stay on the Spine
-// skeleton below untouched - those are real, still-working animations
-// (the multiplier plate's landing flourish), not part of this redesign.
+// Rust radial glow behind the tag (spec s3: "sits behind, static
+// position... no hard edges"). Every M state is now static: spec s3 says
+// the number is baked into the art and showWinFrame excludes M, so the
+// multiplier needs no animation. That retired the last use of the 'M'
+// spine, which was Mining Mayhem's purple crystal sheet.
 const backgroundLowStatic = {
 	type: 'sprite',
 	assetKey: 'mBackgroundLow',
@@ -221,59 +220,29 @@ const backgroundHighStatic = {
 
 const backgroundLow = {
 	explosion,
-	win: {
-		type: 'spine',
-		assetKey: 'M',
-		animationName: 'low_multiplier_pay',
-		sizeRatios: { width: M_SIZE, height: M_SIZE },
-	},
+	win: backgroundLowStatic,
 	postWinStatic: backgroundLowStatic,
 	static: backgroundLowStatic,
 	spin: backgroundLowStatic,
-	land: {
-		type: 'spine',
-		assetKey: 'M',
-		animationName: 'low_multiplier_land',
-		sizeRatios: { width: M_SIZE, height: M_SIZE },
-	},
+	land: backgroundLowStatic,
 };
 
 const backgroundMid = {
 	explosion,
-	win: {
-		type: 'spine',
-		assetKey: 'M',
-		animationName: 'mid_multiplier_pay',
-		sizeRatios: { width: M_SIZE, height: M_SIZE },
-	},
+	win: backgroundMidStatic,
 	postWinStatic: backgroundMidStatic,
 	static: backgroundMidStatic,
 	spin: backgroundMidStatic,
-	land: {
-		type: 'spine',
-		assetKey: 'M',
-		animationName: 'mid_multiplier_land',
-		sizeRatios: { width: M_SIZE, height: M_SIZE },
-	},
+	land: backgroundMidStatic,
 };
 
 const backgroundHigh = {
 	explosion,
-	win: {
-		type: 'spine',
-		assetKey: 'M',
-		animationName: 'high_multiplier_pay',
-		sizeRatios: { width: M_SIZE, height: M_SIZE },
-	},
+	win: backgroundHighStatic,
 	postWinStatic: backgroundHighStatic,
 	static: backgroundHighStatic,
 	spin: backgroundHighStatic,
-	land: {
-		type: 'spine',
-		assetKey: 'M',
-		animationName: 'high_multiplier_land',
-		sizeRatios: { width: M_SIZE, height: M_SIZE },
-	},
+	land: backgroundHighStatic,
 };
 
 export const SYMBOL_INFO_MAP = {
@@ -413,90 +382,40 @@ export const SYMBOL_INFO_MAP = {
 		postWinStatic: m2Static,
 		static: m2Static,
 		spin: m2Static,
-		win: {
-			type: 'spine',
-			assetKey: 'M',
-			animationName: '2x',
-			sizeRatios: { width: M_SIZE, height: M_SIZE },
-		},
-		land: {
-			type: 'spine',
-			assetKey: 'M',
-			animationName: '2x_land',
-			sizeRatios: { width: M_SIZE, height: M_SIZE },
-		},
+		win: m2Static,
+		land: m2Static,
 	},
 	M_4: {
 		explosion,
 		postWinStatic: m4Static,
 		static: m4Static,
 		spin: m4Static,
-		win: {
-			type: 'spine',
-			assetKey: 'M',
-			animationName: '4x',
-			sizeRatios: { width: M_SIZE, height: M_SIZE },
-		},
-		land: {
-			type: 'spine',
-			assetKey: 'M',
-			animationName: '4x_land',
-			sizeRatios: { width: M_SIZE, height: M_SIZE },
-		},
+		win: m4Static,
+		land: m4Static,
 	},
 	M_5: {
 		explosion,
 		postWinStatic: m5Static,
 		static: m5Static,
 		spin: m5Static,
-		win: {
-			type: 'spine',
-			assetKey: 'M',
-			animationName: '5x',
-			sizeRatios: { width: M_SIZE, height: M_SIZE },
-		},
-		land: {
-			type: 'spine',
-			assetKey: 'M',
-			animationName: '5x_land',
-			sizeRatios: { width: M_SIZE, height: M_SIZE },
-		},
+		win: m5Static,
+		land: m5Static,
 	},
 	M_7: {
 		explosion,
 		postWinStatic: m7Static,
 		static: m7Static,
 		spin: m7Static,
-		win: {
-			type: 'spine',
-			assetKey: 'M',
-			animationName: '7x',
-			sizeRatios: { width: M_SIZE, height: M_SIZE },
-		},
-		land: {
-			type: 'spine',
-			assetKey: 'M',
-			animationName: '7x_land',
-			sizeRatios: { width: M_SIZE, height: M_SIZE },
-		},
+		win: m7Static,
+		land: m7Static,
 	},
 	M_10: {
 		explosion,
 		postWinStatic: m10Static,
 		static: m10Static,
 		spin: m10Static,
-		win: {
-			type: 'spine',
-			assetKey: 'M',
-			animationName: '10x',
-			sizeRatios: { width: M_SIZE, height: M_SIZE },
-		},
-		land: {
-			type: 'spine',
-			assetKey: 'M',
-			animationName: '10x_land',
-			sizeRatios: { width: M_SIZE, height: M_SIZE },
-		},
+		win: m10Static,
+		land: m10Static,
 	},
 	M_TAKEN_2: backgroundLow,
 	M_TAKEN_4: backgroundLow,

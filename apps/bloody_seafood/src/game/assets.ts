@@ -86,14 +86,6 @@ export default {
 		src: new URL('../../assets/sprites/bgLayers/title_plaque.png', import.meta.url).href,
 		preload: true,
 	},
-	M: {
-		type: 'spine',
-		src: {
-			atlas: new URL('../../assets/spines/symbols2/symbols2.atlas', import.meta.url).href,
-			skeleton: new URL('../../assets/spines/symbols2/M.json', import.meta.url).href,
-			scale: 2,
-		},
-	},
 	explosion: {
 		type: 'spine',
 		src: {
