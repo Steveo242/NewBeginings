@@ -29,7 +29,13 @@
 </script>
 
 {#if isSprite}
-	<SymbolSprite {symbolInfo} x={props.x} y={props.y} oncomplete={props.oncomplete} />
+	<SymbolSprite
+		{symbolInfo}
+		x={props.x}
+		y={props.y}
+		oncomplete={props.oncomplete}
+		bounce={props.state === 'land'}
+	/>
 {:else if isSpriteSheet}
 	<SymbolAnimatedSprite
 		{symbolInfo}
