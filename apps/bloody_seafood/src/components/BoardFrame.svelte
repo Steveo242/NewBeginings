@@ -37,8 +37,17 @@
 		}
 		graphics.fill({ color: 0x000000, alpha: GRID_LINE_ALPHA });
 	};
-	const SPINE_SCALE = { width: 0.59, height: 0.62 };
 	const SPRITE_SCALE = { width: 880 / 700, height: 880 / 700 };
+	// The glow renders at zIndex -1, fully behind frame_bg - which is opaque
+	// across its whole 880x880 footprint, not just its border. Anything sized
+	// at or under the frame is entirely hidden; scaling past it lets the glow
+	// bleed out around the frame's edges, which is the only way it's ever
+	// visible at all.
+	const GLOW_MARGIN = 1.15;
+	const SPINE_SCALE = {
+		width: SPRITE_SCALE.width * GLOW_MARGIN,
+		height: SPRITE_SCALE.height * GLOW_MARGIN,
+	};
 	const BG_RATIO = 1;
 	const POSITION_ADJUSTMENT = 1;
 	// Keeps the water inside the frame's border rather than under it.
