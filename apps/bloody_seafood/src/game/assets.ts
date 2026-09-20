@@ -81,6 +81,11 @@ export default {
 		src: new URL('../../assets/sprites/bgLayers/title_plaque.png', import.meta.url).href,
 		preload: true,
 	},
+	titlePlaqueBoard: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/bgLayers/title_plaque_board.png', import.meta.url).href,
+		preload: true,
+	},
 	reelsFrame: {
 		type: 'sprites',
 		src: new URL('../../assets/sprites/reelsFrame/reels_frame.json', import.meta.url).href,

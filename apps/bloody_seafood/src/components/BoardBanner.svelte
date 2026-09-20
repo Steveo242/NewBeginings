@@ -9,8 +9,13 @@
 	const main = $derived(context.stateLayoutDerived.mainLayout());
 	const board = $derived(context.stateGameDerived.boardLayout());
 
-	/** Content aspect of title_plaque.png, measured off its alpha bounds. */
-	const BANNER_ASPECT = 1.826;
+	/**
+	 * Content aspect of title_plaque_board.png, measured off its alpha bounds.
+	 * That is the loading screen's plaque with its hanging rods, rings and
+	 * their drop shadows removed - mounted over the board it is not hanging
+	 * from anything, so the hardware read as loose clutter.
+	 */
+	const BANNER_ASPECT = 2.573;
 	const MARGIN = 10;
 	/** Never let the banner crowd the reels by outgrowing the board itself. */
 	const MAX_WIDTH_RATIO = 0.92;
@@ -31,6 +36,6 @@
 
 {#if height > 1}
 	<Container x={board.x} y={centerY}>
-		<Sprite key="titlePlaque" anchor={0.5} {width} {height} />
+		<Sprite key="titlePlaqueBoard" anchor={0.5} {width} {height} />
 	</Container>
 {/if}
