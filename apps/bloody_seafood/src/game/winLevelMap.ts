@@ -16,7 +16,7 @@ export const winLevelMap = {
 		type: 'small',
 		text: null,
 		presentDuration: 0.6 * SECOND,
-		sound: { sfx: 'sfx_winlevel_standard', bgm: undefined },
+		sound: { sfx: undefined, bgm: undefined },
 		animation: undefined,
 	},
 	3: {
@@ -25,7 +25,7 @@ export const winLevelMap = {
 		type: 'small',
 		text: null,
 		presentDuration: 1 * SECOND,
-		sound: { sfx: 'sfx_winlevel_small', bgm: undefined },
+		sound: { sfx: undefined, bgm: undefined },
 		animation: undefined,
 	},
 	4: {
@@ -34,7 +34,7 @@ export const winLevelMap = {
 		type: 'medium',
 		text: null,
 		presentDuration: 1.5 * SECOND,
-		sound: { sfx: 'sfx_winlevel_nice', bgm: undefined },
+		sound: { sfx: undefined, bgm: undefined },
 		animation: undefined,
 	},
 	5: {
@@ -43,7 +43,7 @@ export const winLevelMap = {
 		type: 'medium',
 		text: null,
 		presentDuration: 2.0 * SECOND,
-		sound: { sfx: 'sfx_winlevel_substantial', bgm: undefined },
+		sound: { sfx: undefined, bgm: undefined },
 		animation: undefined,
 	},
 	6: {
@@ -52,7 +52,7 @@ export const winLevelMap = {
 		type: 'big',
 		text: 'BIG WIN',
 		presentDuration: 6 * SECOND,
-		sound: { sfx: undefined, bgm: 'bgm_winlevel_big' },
+		sound: { sfx: undefined, bgm: undefined },
 		animation: { intro: 'big_win_intro', idle: 'big_win_idle', outro: 'big_win_exit' },
 	},
 	7: {
@@ -61,7 +61,7 @@ export const winLevelMap = {
 		type: 'big',
 		text: 'SUPER WIN',
 		presentDuration: 18 * SECOND,
-		sound: { sfx: undefined, bgm: 'bgm_winlevel_superwin' },
+		sound: { sfx: undefined, bgm: undefined },
 		animation: { intro: 'super_win_intro', idle: 'super_win_idle', outro: 'super_win_exit' },
 	},
 	8: {
@@ -70,7 +70,7 @@ export const winLevelMap = {
 		type: 'big',
 		text: 'MEGA WIN',
 		presentDuration: 20 * SECOND,
-		sound: { sfx: undefined, bgm: 'bgm_winlevel_mega' },
+		sound: { sfx: undefined, bgm: undefined },
 		animation: { intro: 'mega_win_intro', idle: 'mega_win_idle', outro: 'mega_win_exit' },
 	},
 	9: {
@@ -79,7 +79,7 @@ export const winLevelMap = {
 		type: 'big',
 		text: 'EPIC WIN!',
 		presentDuration: 26 * SECOND,
-		sound: { sfx: undefined, bgm: 'bgm_winlevel_epic' },
+		sound: { sfx: undefined, bgm: undefined },
 		animation: { intro: 'epic_win_intro', idle: 'epic_win_idle', outro: 'epic_win_exit' },
 	},
 	10: {
@@ -88,7 +88,7 @@ export const winLevelMap = {
 		type: 'big',
 		text: 'MAX WIN',
 		presentDuration: 32 * SECOND,
-		sound: { sfx: undefined, bgm: 'bgm_winlevel_max' },
+		sound: { sfx: undefined, bgm: undefined },
 		animation: { intro: 'max_win_intro', idle: 'max_win_idle', outro: 'max_win_exit' },
 	},
 } as const;

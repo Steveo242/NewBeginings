@@ -18,12 +18,19 @@ const winLevelSoundsPlay = ({ winLevelData }: { winLevelData: WinLevelData }) =>
 	if (winLevelData?.sound?.bgm) {
 		eventEmitter.broadcast({ type: 'soundMusic', name: winLevelData.sound.bgm });
 	}
+	// Same celebration sound for every win category while the amount counts
+	// up, rather than a different stinger/bgm per tier - level 1 is "zero",
+	// nothing to applaud.
+	if (winLevelData?.level > 1) {
+		eventEmitter.broadcast({ type: 'soundLoop', name: 'sfx_applause' });
+	}
 	if (winLevelData?.type === 'big') {
 		eventEmitter.broadcast({ type: 'soundLoop', name: 'sfx_bigwin_coinloop' });
 	}
 };
 
 const winLevelSoundsStop = () => {
+	eventEmitter.broadcast({ type: 'soundStop', name: 'sfx_applause' });
 	eventEmitter.broadcast({ type: 'soundStop', name: 'sfx_bigwin_coinloop' });
 	if (stateBet.activeBetModeKey === 'SUPERSPIN' || stateGame.gameType === 'freeSpins') {
 		// check if SUPERSPIN, when finishing a bet.
