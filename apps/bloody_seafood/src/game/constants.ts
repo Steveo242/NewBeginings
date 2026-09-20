@@ -200,7 +200,11 @@ const m7Static = { type: 'sprite', assetKey: 'm2_7x.png', sizeRatios: { width: 1
 const m10Static = { type: 'sprite', assetKey: 'm3_10x.png', sizeRatios: { width: 1, height: 1 } };
 
 const wSizeRatios = { width: 1.5 * 0.9, height: SPECIAL_SYMBOL_SIZE * 1.15 };
-const sSizeRatios = { width: 2.5, height: SPECIAL_SYMBOL_SIZE * 2.3 };
+// SymbolSprite draws to this box outright rather than fitting to the art, so
+// the height tracks the scatter plate's own aspect: cropping the studio floor
+// off the bottom took the art from 310 to 244 rows, and leaving the height at
+// 2.3 would have stretched the chest to fill the difference.
+const sSizeRatios = { width: 2.5, height: SPECIAL_SYMBOL_SIZE * 1.81 };
 
 // Rust radial glow behind the tag (spec s3: "sits behind, static
 // position... no hard edges"). Every M state is now static: spec s3 says
