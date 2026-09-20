@@ -76,7 +76,7 @@
 
 <FadeContainer {show}>
 	<BoardContainer>
-		<Container x={context.stateLayoutDerived.mainLayoutStandard().width - 610} y={context.stateLayoutDerived.mainLayoutStandard().height * 0.5 - 430} {scale}>
+		<Container x={position.x} y={position.y} {scale}>
 			<SpineProvider key="globalMultiplier" width={PANEL_WIDTH}>
 				<SpineTrack
 					trackIndex={0}
