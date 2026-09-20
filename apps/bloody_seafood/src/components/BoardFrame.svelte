@@ -43,7 +43,7 @@
 	// at or under the frame is entirely hidden; scaling past it lets the glow
 	// bleed out around the frame's edges, which is the only way it's ever
 	// visible at all.
-	const GLOW_MARGIN = 1.15;
+	const GLOW_MARGIN = 1.4;
 	const SPINE_SCALE = {
 		width: SPRITE_SCALE.width * GLOW_MARGIN,
 		height: SPRITE_SCALE.height * GLOW_MARGIN,
