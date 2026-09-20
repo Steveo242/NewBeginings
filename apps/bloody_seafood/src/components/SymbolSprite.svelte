@@ -2,7 +2,6 @@
 	import { Sprite, type SpriteProps } from 'pixi-svelte';
 	import { Tween } from 'svelte/motion';
 	import { elasticOut } from 'svelte/easing';
-	import { onMount } from 'svelte';
 
 	import { getSymbolInfo } from '../game/utils';
 	import { SYMBOL_SIZE } from '../game/constants';
@@ -22,28 +21,25 @@
 	// popping in dead-still. Starts pre-squashed and springs out to 1, so
 	// the "impact" reads as instant rather than a delayed grow-in.
 	const BOUNCE_DURATION = 420;
-	const scale = new Tween(props.bounce ? 0.82 : 1, {
-		duration: BOUNCE_DURATION,
-		easing: elasticOut,
-	});
-	const rotation = new Tween(props.bounce ? (Math.random() < 0.5 ? -0.07 : 0.07) : 0, {
-		duration: BOUNCE_DURATION,
-		easing: elasticOut,
-	});
+	const scale = new Tween(1, { duration: BOUNCE_DURATION, easing: elasticOut });
+	const rotation = new Tween(0, { duration: BOUNCE_DURATION, easing: elasticOut });
 
-	onMount(() => {
-		if (props.bounce) {
-			scale.set(1);
-			rotation.set(0);
-			setTimeout(() => props.oncomplete?.(), BOUNCE_DURATION);
-		} else {
-			props.oncomplete?.();
-		}
-	});
-
+	// This component instance is reused across every state a symbol passes
+	// through (static/land/win/...) rather than remounted, since the parent
+	// {#if isSprite} branch never changes - so onMount only ever fires once,
+	// long before a real 'land' transition happens. The trigger has to live
+	// in an $effect, which reruns every time `bounce` flips, not just once.
 	$effect(() => {
 		props.symbolInfo;
-		if (!props.bounce) props.oncomplete?.();
+		if (props.bounce) {
+			scale.set(0.82, { duration: 0 });
+			rotation.set(Math.random() < 0.5 ? -0.07 : 0.07, { duration: 0 });
+			scale.set(1);
+			rotation.set(0);
+			const timeout = setTimeout(() => props.oncomplete?.(), BOUNCE_DURATION);
+			return () => clearTimeout(timeout);
+		}
+		props.oncomplete?.();
 	});
 </script>
 
