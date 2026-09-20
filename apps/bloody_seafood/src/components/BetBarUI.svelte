@@ -8,7 +8,7 @@
 	import LabelBet from 'components-ui-pixi/src/components/LabelBet.svelte';
 	import ButtonPayTable from 'components-ui-pixi/src/components/ButtonPayTable.svelte';
 	import ButtonGameRules from 'components-ui-pixi/src/components/ButtonGameRules.svelte';
-	import ButtonSettings from 'components-ui-pixi/src/components/ButtonSettings.svelte';
+	import ButtonSettingsWide from './ButtonSettingsWide.svelte';
 	import ButtonBuyBonus from 'components-ui-pixi/src/components/ButtonBuyBonus.svelte';
 	import ButtonBet from 'components-ui-pixi/src/components/ButtonBet.svelte';
 	import ButtonTurbo from 'components-ui-pixi/src/components/ButtonTurbo.svelte';
@@ -102,7 +102,7 @@
 		{/snippet}
 
 		{#snippet buttonSettings(buttonProps)}
-			<ButtonSettings {...buttonProps} />
+			<ButtonSettingsWide {...buttonProps} />
 		{/snippet}
 
 		{#snippet buttonSoundSwitch(buttonProps)}

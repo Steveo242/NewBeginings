@@ -36,7 +36,10 @@
 	const SLOT_W: Record<string, number> = {
 		rules: UI_BASE_SIZE * 1.3,
 		pay: UI_BASE_SIZE * 1.3,
-		settings: TEXT_CAPTION_W,
+		// "SETTINGS" is one unwrappable word ~236 units wide, so its button
+		// carries a wider plate than the shared default - see
+		// ButtonSettingsWide.svelte.
+		settings: 270,
 		sound: TEXT_CAPTION_W,
 		menu: TEXT_CAPTION_W,
 		auto: TEXT_CAPTION_W,
