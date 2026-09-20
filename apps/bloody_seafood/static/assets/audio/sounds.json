@@ -200,5 +200,131 @@
    622.59,
    false
   ]
+ },
+ "src": [
+  "./assets/audio/sounds.ogg",
+  "./assets/audio/sounds.m4a"
+ ],
+ "config": {
+  "bgm_freespin": {
+   "volume": 1
+  },
+  "bgm_main": {
+   "volume": 1
+  },
+  "jng_intro_fs": {
+   "volume": 1
+  },
+  "sfx_anticipation": {
+   "volume": 1
+  },
+  "sfx_anticipation_start": {
+   "volume": 1
+  },
+  "sfx_applause": {
+   "volume": 1
+  },
+  "sfx_bigwin_coinloop": {
+   "volume": 1
+  },
+  "sfx_btn_general": {
+   "volume": 1
+  },
+  "sfx_btn_spin": {
+   "volume": 1
+  },
+  "sfx_fs_respins": {
+   "volume": 1
+  },
+  "sfx_multiplier_combine_a": {
+   "volume": 1
+  },
+  "sfx_multiplier_combine_b": {
+   "volume": 1
+  },
+  "sfx_multiplier_explosion_a": {
+   "volume": 1
+  },
+  "sfx_multiplier_explosion_b": {
+   "volume": 1
+  },
+  "sfx_multiplier_explosion_c": {
+   "volume": 1
+  },
+  "sfx_multiplier_landing": {
+   "volume": 1
+  },
+  "sfx_multiplier_reset": {
+   "volume": 1
+  },
+  "sfx_multiplier_up": {
+   "volume": 1
+  },
+  "sfx_multiplier_update": {
+   "volume": 1
+  },
+  "sfx_multiplier_win": {
+   "volume": 1
+  },
+  "sfx_reel_stop_1": {
+   "volume": 1
+  },
+  "sfx_reel_stop_2": {
+   "volume": 1
+  },
+  "sfx_reel_stop_3": {
+   "volume": 1
+  },
+  "sfx_reel_stop_4": {
+   "volume": 1
+  },
+  "sfx_reel_stop_5": {
+   "volume": 1
+  },
+  "sfx_royals_landing": {
+   "volume": 1
+  },
+  "sfx_scatter_reveal": {
+   "volume": 1
+  },
+  "sfx_scatter_toot": {
+   "volume": 1
+  },
+  "sfx_scatter_win": {
+   "volume": 1
+  },
+  "sfx_scatter_win_v2": {
+   "volume": 1
+  },
+  "sfx_superfreespin": {
+   "volume": 1
+  },
+  "sfx_symbols_landing": {
+   "volume": 1
+  },
+  "sfx_wild_explode": {
+   "volume": 1
+  },
+  "sfx_winlevel_end": {
+   "volume": 1
+  },
+  "sfx_winlevel_small": {
+   "volume": 1
+  },
+  "sfx_youwon_panel": {
+   "volume": 1
+  },
+  "tumble_win_1": {
+   "volume": 1
+  },
+  "tumble_win_2": {
+   "volume": 1
+  },
+  "tumble_win_3": {
+   "volume": 1
+  },
+  "tumble_win_4": {
+   "volume": 1
+  }
  }
 }
