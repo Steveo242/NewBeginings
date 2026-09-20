@@ -8,9 +8,12 @@
 	import { Container, Rectangle, Sprite, SpineProvider, SpineTrack } from 'pixi-svelte';
 
 	import { getContext } from '../game/context';
+	import { BOARD_DIMENSIONS, BOARD_SIZES, SYMBOL_SIZE } from '../game/constants';
 	import Bubbles from './Bubbles.svelte';
 
 	const context = getContext();
+	const GRID_LINE_WIDTH = 2;
+	const GRID_LINE_ALPHA = 0.22;
 	const SPINE_SCALE = { width: 0.59, height: 0.62 };
 	const SPRITE_SCALE = { width: 880 / 700, height: 880 / 700 };
 	const BG_RATIO = 1;
@@ -100,6 +103,35 @@
 			opacity={0.55}
 			sizeRange={[0.018, 0.055]}
 		/>
+
+		<!--
+			Faint cell separators over the water, aligned to the symbol grid
+			rather than the frame opening, so the reels read as a grid instead
+			of symbols floating loose. Masked with the water, so the frame's
+			border still covers the ends.
+		-->
+		{@const gridLeft = layout.x * POSITION_ADJUSTMENT - BOARD_SIZES.width * 0.5}
+		{@const gridTop = layout.y * POSITION_ADJUSTMENT - BOARD_SIZES.height * 0.5}
+		{#each Array.from({ length: BOARD_DIMENSIONS.x - 1 }) as _, index}
+			<Rectangle
+				x={gridLeft + (index + 1) * SYMBOL_SIZE - GRID_LINE_WIDTH * 0.5}
+				y={gridTop}
+				width={GRID_LINE_WIDTH}
+				height={BOARD_SIZES.height}
+				backgroundColor={0x000000}
+				backgroundAlpha={GRID_LINE_ALPHA}
+			/>
+		{/each}
+		{#each Array.from({ length: BOARD_DIMENSIONS.y - 1 }) as _, index}
+			<Rectangle
+				x={gridLeft}
+				y={gridTop + (index + 1) * SYMBOL_SIZE - GRID_LINE_WIDTH * 0.5}
+				width={BOARD_SIZES.width}
+				height={GRID_LINE_WIDTH}
+				backgroundColor={0x000000}
+				backgroundAlpha={GRID_LINE_ALPHA}
+			/>
+		{/each}
 	</Container>
 {/if}
 

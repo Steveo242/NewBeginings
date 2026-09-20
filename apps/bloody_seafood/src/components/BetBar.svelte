@@ -7,124 +7,125 @@
 	import LabelFreeSpinCounter from 'components-ui-pixi/src/components/LabelFreeSpinCounter.svelte';
 
 	import { getContext } from '../game/context';
+	import { BOARD_SIZES } from '../game/constants';
 
 	const props: LayoutUiProps = $props();
 	const context = getContext();
 
 	const canvas = $derived(context.stateLayoutDerived.canvasSizes());
-	const layoutType = $derived(context.stateLayoutDerived.layoutType());
+	const main = $derived(context.stateLayoutDerived.mainLayout());
 
 	// The bar is authored once in the shared controls' own coordinate space
-	// (a button is UI_BASE_SIZE across) and the whole thing is scaled by a
-	// single factor to fit the canvas. Sizes and positions therefore always
-	// scale together; the previous version scaled sizes off the canvas
-	// height and positions off its width, which on any portrait canvas drove
-	// them apart until every control overlapped its neighbour.
-	const BTN = UI_BASE_SIZE;
+	// and scaled by a single factor, so sizes and positions always scale
+	// together. Scaling them off different axes is what previously let every
+	// control overlap its neighbour on a portrait canvas.
 	const SPIN = UI_BASE_SIZE * 1.35;
 	const LABEL_W = 430;
 	const LABEL_H = 132;
-	const GAP = 34;
-	const ROW_GAP = 26;
+	const GAP = 46;
+	const ROW_GAP = 32;
 	/** Stacked labels draw downwards from their origin, so lift them to sit centred. */
 	const LABEL_SHIFT_Y = -UI_BASE_SIZE * 0.37;
 
+	// Authored widths, which are not uniform: the four incidental buttons are
+	// UI_BASE_SIZE * 1.3, and any button UiButton has no icon asset for draws
+	// a text caption that word-wraps at 200. Budgeting UI_BASE_SIZE for those
+	// is what left SETTINGS/SOUND ON touching and AUTO SPIN/TURBO running off
+	// the right edge.
+	const TEXT_CAPTION_W = 200;
+	const SLOT_W: Record<string, number> = {
+		rules: UI_BASE_SIZE * 1.3,
+		pay: UI_BASE_SIZE * 1.3,
+		settings: TEXT_CAPTION_W,
+		sound: TEXT_CAPTION_W,
+		menu: TEXT_CAPTION_W,
+		auto: TEXT_CAPTION_W,
+		turbo: TEXT_CAPTION_W,
+		buy: UI_BASE_SIZE,
+		dec: UI_BASE_SIZE,
+		inc: UI_BASE_SIZE,
+		spin: SPIN,
+		balance: LABEL_W,
+		win: LABEL_W,
+		bet: LABEL_W,
+	};
+
 	const LABEL_KEYS = ['balance', 'win', 'bet'];
+	// These three are `bare`, so UiButton draws their caption in navy with no
+	// plate behind it - invisible against this bar. The amounts have the same
+	// problem: UiLabel's own `tiled` plate draws an asset key this game has
+	// never shipped, so they were landing at roughly 1.4:1 on near-black.
+	const PLATED_KEYS = [...LABEL_KEYS, 'menu', 'auto', 'turbo'];
+	const PLATE_COLOR = 0xe6d8bc;
 
-	type Slot = { key: string; width: number };
-	type Row = { slots: Slot[]; height: number };
+	type Row = { keys: string[]; height: number };
 
-	const icon = (key: string): Slot => ({ key, width: BTN });
-	const label = (key: string): Slot => ({ key, width: LABEL_W });
+	const wideIcons = $derived(
+		canvas.width < 1200 ? ['menu'] : ['rules', 'pay', 'settings', 'sound'],
+	);
 
-	/**
-	 * Three arrangements of the same controls. Wide is the single strip;
-	 * compact folds the readouts onto their own line; stacked splits again so
-	 * a phone held upright still gets full-size controls.
-	 */
 	const arrangements = $derived({
-		wide: {
-			heightRatio: 0.18,
-			rows: [
-				{
-					height: Math.max(SPIN, LABEL_H),
-					slots: [
-						...(canvas.width < 1200
-							? [icon('menu')]
-							: [icon('rules'), icon('pay'), icon('settings'), icon('sound')]),
-						icon('buy'),
-						label('balance'),
-						label('win'),
-						label('bet'),
-						icon('dec'),
-						{ key: 'spin', width: SPIN },
-						icon('inc'),
-						icon('auto'),
-						icon('turbo'),
-					],
-				},
-			] as Row[],
-		},
-		compact: {
-			heightRatio: 0.3,
-			rows: [
-				{ height: LABEL_H, slots: [label('balance'), label('win'), label('bet')] },
-				{
-					height: SPIN,
-					slots: [
-						icon('menu'),
-						icon('buy'),
-						icon('dec'),
-						{ key: 'spin', width: SPIN },
-						icon('inc'),
-						icon('auto'),
-						icon('turbo'),
-					],
-				},
-			] as Row[],
-		},
-		stacked: {
-			heightRatio: 0.32,
-			rows: [
-				{ height: LABEL_H, slots: [label('balance'), label('win')] },
-				{
-					height: SPIN,
-					slots: [
-						icon('menu'),
-						icon('auto'),
-						{ key: 'spin', width: SPIN },
-						icon('turbo'),
-						icon('buy'),
-					],
-				},
-				{ height: BTN, slots: [icon('dec'), label('bet'), icon('inc')] },
-			] as Row[],
-		},
+		wide: [
+			{
+				height: Math.max(SPIN, LABEL_H),
+				keys: [
+					...wideIcons,
+					'buy',
+					'balance',
+					'win',
+					'bet',
+					'dec',
+					'spin',
+					'inc',
+					'auto',
+					'turbo',
+				],
+			},
+		] as Row[],
+		compact: [
+			{ height: LABEL_H, keys: ['balance', 'win', 'bet'] },
+			{ height: SPIN, keys: ['menu', 'buy', 'dec', 'spin', 'inc', 'auto', 'turbo'] },
+		] as Row[],
+		stacked: [
+			{ height: LABEL_H, keys: ['balance', 'win'] },
+			{ height: SPIN, keys: ['menu', 'auto', 'spin', 'turbo', 'buy'] },
+			{ height: UI_BASE_SIZE, keys: ['dec', 'bet', 'inc'] },
+		] as Row[],
 	});
 
-	const WIDTH_RATIO = 0.98;
-	const MAX_SCALE = 0.62;
-	/** Below this the controls get too small to tap comfortably. */
-	const MIN_COMFORT = 0.34;
+	const WIDTH_RATIO = 0.92;
+	const MAX_SCALE = 0.4;
+	const MARGIN = 8;
 
-	const measure = (arrangement: { heightRatio: number; rows: Row[] }) => {
-		const rows = arrangement.rows.map((row) => {
-			const width = row.slots.reduce((sum, s) => sum + s.width, 0) + GAP * (row.slots.length - 1);
+	// The band left under the board is the bar's real height budget. Sizing
+	// against that rather than a flat fraction of the canvas is what keeps the
+	// bar off the reels - it was covering the bottom rows before. Derived from
+	// the board's own layout so it stays right if the board moves.
+	const boardBottom = $derived(
+		canvas.height * 0.5 +
+			(context.stateGameDerived.boardLayout().y + BOARD_SIZES.height * 0.5 - main.height * 0.5) *
+				main.scale,
+	);
+	const roomBelowBoard = $derived(canvas.height - boardBottom - MARGIN);
+
+	const measure = (rows: Row[]) => {
+		const laid = rows.map((row) => {
+			const width =
+				row.keys.reduce((sum, key) => sum + SLOT_W[key], 0) + GAP * (row.keys.length - 1);
 			const centers: Record<string, number> = {};
 			let cursor = -width * 0.5;
-			for (const slot of row.slots) {
-				centers[slot.key] = cursor + slot.width * 0.5;
-				cursor += slot.width + GAP;
+			for (const key of row.keys) {
+				centers[key] = cursor + SLOT_W[key] * 0.5;
+				cursor += SLOT_W[key] + GAP;
 			}
 			return { ...row, width, centers };
 		});
 
-		const width = Math.max(...rows.map((row) => row.width));
-		const height =
-			rows.reduce((sum, row) => sum + row.height, 0) + ROW_GAP * (rows.length - 1);
+		const width = Math.max(...laid.map((row) => row.width));
+		const height = laid.reduce((sum, row) => sum + row.height, 0) + ROW_GAP * (laid.length - 1);
 
 		let cursor = -height * 0.5;
-		const placed = rows.map((row) => {
+		const placed = laid.map((row) => {
 			const y = cursor + row.height * 0.5;
 			cursor += row.height + ROW_GAP;
 			return { ...row, y };
@@ -132,46 +133,38 @@
 
 		const scale = Math.min(
 			(canvas.width * WIDTH_RATIO) / width,
-			(canvas.height * arrangement.heightRatio) / height,
+			Math.max(roomBelowBoard, 1) / height,
 			MAX_SCALE,
 		);
 
 		return { rows: placed, width, height, scale };
 	};
 
-	// A tall canvas always splits into three rows - a lone wide strip under a
-	// tall board wastes the space and reads as a desktop bar on a phone.
-	// Otherwise keep the widest arrangement that still tests comfortably, and
-	// if none does, take whichever leaves the controls largest.
-	const chosen = $derived.by(() => {
-		if (['portrait', 'tablet'].includes(layoutType)) return measure(arrangements.stacked);
+	// Whichever arrangement leaves the controls largest in the space available.
+	// A wide canvas naturally wins with the single strip; a tall one with the
+	// three-row split, without either being hard-coded to a layout type.
+	const chosen = $derived(
+		[arrangements.wide, arrangements.compact, arrangements.stacked]
+			.map(measure)
+			.reduce((best, candidate) => (candidate.scale > best.scale ? candidate : best)),
+	);
 
-		const wide = measure(arrangements.wide);
-		if (wide.scale >= MIN_COMFORT) return wide;
-
-		const compact = measure(arrangements.compact);
-		if (compact.scale >= MIN_COMFORT) return compact;
-
-		return compact.scale > wide.scale ? compact : wide;
-	});
-
-	const useMenu = $derived(chosen.rows.some((row) => row.slots.some((s) => s.key === 'menu')));
+	const useMenu = $derived(chosen.rows.some((row) => row.keys.includes('menu')));
 
 	// Game.svelte only renders the side counter panel on wide layouts, so
 	// everywhere else the play slot has to carry the count itself.
 	const counterInBar = $derived(
-		stateUi.freeSpinCounterShow && !['desktop', 'landscape'].includes(layoutType),
+		stateUi.freeSpinCounterShow &&
+			!['desktop', 'landscape'].includes(context.stateLayoutDerived.layoutType()),
 	);
 
 	const barHeight = $derived(chosen.height * chosen.scale);
-	const margin = $derived(Math.min(canvas.height * 0.015, 16));
 	const centerX = $derived(canvas.width * 0.5);
-	const centerY = $derived(canvas.height - barHeight * 0.5 - margin);
+	const centerY = $derived(canvas.height - barHeight * 0.5 - MARGIN);
 
-	const PANEL_PAD = 30;
+	const PANEL_PAD = 26;
 
-	// Where the menu button ended up, so its fold-out stack can sit above it.
-	const menuRow = $derived(chosen.rows.find((row) => row.centers.menu !== undefined));
+	const menuRow = $derived(chosen.rows.find((row) => row.keys.includes('menu')));
 	const menuX = $derived(centerX + (menuRow?.centers.menu ?? 0) * chosen.scale);
 	const menuY = $derived(centerY + (menuRow?.y ?? 0) * chosen.scale);
 </script>
@@ -184,59 +177,68 @@
 		y={centerY}
 		width={(chosen.width + PANEL_PAD * 2) * chosen.scale}
 		height={(chosen.height + PANEL_PAD * 2) * chosen.scale}
-		borderRadius={Math.min(chosen.height + PANEL_PAD * 2, chosen.width) * chosen.scale * 0.18}
+		borderRadius={(chosen.height + PANEL_PAD * 2) * chosen.scale * 0.18}
 		backgroundColor={0x0a1a24}
 		backgroundAlpha={0.82}
 	/>
 
 	<Container x={centerX} y={centerY} scale={chosen.scale}>
 		{#each chosen.rows as row (row.y)}
-			{#each row.slots as slot (slot.key)}
-				<Container
-					x={row.centers[slot.key]}
-					y={row.y + (LABEL_KEYS.includes(slot.key) ? LABEL_SHIFT_Y : 0)}
-				>
-					{#if slot.key === 'menu'}
-						{@render props.buttonMenu({ anchor: 0.5 })}
-					{:else if slot.key === 'rules'}
-						{@render props.buttonGameRules({ anchor: 0.5 })}
-					{:else if slot.key === 'pay'}
-						{@render props.buttonPayTable({ anchor: 0.5 })}
-					{:else if slot.key === 'settings'}
-						{@render props.buttonSettings({ anchor: 0.5 })}
-					{:else if slot.key === 'sound'}
-						{@render props.buttonSoundSwitch({ anchor: 0.5 })}
-					{:else if slot.key === 'buy'}
-						{#if !stateUi.freeSpinCounterShow}
-							{@render props.buttonBuyBonus({ anchor: 0.5 })}
-						{/if}
-					{:else if slot.key === 'balance'}
-						{@render props.amountBalance({ stacked: true })}
-					{:else if slot.key === 'win'}
-						{@render props.amountWin({ stacked: true })}
-					{:else if slot.key === 'bet'}
-						{#if counterInBar}
-							<LabelFreeSpinCounter stacked />
-						{:else}
-							{@render props.amountBet({ stacked: true })}
-						{/if}
-					{:else if slot.key === 'dec'}
-						{#if !counterInBar}
-							{@render props.buttonDecrease({ anchor: 0.5 })}
-						{/if}
-					{:else if slot.key === 'inc'}
-						{#if !counterInBar}
-							{@render props.buttonIncrease({ anchor: 0.5 })}
-						{/if}
-					{:else if slot.key === 'spin'}
-						<Container scale={SPIN / BTN}>
-							{@render props.buttonBet({ anchor: 0.5 })}
-						</Container>
-					{:else if slot.key === 'auto'}
-						{@render props.buttonAutoSpin({ anchor: 0.5 })}
-					{:else if slot.key === 'turbo'}
-						{@render props.buttonTurbo({ anchor: 0.5 })}
+			{#each row.keys as key (key)}
+				<Container x={row.centers[key]} y={row.y}>
+					{#if PLATED_KEYS.includes(key)}
+						<Rectangle
+							anchor={0.5}
+							width={SLOT_W[key]}
+							height={LABEL_KEYS.includes(key) ? LABEL_H : UI_BASE_SIZE * 0.66}
+							borderRadius={UI_BASE_SIZE * 0.18}
+							backgroundColor={PLATE_COLOR}
+							backgroundAlpha={0.94}
+						/>
 					{/if}
+					<Container y={LABEL_KEYS.includes(key) ? LABEL_SHIFT_Y : 0}>
+						{#if key === 'menu'}
+							{@render props.buttonMenu({ anchor: 0.5 })}
+						{:else if key === 'rules'}
+							{@render props.buttonGameRules({ anchor: 0.5 })}
+						{:else if key === 'pay'}
+							{@render props.buttonPayTable({ anchor: 0.5 })}
+						{:else if key === 'settings'}
+							{@render props.buttonSettings({ anchor: 0.5 })}
+						{:else if key === 'sound'}
+							{@render props.buttonSoundSwitch({ anchor: 0.5 })}
+						{:else if key === 'buy'}
+							{#if !stateUi.freeSpinCounterShow}
+								{@render props.buttonBuyBonus({ anchor: 0.5 })}
+							{/if}
+						{:else if key === 'balance'}
+							{@render props.amountBalance({ stacked: true })}
+						{:else if key === 'win'}
+							{@render props.amountWin({ stacked: true })}
+						{:else if key === 'bet'}
+							{#if counterInBar}
+								<LabelFreeSpinCounter stacked />
+							{:else}
+								{@render props.amountBet({ stacked: true })}
+							{/if}
+						{:else if key === 'dec'}
+							{#if !counterInBar}
+								{@render props.buttonDecrease({ anchor: 0.5 })}
+							{/if}
+						{:else if key === 'inc'}
+							{#if !counterInBar}
+								{@render props.buttonIncrease({ anchor: 0.5 })}
+							{/if}
+						{:else if key === 'spin'}
+							<Container scale={SPIN / UI_BASE_SIZE}>
+								{@render props.buttonBet({ anchor: 0.5 })}
+							</Container>
+						{:else if key === 'auto'}
+							{@render props.buttonAutoSpin({ anchor: 0.5 })}
+						{:else if key === 'turbo'}
+							{@render props.buttonTurbo({ anchor: 0.5 })}
+						{/if}
+					</Container>
 				</Container>
 			{/each}
 		{/each}
@@ -259,16 +261,16 @@
 		/>
 
 		<Container x={menuX} y={menuY} scale={chosen.scale}>
-			<Container y={-(BTN + GAP) * 4}>
+			<Container y={-(UI_BASE_SIZE + GAP) * 4}>
 				{@render props.buttonPayTable({ anchor: 0.5 })}
 			</Container>
-			<Container y={-(BTN + GAP) * 3}>
+			<Container y={-(UI_BASE_SIZE + GAP) * 3}>
 				{@render props.buttonGameRules({ anchor: 0.5 })}
 			</Container>
-			<Container y={-(BTN + GAP) * 2}>
+			<Container y={-(UI_BASE_SIZE + GAP) * 2}>
 				{@render props.buttonSettings({ anchor: 0.5 })}
 			</Container>
-			<Container y={-(BTN + GAP)}>
+			<Container y={-(UI_BASE_SIZE + GAP)}>
 				{@render props.buttonSoundSwitch({ anchor: 0.5 })}
 			</Container>
 			<Container>
