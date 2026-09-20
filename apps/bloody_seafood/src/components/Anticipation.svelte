@@ -32,7 +32,9 @@
 	x={context.stateGameDerived.boardLayout().x -
 		context.stateGameDerived.boardLayout().width * 0.5 +
 		(props.reel.reelIndex + REEL_PADDING) * SYMBOL_SIZE}
-	y={context.stateGameDerived.boardLayout().y - SYMBOL_SIZE * 0.06}
+	y={context.stateGameDerived.boardLayout().y -
+		context.stateGameDerived.boardLayout().height * 0.5 -
+		SYMBOL_SIZE * 0.06}
 >
 	<SpineTrack
 		trackIndex={0}
