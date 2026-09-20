@@ -1,12 +1,6 @@
-<script lang="ts" module>
-	export type EmitterEventBoardFrame =
-		| { type: 'boardFrameGlowShow' }
-		| { type: 'boardFrameGlowHide' };
-</script>
-
 <script lang="ts">
 	import type { Graphics } from 'pixi.js';
-	import { Container, Graphics as GraphicsNode, Rectangle, Sprite, SpineProvider, SpineTrack } from 'pixi-svelte';
+	import { Container, Graphics as GraphicsNode, Rectangle, Sprite } from 'pixi-svelte';
 
 	import { getContext } from '../game/context';
 	import { BOARD_DIMENSIONS, BOARD_SIZES, SYMBOL_SIZE } from '../game/constants';
@@ -38,68 +32,11 @@
 		graphics.fill({ color: 0x000000, alpha: GRID_LINE_ALPHA });
 	};
 	const SPRITE_SCALE = { width: 880 / 700, height: 880 / 700 };
-	// The glow renders at zIndex -1, fully behind frame_bg - which is opaque
-	// across its whole 880x880 footprint, not just its border. Anything sized
-	// at or under the frame is entirely hidden; scaling past it lets the glow
-	// bleed out around the frame's edges, which is the only way it's ever
-	// visible at all.
-	const GLOW_MARGIN = 1.4;
-	const SPINE_SCALE = {
-		width: SPRITE_SCALE.width * GLOW_MARGIN,
-		height: SPRITE_SCALE.height * GLOW_MARGIN,
-	};
 	const BG_RATIO = 1;
 	const POSITION_ADJUSTMENT = 1;
 	// Keeps the water inside the frame's border rather than under it.
 	const WATER_INSET = 0.9;
-
-	type AnimationName = 'reelhouse_glow_start' | 'reelhouse_glow_idle' | 'reelhouse_glow_exit';
-
-	let animationName = $state<AnimationName | undefined>(undefined);
-	let loop = $state(false);
-
-	context.eventEmitter.subscribeOnMount({
-		boardFrameGlowShow: () => {
-			animationName = 'reelhouse_glow_start';
-			loop = false;
-		},
-		boardFrameGlowHide: () => {
-			if (animationName) animationName = 'reelhouse_glow_exit';
-		},
-	});
 </script>
-
-{#if animationName}
-	<SpineProvider
-		zIndex={-1}
-		key="reelhouse"
-		x={context.stateGameDerived.boardLayout().x * POSITION_ADJUSTMENT}
-		y={context.stateGameDerived.boardLayout().y * POSITION_ADJUSTMENT}
-		width={context.stateGameDerived.boardLayout().width * SPINE_SCALE.width}
-		height={context.stateGameDerived.boardLayout().height * SPINE_SCALE.height}
-	>
-		<SpineTrack
-			trackIndex={0}
-			{animationName}
-			{loop}
-			listener={{
-				complete: (entry) => {
-					if (entry.animation) {
-						if (entry.animation.name === 'reelhouse_glow_start') {
-							animationName = 'reelhouse_glow_idle';
-							loop = true;
-						}
-
-						if (entry.animation.name === 'reelhouse_glow_exit') {
-							animationName = undefined;
-							loop = false;
-						}
-					}
-				},
-			}}
-		/>
-	</SpineProvider>
-{/if}
 
 <Sprite
 	key="frame_bg.png"
