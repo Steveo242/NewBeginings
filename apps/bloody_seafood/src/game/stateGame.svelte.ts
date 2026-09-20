@@ -89,12 +89,11 @@ export const stateGame = $state({
 });
 
 /**
- * Sits the board slightly above centre. Dead centre splits the leftover
- * design space evenly above and below, but only the band below it is any
- * use - that is where the bet bar goes - so the top half was being wasted
- * and the bar squeezed.
+ * Sits the board slightly above centre: the band below it carries the bet
+ * bar and the band above it the title banner, and the bar needs the larger
+ * share. Dead centre split them evenly and left the bar squeezed.
  */
-const BOARD_CENTER_Y_RATIO = 0.45;
+const BOARD_CENTER_Y_RATIO = 0.47;
 
 const boardLayout = () => ({
 	x: stateLayoutDerived.mainLayout().width * 0.5,

@@ -5,15 +5,38 @@
 </script>
 
 <script lang="ts">
-	import { Container, Rectangle, Sprite, SpineProvider, SpineTrack } from 'pixi-svelte';
+	import type { Graphics } from 'pixi.js';
+	import { Container, Graphics as GraphicsNode, Rectangle, Sprite, SpineProvider, SpineTrack } from 'pixi-svelte';
 
 	import { getContext } from '../game/context';
 	import { BOARD_DIMENSIONS, BOARD_SIZES, SYMBOL_SIZE } from '../game/constants';
 	import Bubbles from './Bubbles.svelte';
 
 	const context = getContext();
+	// Faint solid separators, drawn into one Graphics rather than a Rectangle
+	// per line so the grid costs a single display object.
 	const GRID_LINE_WIDTH = 2;
 	const GRID_LINE_ALPHA = 0.22;
+
+	const drawGrid = (graphics: Graphics) => {
+		for (let column = 1; column < BOARD_DIMENSIONS.x; column += 1) {
+			graphics.rect(
+				column * SYMBOL_SIZE - GRID_LINE_WIDTH * 0.5,
+				0,
+				GRID_LINE_WIDTH,
+				BOARD_SIZES.height,
+			);
+		}
+		for (let row = 1; row < BOARD_DIMENSIONS.y; row += 1) {
+			graphics.rect(
+				0,
+				row * SYMBOL_SIZE - GRID_LINE_WIDTH * 0.5,
+				BOARD_SIZES.width,
+				GRID_LINE_WIDTH,
+			);
+		}
+		graphics.fill({ color: 0x000000, alpha: GRID_LINE_ALPHA });
+	};
 	const SPINE_SCALE = { width: 0.59, height: 0.62 };
 	const SPRITE_SCALE = { width: 880 / 700, height: 880 / 700 };
 	const BG_RATIO = 1;
@@ -112,26 +135,7 @@
 		-->
 		{@const gridLeft = layout.x * POSITION_ADJUSTMENT - BOARD_SIZES.width * 0.5}
 		{@const gridTop = layout.y * POSITION_ADJUSTMENT - BOARD_SIZES.height * 0.5}
-		{#each Array.from({ length: BOARD_DIMENSIONS.x - 1 }) as _, index}
-			<Rectangle
-				x={gridLeft + (index + 1) * SYMBOL_SIZE - GRID_LINE_WIDTH * 0.5}
-				y={gridTop}
-				width={GRID_LINE_WIDTH}
-				height={BOARD_SIZES.height}
-				backgroundColor={0x000000}
-				backgroundAlpha={GRID_LINE_ALPHA}
-			/>
-		{/each}
-		{#each Array.from({ length: BOARD_DIMENSIONS.y - 1 }) as _, index}
-			<Rectangle
-				x={gridLeft}
-				y={gridTop + (index + 1) * SYMBOL_SIZE - GRID_LINE_WIDTH * 0.5}
-				width={BOARD_SIZES.width}
-				height={GRID_LINE_WIDTH}
-				backgroundColor={0x000000}
-				backgroundAlpha={GRID_LINE_ALPHA}
-			/>
-		{/each}
+		<GraphicsNode x={gridLeft} y={gridTop} draw={drawGrid} />
 	</Container>
 {/if}
 

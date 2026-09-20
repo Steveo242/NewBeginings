@@ -1,19 +1,28 @@
 <script lang="ts">
-	// Same runtime-resolved URL pattern game/assets.ts uses for Pixi assets -
-	// these are DOM <img> tags, so they can't read frames out of the
-	// symbolsStatic atlas and need standalone files. Regenerate them with
-	// bs-render/build_paytable_icons.py whenever the symbol art changes.
-	const icon = (name: string) =>
-		new URL(`../../assets/sprites/paytable/${name}.png`, import.meta.url).href;
+	// These are DOM <img> tags, so they can't read frames out of the
+	// symbolsStatic atlas and need standalone files. Imported rather than
+	// resolved through `new URL(..., import.meta.url)` like the Pixi assets:
+	// the path was built from a template literal, so Vite left it to runtime
+	// arithmetic, and the modal rendered its alt text instead of the symbol.
+	// Regenerate with bs-render/build_paytable_icons.py after any art change.
+	import h1Icon from '../paytable_icons/h1.png';
+	import h2Icon from '../paytable_icons/h2.png';
+	import h3Icon from '../paytable_icons/h3.png';
+	import h4Icon from '../paytable_icons/h4.png';
+	import l1Icon from '../paytable_icons/l1.png';
+	import l2Icon from '../paytable_icons/l2.png';
+	import l3Icon from '../paytable_icons/l3.png';
+	import wIcon from '../paytable_icons/w.png';
+	import sIcon from '../paytable_icons/s.png';
 
 	const rows = [
-		{ name: 'h1', alt: 'Shark', pays: ['5.00', '12.50', '25.00', '60.00'] },
-		{ name: 'h2', alt: 'Angelfish', pays: ['2.00', '5.00', '10.00', '40.00'] },
-		{ name: 'h3', alt: 'Clownfish', pays: ['1.30', '3.20', '7.00', '30.00'] },
-		{ name: 'h4', alt: 'Grouper', pays: ['1.00', '2.50', '6.00', '20.00'] },
-		{ name: 'l1', alt: 'Chum bucket', pays: ['0.60', '1.50', '4.00', '10.00'] },
-		{ name: 'l2', alt: 'Chum tub', pays: ['0.40', '1.20', '3.50', '8.00'] },
-		{ name: 'l3', alt: 'Chum crate', pays: ['0.20', '0.80', '2.50', '5.00'] },
+		{ src: h1Icon, alt: 'Shark', pays: ['5.00', '12.50', '25.00', '60.00'] },
+		{ src: h2Icon, alt: 'Angelfish', pays: ['2.00', '5.00', '10.00', '40.00'] },
+		{ src: h3Icon, alt: 'Clownfish', pays: ['1.30', '3.20', '7.00', '30.00'] },
+		{ src: h4Icon, alt: 'Grouper', pays: ['1.00', '2.50', '6.00', '20.00'] },
+		{ src: l1Icon, alt: 'Chum bucket', pays: ['0.60', '1.50', '4.00', '10.00'] },
+		{ src: l2Icon, alt: 'Chum tub', pays: ['0.40', '1.20', '3.50', '8.00'] },
+		{ src: l3Icon, alt: 'Chum crate', pays: ['0.20', '0.80', '2.50', '5.00'] },
 	];
 </script>
 
@@ -34,9 +43,9 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each rows as row (row.name)}
+			{#each rows as row (row.alt)}
 				<tr>
-					<th><img class="bs-symbol" src={icon(row.name)} alt={row.alt} /></th>
+					<th><img class="bs-symbol" src={row.src} alt={row.alt} /></th>
 					{#each row.pays as pay}<td>{pay}</td>{/each}
 				</tr>
 			{/each}
@@ -46,14 +55,14 @@
 	<h2 class="bs-h2">Special symbols</h2>
 	<ul class="bs-specials">
 		<li>
-			<img class="bs-symbol bs-symbol--special" src={icon('w')} alt="Wild anchor" />
+			<img class="bs-symbol bs-symbol--special" src={wIcon} alt="Wild anchor" />
 			<span>
 				<strong>WILD</strong> &mdash; substitutes for any paying symbol. Appears
 				during free spins only. Has no win of its own.
 			</span>
 		</li>
 		<li>
-			<img class="bs-symbol bs-symbol--special" src={icon('s')} alt="Scatter chest" />
+			<img class="bs-symbol bs-symbol--special" src={sIcon} alt="Scatter chest" />
 			<span>
 				<strong>SCATTER</strong> &mdash; <span class="bs-num">3</span> or more
 				anywhere on the board award free spins. Has no cluster win of its own.

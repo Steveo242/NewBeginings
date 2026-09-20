@@ -22,6 +22,7 @@
 	import Background from './Background.svelte';
 	import LoadingScreen from './LoadingScreen.svelte';
 	import BoardFrame from './BoardFrame.svelte';
+	import BoardBanner from './BoardBanner.svelte';
 	import Board from './Board.svelte';
 	import Anticipations from './Anticipations.svelte';
 	import ClusterWinAmounts from './ClusterWinAmounts.svelte';
@@ -70,6 +71,7 @@
 
 		<MainContainer>
 			<BoardFrame />
+			<BoardBanner />
 		</MainContainer>
 
 		<MainContainer>

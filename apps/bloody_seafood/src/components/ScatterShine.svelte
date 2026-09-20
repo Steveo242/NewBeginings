@@ -21,9 +21,15 @@
 		elapsed += context.stateApp.pixiApplication!.ticker.deltaMS;
 		if (elapsed >= SWEEP_MS) elapsed = undefined;
 	};
-	if (context.stateApp.pixiApplication) {
-		context.stateApp.pixiApplication.ticker.add(tick);
-	}
+	// Tracked rather than read once at init: if the application is not up yet
+	// when this mounts, a one-shot registration silently never happens and the
+	// sweep sits at zero progress forever.
+	$effect(() => {
+		const ticker = context.stateApp.pixiApplication?.ticker;
+		if (!ticker) return;
+		ticker.add(tick);
+		return () => ticker.remove(tick);
+	});
 	onDestroy(() => {
 		context.stateApp.pixiApplication?.ticker.remove(tick);
 	});
@@ -44,10 +50,14 @@
 		progress === undefined ? 0 : Math.sin(Math.min(1, Math.max(0, progress)) * Math.PI),
 	);
 
+	// Both specials sweep, not just the scatter: the wild is the symbol the
+	// player is watching for and it was never picked up here.
+	const SHINE_SYMBOLS = ['S', 'W'];
+
 	const scatters = $derived(
 		context.stateGame.board.flatMap((reel, reelIndex) =>
 			reel.reelState.symbols
-				.filter((reelSymbol) => reelSymbol.rawSymbol.name === 'S')
+				.filter((reelSymbol) => SHINE_SYMBOLS.includes(reelSymbol.rawSymbol.name))
 				.map((reelSymbol) => ({
 					reelIndex,
 					reelSymbol,

@@ -140,14 +140,19 @@
 		return { rows: placed, width, height, scale };
 	};
 
-	// Whichever arrangement leaves the controls largest in the space available.
-	// A wide canvas naturally wins with the single strip; a tall one with the
-	// three-row split, without either being hard-coded to a layout type.
-	const chosen = $derived(
-		[arrangements.wide, arrangements.compact, arrangements.stacked]
-			.map(measure)
-			.reduce((best, candidate) => (candidate.scale > best.scale ? candidate : best)),
-	);
+	// Prefer the widest arrangement that still tests comfortably, rather than
+	// simply the largest controls: once the board leaves a generous band, the
+	// two-row split wins on raw scale and a desktop bar that already reads
+	// well would fold itself in half for no reason. Only when nothing is
+	// comfortable does the biggest win.
+	const MIN_COMFORT = 0.3;
+	const chosen = $derived.by(() => {
+		const candidates = [arrangements.wide, arrangements.compact, arrangements.stacked].map(measure);
+		return (
+			candidates.find((candidate) => candidate.scale >= MIN_COMFORT) ??
+			candidates.reduce((best, candidate) => (candidate.scale > best.scale ? candidate : best))
+		);
+	});
 
 	const useMenu = $derived(chosen.rows.some((row) => row.keys.includes('menu')));
 
