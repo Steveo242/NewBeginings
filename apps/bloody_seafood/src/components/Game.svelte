@@ -110,7 +110,7 @@
 				/>
 			{/snippet}
 		</BetBarUI>
-		<MainContainer standard><GlobalMultiplier /></MainContainer>
+		<MainContainer><GlobalMultiplier /></MainContainer>
 		<Win />
 		<FreeSpinIntro />
 		{#if ['desktop', 'landscape'].includes(context.stateLayoutDerived.layoutType())}
