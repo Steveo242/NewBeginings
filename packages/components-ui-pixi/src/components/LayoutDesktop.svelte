@@ -21,9 +21,6 @@
 </Container>
 
 <MainContainer standard>
-{#if typeof window !== 'undefined'}
-{(() => { const c = context.stateLayoutDerived; console.log('PROBE canvas', JSON.stringify(c.canvasSizes()), 'main', JSON.stringify(c.mainLayoutStandard())); return ''; })()}
-{/if}
 	<Container x={200} y={context.stateLayoutDerived.mainLayoutStandard().height * 0.5}>
 		<Container y={-170} scale={0.8}>
 			{@render props.buttonMenu({ anchor: 0.5 })}
