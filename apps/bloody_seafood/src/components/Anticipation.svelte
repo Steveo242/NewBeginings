@@ -24,14 +24,18 @@
 		}
 	});
 
-	// Clamps the glow to exactly this reel's column, from the top of the
-	// board to the bottom - regardless of where the rig's own internal
-	// anchor sits, it can never bleed above the board or into a neighbour
-	// reel. Sizing/positioning the spine itself to land perfectly inside
-	// this window took several tries and disagreed with what actually
-	// rendered each time; the mask makes that unnecessary to get exactly
-	// right.
-	const reelLeft = $derived(
+	// Clamps the glow to this reel's column, from the top of the board to
+	// the bottom - regardless of where the rig's own internal anchor sits,
+	// it can never bleed above the board or into a neighbour reel. Sizing
+	// the spine itself to land perfectly inside this window took several
+	// tries and disagreed with what actually rendered each time; the mask
+	// makes that unnecessary to get exactly right.
+	//
+	// Note this is the column's CENTRE, not its left edge: getSymbolX()
+	// places symbols at SYMBOL_SIZE * (reelIndex + REEL_PADDING) with
+	// anchor 0.5, and REEL_PADDING is ~0.5. The mask has to be offset back
+	// by half a symbol to sit around the glow rather than beside it.
+	const reelCentre = $derived(
 		context.stateGameDerived.boardLayout().x -
 			context.stateGameDerived.boardLayout().width * 0.5 +
 			(props.reel.reelIndex + REEL_PADDING) * SYMBOL_SIZE,
@@ -45,7 +49,7 @@
 <Container>
 	<Rectangle
 		isMask
-		x={reelLeft}
+		x={reelCentre - SYMBOL_SIZE * 0.5}
 		y={boardTop}
 		width={SYMBOL_SIZE}
 		height={context.stateGameDerived.boardLayout().height}
@@ -54,7 +58,7 @@
 		key="anticipation"
 		width={SYMBOL_SIZE * 0.56}
 		height={context.stateGameDerived.boardLayout().height}
-		x={reelLeft}
+		x={reelCentre}
 		y={context.stateGameDerived.boardLayout().y}
 	>
 		<SpineTrack
