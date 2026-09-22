@@ -13,7 +13,7 @@ import type { SoundEffectName } from './sound';
 
 // big/mega/epic get their own applause recording; every other win category
 // (including superwin/max) falls back to the generic sfx_applause loop.
-const WIN_LEVEL_APPLAUSE_SFX: Partial<Record<WinLevelAlias, SoundEffectName>> = {
+export const WIN_LEVEL_APPLAUSE_SFX: Partial<Record<WinLevelAlias, SoundEffectName>> = {
 	big: 'sfx_applause_big',
 	mega: 'sfx_applause_mega',
 	epic: 'sfx_applause_epic',
@@ -36,9 +36,6 @@ const winLevelSoundsPlay = ({ winLevelData }: { winLevelData: WinLevelData }) =>
 		activeApplauseSfx = WIN_LEVEL_APPLAUSE_SFX[winLevelData.alias] ?? 'sfx_applause';
 		eventEmitter.broadcast({ type: 'soundLoop', name: activeApplauseSfx });
 	}
-	if (winLevelData?.type === 'big') {
-		eventEmitter.broadcast({ type: 'soundLoop', name: 'sfx_bigwin_coinloop' });
-	}
 };
 
 const winLevelSoundsStop = () => {
@@ -46,7 +43,6 @@ const winLevelSoundsStop = () => {
 		eventEmitter.broadcast({ type: 'soundStop', name: activeApplauseSfx });
 		activeApplauseSfx = undefined;
 	}
-	eventEmitter.broadcast({ type: 'soundStop', name: 'sfx_bigwin_coinloop' });
 	if (stateBet.activeBetModeKey === 'SUPERSPIN' || stateGame.gameType === 'freeSpins') {
 		// check if SUPERSPIN, when finishing a bet.
 		eventEmitter.broadcast({ type: 'soundMusic', name: 'bgm_freespin' });

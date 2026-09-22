@@ -21,6 +21,7 @@
 	import { stateUrlDerived } from 'state-shared';
 
 	import { getContext } from '../game/context';
+	import { WIN_LEVEL_APPLAUSE_SFX } from '../game/bookEventHandlerMap';
 	import FreeSpinAnimation from './FreeSpinAnimation.svelte';
 	import PressToContinue from './PressToContinue.svelte';
 	import WinCoins from './WinCoins.svelte';
@@ -53,7 +54,15 @@
 		{@const isBigWin = winLevelData.type === 'big'}
 		<WinCountUpProvider {amount} {duration} oncomplete={() => onCountUpComplete()}>
 			{#snippet children({ countUpAmount, startCountUp, finishCountUp, countUpCompleted })}
-				<OnMount onmount={() => startCountUp()} />
+				<OnMount
+					onmount={async () => {
+						await startCountUp();
+						const applauseSfx = winLevelData
+							? (WIN_LEVEL_APPLAUSE_SFX[winLevelData.alias] ?? 'sfx_applause')
+							: 'sfx_applause';
+						context.eventEmitter.broadcast({ type: 'soundStop', name: applauseSfx });
+					}}
+				/>
 
 				<CanvasSizeRectangle backgroundColor={0x000000} backgroundAlpha={0.5} />
 
