@@ -1,31 +1,28 @@
+"""Bloody Seafood key art.
+
+Composed from the game's own harbour layers, logo and symbol atlas so the
+art reads as the actual game. Bright, matching the in-game background -
+this is deliberately NOT a dark/vignetted treatment.
+
+Run build_keyart_bg.py first; it writes /tmp/keyart_bg_raw.png.
+"""
 from PIL import Image, ImageFilter, ImageEnhance, ImageDraw, ImageChops
-import json, math
+import json
 
 W, H = 2560, 1440
 CX = W // 2
 SPR = 'static/assets/sprites'
+OUT = 'thumbnails'
 
 # ---------------------------------------------------------------- background
 bg = Image.open('/tmp/keyart_bg_raw.png').convert('RGB')
-# Push the harbour back: soften it, cool it down and drop it into shadow so
-# the logo and symbols are unambiguously the subject.
-bg = bg.filter(ImageFilter.GaussianBlur(7))
-bg = ImageEnhance.Brightness(bg).enhance(0.46)
-bg = ImageEnhance.Color(bg).enhance(0.72)
-
-# Cool the shadows, keep a little warmth up top - a straight brightness cut
-# leaves it looking grey rather than like dusk over water.
-r, g, b = bg.split()
-r = r.point(lambda v: int(v * 0.88))
-b = b.point(lambda v: min(255, int(v * 1.14)))
-bg = Image.merge('RGB', (r, g, b)).convert('RGBA')
-
-# Glow behind where the logo will sit, so the wordmark reads off the water.
-glow = Image.new('RGBA', (W, H), (0, 0, 0, 0))
-gd = ImageDraw.Draw(glow)
-gd.ellipse([CX - 1150, -350, CX + 1150, 1000], fill=(90, 150, 180, 120))
-glow = glow.filter(ImageFilter.GaussianBlur(220))
-bg = Image.alpha_composite(bg, glow)
+# Just enough softening to separate the scene from the symbols in front of
+# it. The brightness stays where the game has it - the harbour is a bright
+# daylight scene and the art has to look like the game.
+bg = bg.filter(ImageFilter.GaussianBlur(3))
+bg = ImageEnhance.Brightness(bg).enhance(1.02)
+bg = ImageEnhance.Color(bg).enhance(1.04)
+bg = bg.convert('RGBA')
 
 # ------------------------------------------------------------------- symbols
 atlas = Image.open(f'{SPR}/symbolsStatic/symbolsStatic.webp').convert('RGBA')
@@ -41,86 +38,84 @@ def fit(img, target_w):
 
 def pad(img, m):
     """Room for blurs to spread. Without it every filter below gets clipped
-    square at the symbol's own bounding box."""
+    square at the symbol's own bounding box - which shows up as a hard
+    rectangle behind each symbol."""
     out = Image.new('RGBA', (img.width + 2 * m, img.height + 2 * m), (0, 0, 0, 0))
     out.alpha_composite(img, (m, m))
     return out
 
-def shadow(img, blur=26, alpha=150, spread=1.06):
-    """Contact shadow so symbols sit in the scene instead of floating on it."""
+def shadow(img, blur=24, alpha=115, spread=1.05):
+    """Contact shadow so symbols sit in the scene instead of floating on it.
+    Lighter than it would be on a dark background - on a bright scene a heavy
+    shadow reads as dirt."""
     a = img.getchannel('A').resize(
         (int(img.width * spread), int(img.height * spread)), Image.LANCZOS)
     sh = Image.new('RGBA', a.size, (0, 0, 0, 0))
     sh.putalpha(a.point(lambda v: int(v * alpha / 255)))
     return pad(sh, blur * 3).filter(ImageFilter.GaussianBlur(blur))
 
-def rim(img, color=(255, 214, 140), strength=110, off=(-5, -5)):
-    """Warm rim light up-left, matching the symbols' own key light."""
+def rim(img, color=(255, 236, 200), strength=95, off=(-5, -5)):
+    """Light rim up-left, matching the symbols' own key light."""
     a = img.getchannel('A')
     edge = ImageChops.subtract(a, ImageChops.offset(a, *off))
     lit = Image.new('RGBA', img.size, color + (0,))
     lit.putalpha(edge.point(lambda v: int(v * strength / 255)))
     return Image.alpha_composite(img, lit.filter(ImageFilter.GaussianBlur(2)))
 
-def steel(img, desat=0.86):
-    """The shark renders bright cyan, which fights the rust/brass/blood
-    palette. Key art only - the in-game symbol is untouched."""
-    a = img.getchannel('A')
-    lum = img.convert('RGB').convert('L').convert('RGB')
-    out = Image.blend(img.convert('RGB'), lum, desat)
-    r, g, b = out.split()
-    r = r.point(lambda v: min(255, int(v * 1.07)))
-    b = b.point(lambda v: int(v * 0.97))
-    out = Image.merge('RGB', (r, g, b))
-    out = ImageEnhance.Contrast(out).enhance(1.18)
-    out = ImageEnhance.Brightness(out).enhance(1.05)
-    out = out.convert('RGBA')
-    out.putalpha(a)
-    return out
-
 canvas = bg.copy()
 
-def paste(img, cx, cy, with_shadow=True):
-    if with_shadow:
-        sh = shadow(img)
-        canvas.alpha_composite(sh, (int(cx - sh.width / 2), int(cy - sh.height / 2 + 26)))
+def paste(img, cx, cy):
+    sh = shadow(img)
+    canvas.alpha_composite(sh, (int(cx - sh.width / 2), int(cy - sh.height / 2 + 24)))
     canvas.alpha_composite(img, (int(cx - img.width / 2), int(cy - img.height / 2)))
 
-# Heroes sit inside the centre 1440px so a square crop keeps all of them.
-shark = rim(steel(fit(sym('h1.webp'), 790)), strength=125)
+# The shark keeps its own aqua/green - that is its colour in the game and the
+# art has to match what a player actually sees.
+shark = rim(fit(sym('h1.webp'), 790), strength=105)
 chest = rim(fit(sym('s.png'), 600))
 bucket = rim(fit(sym('l1.webp'), 400))
-anchor = rim(fit(sym('w.png'), 420), strength=150)
+anchor = rim(fit(sym('w.png'), 420), strength=125)
 
+# Everything lives inside CX +/- 660 so the square tile crop keeps all of it.
 paste(anchor, CX + 500, 1000)
 paste(bucket, CX - 500, 1060)
 paste(chest, CX + 170, 1120)
 paste(shark, CX - 235, 935)
 
 # ---------------------------------------------------------------------- logo
-logo = Image.open(f'{SPR}/bgLayers/title_plaque.png').convert('RGBA')
-logo = fit(logo, 1580)
-# The flat wordmark needs weight against a photographic scene: a dark halo to
-# separate it, then a warm rim to give the steel band and letters an edge.
+logo = fit(Image.open(f'{SPR}/bgLayers/title_plaque.png').convert('RGBA'), 1580)
+# The wordmark is red and bone over a bright sky, so it needs a soft dark
+# halo to hold its edges - without it the red letters vibrate against blue.
 halo = Image.new('RGBA', logo.size, (0, 0, 0, 0))
-halo.putalpha(logo.getchannel('A').point(lambda v: int(v * 0.85)))
-halo = halo.filter(ImageFilter.GaussianBlur(34))
+halo.putalpha(logo.getchannel('A').point(lambda v: int(v * 0.5)))
+halo = pad(halo, 90).filter(ImageFilter.GaussianBlur(38))
 lx, ly = CX - logo.width // 2, 120
-for dx, dy in ((0, 0), (0, 12)):
-    canvas.alpha_composite(halo, (lx + dx, ly + dy))
-canvas.alpha_composite(rim(logo, color=(255, 226, 168), strength=125, off=(-4, -4)), (lx, ly))
+canvas.alpha_composite(halo, (lx - 90, ly - 90 + 10))
+canvas.alpha_composite(rim(logo, color=(255, 240, 210), strength=110), (lx, ly))
 
-# ------------------------------------------------------------------ grade
-# Vignette: darken the edges so every crop pulls the eye to the centre.
+# ------------------------------------------------------------------- grade
+# A whisper of a vignette only - enough to hold the eye in, not enough to
+# darken the scene.
 vig = Image.new('L', (W, H), 0)
-ImageDraw.Draw(vig).ellipse([-W * 0.22, -H * 0.40, W * 1.22, H * 1.34], fill=255)
-vig = vig.filter(ImageFilter.GaussianBlur(320))
-dark = Image.new('RGBA', (W, H), (4, 12, 20, 255))
-dark.putalpha(vig.point(lambda v: 255 - v))
+ImageDraw.Draw(vig).ellipse([-W * 0.30, -H * 0.45, W * 1.30, H * 1.42], fill=255)
+vig = vig.filter(ImageFilter.GaussianBlur(300))
+dark = Image.new('RGBA', (W, H), (10, 30, 48, 255))
+dark.putalpha(vig.point(lambda v: int((255 - v) * 0.42)))
 canvas = Image.alpha_composite(canvas, dark)
 
 out = canvas.convert('RGB')
-out = ImageEnhance.Contrast(out).enhance(1.10)
-out = ImageEnhance.Color(out).enhance(1.10)
+out = ImageEnhance.Contrast(out).enhance(1.05)
+out = ImageEnhance.Color(out).enhance(1.06)
 out.save('/tmp/keyart_master.png')
-print('master saved', out.size)
+
+sq = out.crop(((W - H) // 2, 0, (W - H) // 2 + H, H))
+exports = {
+    'bloody_seafood_keyart_2560x1440.png': out,
+    'bloody_seafood_banner_1280x720.png': out.resize((1280, 720), Image.LANCZOS),
+    'bloody_seafood_tile_1024.png': sq.resize((1024, 1024), Image.LANCZOS),
+    'bloody_seafood_tile_512.png': sq.resize((512, 512), Image.LANCZOS),
+    'bloody_seafood_tile_256.png': sq.resize((256, 256), Image.LANCZOS),
+}
+for name, im in exports.items():
+    im.save(f'{OUT}/{name}', optimize=True)
+    print(f'{name:42s} {im.size}')
