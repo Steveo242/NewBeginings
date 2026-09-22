@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Snippet } from "svelte";
-  import { Container, Graphics, Text } from "pixi-svelte";
+  import { Container, Graphics, Sprite, Text } from "pixi-svelte";
   import { getContext } from "../game/context";
 
   type Props = { text?: string | null; alias?: string; children: Snippet };
@@ -16,6 +16,19 @@
   };
   const tier = $derived(TIERS[props.alias ?? "big"] ?? TIERS.big);
   const W = $derived(context.stateGameDerived.boardLayout().width * 0.85);
+
+  /** Content aspect of title_plaque_board.png, measured off its alpha bounds. */
+  const LOGO_ASPECT = 2.573;
+  /** Wider than the plaque so the logo overhangs it on both sides. */
+  const LOGO_WIDTH_RATIO = 1.32;
+  /**
+   * Bottom edge sits just inside the ribbon band's top (-125), so the logo
+   * crowns the plaque and its blood drips dangle over the band rather than
+   * floating clear of it. The wordmark below is at -75 and stays uncovered.
+   */
+  const LOGO_BOTTOM = -120;
+  const logoWidth = $derived(W * LOGO_WIDTH_RATIO);
+  const logoHeight = $derived(logoWidth / LOGO_ASPECT);
 
   // The whole banner is drawn at its original dimensions and then scaled
   // down as a unit, so the plaque, wordmark and amount keep their
@@ -65,6 +78,13 @@
 
 <Container scale={pop * BANNER_SCALE}>
   <Graphics {draw} />
+  <Sprite
+    key="titlePlaqueBoard"
+    anchor={0.5}
+    width={logoWidth}
+    height={logoHeight}
+    y={LOGO_BOTTOM - logoHeight * 0.5}
+  />
   <!-- y is the ribbon band's exact centre (band runs -125..-25), and the
        text is anchor-centred, so the wordmark sits dead centre in the band.
        It used to carry a permanent 4% sine pulse; that is gone - the size
