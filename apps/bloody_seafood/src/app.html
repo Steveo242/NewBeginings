@@ -4,10 +4,18 @@
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.svg" />
 		<link rel="stylesheet" href="https://use.typekit.net/aba0ebl.css" />
-		<meta name="viewport" content="width=device-width" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+		/>
 		%sveltekit.head%
 	</head>
-	<body style="margin: 0; padding: 0; overflow: hidden; background-color: black">
+	<!-- touch-action carries the double-tap-zoom block on its own: iOS Safari
+	     has ignored user-scalable=no since iOS 10, so the meta tag above is
+	     not sufficient by itself. -->
+	<body
+		style="margin: 0; padding: 0; overflow: hidden; background-color: black; touch-action: manipulation"
+	>
 		<div>%sveltekit.body%</div>
 	</body>
 </html>
