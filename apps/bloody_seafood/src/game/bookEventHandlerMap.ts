@@ -81,7 +81,9 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		const gm = Math.max(1, ...bookEvent.wins.map((w: any) => Number(w?.meta?.globalMult ?? 1)));
 		eventEmitter.broadcast({ type: 'globalMultiplierUpdate', multiplier: gm });
 		const promise1 = async () => {
-			eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_winlevel_small' });
+			// Accelerating clack that winds up into the explosion the tumble
+			// step fires next, in place of the old single ding.
+			eventEmitter.broadcast({ type: 'soundOnce', name: 'tumble_win_1' });
 			await animateSymbols({ positions: _.flatten(bookEvent.wins.map((win) => win.positions)) });
 		};
 
