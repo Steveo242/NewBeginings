@@ -21,7 +21,7 @@
 	import { stateUrlDerived } from 'state-shared';
 
 	import { getContext } from '../game/context';
-	import { WIN_LEVEL_APPLAUSE_SFX } from '../game/bookEventHandlerMap';
+	import { winLevelApplauseSfx } from '../game/bookEventHandlerMap';
 	import FreeSpinAnimation from './FreeSpinAnimation.svelte';
 	import PressToContinue from './PressToContinue.svelte';
 	import WinCoins from './WinCoins.svelte';
@@ -57,10 +57,13 @@
 				<OnMount
 					onmount={async () => {
 						await startCountUp();
-						const applauseSfx = winLevelData
-							? (WIN_LEVEL_APPLAUSE_SFX[winLevelData.alias] ?? 'sfx_applause')
-							: 'sfx_applause';
-						context.eventEmitter.broadcast({ type: 'soundStop', name: applauseSfx });
+						// Silence the applause the moment the total stops counting,
+						// instead of holding it until the player taps on. A regular
+						// win never started a loop, so there is nothing to stop.
+						const applauseSfx = winLevelApplauseSfx(winLevelData);
+						if (applauseSfx) {
+							context.eventEmitter.broadcast({ type: 'soundStop', name: applauseSfx });
+						}
 					}}
 				/>
 

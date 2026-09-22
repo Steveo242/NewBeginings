@@ -20,7 +20,7 @@
    2000.0,
    true
   ],
-  "sfx_anticipation_start": [
+  "sfx_win_bell": [
    200686.6,
    1100.0,
    false
@@ -233,7 +233,7 @@
   "sfx_anticipation": {
    "volume": 1
   },
-  "sfx_anticipation_start": {
+  "sfx_win_bell": {
    "volume": 1
   },
   "sfx_applause": {

@@ -11,13 +11,27 @@ import type { BookEvent, BookEventOfType, BookEventContext } from './typesBookEv
 import type { Position } from './types';
 import type { SoundEffectName } from './sound';
 
-// big/mega/epic get their own applause recording; every other win category
-// (including superwin/max) falls back to the generic sfx_applause loop.
+// big/mega/epic get their own applause recording; superwin and max fall back
+// to the generic sfx_applause loop.
 export const WIN_LEVEL_APPLAUSE_SFX: Partial<Record<WinLevelAlias, SoundEffectName>> = {
 	big: 'sfx_applause_big',
 	mega: 'sfx_applause_mega',
 	epic: 'sfx_applause_epic',
 };
+
+/**
+ * The applause loop a tier starts, or undefined if that tier doesn't applaud.
+ * Only the celebration tiers (`type: 'big'` - big/superwin/mega/epic/max, the
+ * ones that get a banner) do; a regular win rings a bell instead.
+ *
+ * Whatever stops the loop has to agree with whatever started it, or the
+ * applause outlives the win - that mismatch is exactly how the tier-specific
+ * keys once got left looping forever.
+ */
+export const winLevelApplauseSfx = (winLevelData?: WinLevelData): SoundEffectName | undefined =>
+	winLevelData?.type === 'big'
+		? (WIN_LEVEL_APPLAUSE_SFX[winLevelData.alias] ?? 'sfx_applause')
+		: undefined;
 
 let activeApplauseSfx: SoundEffectName | undefined;
 
@@ -29,12 +43,13 @@ const winLevelSoundsPlay = ({ winLevelData }: { winLevelData: WinLevelData }) =>
 	if (winLevelData?.sound?.bgm) {
 		eventEmitter.broadcast({ type: 'soundMusic', name: winLevelData.sound.bgm });
 	}
-	// Same celebration sound for every win category while the amount counts
-	// up, except big/mega/epic which get their own applause recording -
-	// level 1 is "zero", nothing to applaud.
-	if (winLevelData?.level > 1) {
-		activeApplauseSfx = WIN_LEVEL_APPLAUSE_SFX[winLevelData.alias] ?? 'sfx_applause';
+	// The celebration tiers applaud through the whole count-up. A regular win
+	// gets two strikes of a bell instead - level 1 is "zero", silent.
+	activeApplauseSfx = winLevelApplauseSfx(winLevelData);
+	if (activeApplauseSfx) {
 		eventEmitter.broadcast({ type: 'soundLoop', name: activeApplauseSfx });
+	} else if (winLevelData?.level > 1) {
+		eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_win_bell' });
 	}
 };
 

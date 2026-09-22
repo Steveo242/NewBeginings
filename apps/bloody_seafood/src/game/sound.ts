@@ -5,7 +5,6 @@ export type MusicName = 'bgm_main' | 'bgm_freespin';
 export type SoundEffectName =
 	| 'jng_intro_fs'
 	| 'sfx_anticipation'
-	| 'sfx_anticipation_start'
 	| 'sfx_applause'
 	| 'sfx_applause_big'
 	| 'sfx_applause_epic'
@@ -37,6 +36,7 @@ export type SoundEffectName =
 	| 'sfx_superfreespin'
 	| 'sfx_symbols_landing'
 	| 'sfx_wild_explode'
+	| 'sfx_win_bell'
 	| 'sfx_winlevel_end'
 	| 'sfx_winlevel_small'
 	| 'sfx_youwon_panel'

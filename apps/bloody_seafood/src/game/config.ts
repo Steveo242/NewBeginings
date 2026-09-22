@@ -20,7 +20,7 @@ export default {
       buyBonus: false,
       rtp: 0.967,
       max_win: 10000.0,
-      description: 'Ante bet - improved bonus chance',
+      description: 'Ante play - improved bonus chance',
     },
     ante_super: {
       cost: 2.0,
@@ -28,7 +28,7 @@ export default {
       buyBonus: false,
       rtp: 0.967,
       max_win: 10000.0,
-      description: 'Ante bet - improved super bonus chance',
+      description: 'Ante play - improved super bonus chance',
     },
     buy_bonus: {
       cost: 100.0,
@@ -36,7 +36,7 @@ export default {
       buyBonus: true,
       rtp: 0.967,
       max_win: 10000.0,
-      description: 'Buy the bonus round',
+      description: 'Play the bonus round',
     },
     buy_super: {
       cost: 500.0,
@@ -44,7 +44,7 @@ export default {
       buyBonus: true,
       rtp: 0.967,
       max_win: 10000.0,
-      description: 'Buy the super bonus round',
+      description: 'Play the super bonus round',
     },
   },
   symbols: {
