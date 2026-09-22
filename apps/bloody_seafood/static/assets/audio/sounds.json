@@ -12,191 +12,206 @@
   ],
   "jng_intro_fs": [
    196166.28,
-   2010.16,
+   2020.32,
    false
   ],
   "sfx_anticipation": [
-   198426.44,
+   198436.6,
    2000.0,
    true
   ],
   "sfx_anticipation_start": [
-   200676.44,
+   200686.6,
    1100.0,
    false
   ],
   "sfx_applause": [
-   202026.44,
+   202036.6,
+   7540.0,
+   true
+  ],
+  "sfx_applause_big": [
+   209826.6,
+   7635.99,
+   true
+  ],
+  "sfx_applause_epic": [
+   217712.58,
+   4540.0,
+   true
+  ],
+  "sfx_applause_mega": [
+   222502.58,
    7540.0,
    true
   ],
   "sfx_bigwin_coinloop": [
-   209816.44,
+   230292.58,
    87.1,
    true
   ],
   "sfx_btn_general": [
-   210153.54,
+   230629.68,
    67.1,
    false
   ],
   "sfx_btn_spin": [
-   210470.64,
+   230946.78,
    840.0,
    false
   ],
   "sfx_fs_respins": [
-   211560.64,
+   232036.78,
    997.1,
    false
   ],
   "sfx_multiplier_combine_a": [
-   212807.73,
+   233283.88,
    347.08,
    false
   ],
   "sfx_multiplier_combine_b": [
-   213404.81,
-   351.88,
+   233880.95,
+   357.32,
    false
   ],
   "sfx_multiplier_explosion_a": [
-   214006.69,
-   502.74,
+   234488.28,
+   507.12,
    false
   ],
   "sfx_multiplier_explosion_b": [
-   214759.43,
+   235245.4,
    617.1,
    false
   ],
   "sfx_multiplier_explosion_c": [
-   215626.53,
+   236112.49,
    761.91,
    false
   ],
   "sfx_multiplier_landing": [
-   216638.44,
-   303.4,
+   237124.4,
+   308.59,
    false
   ],
   "sfx_multiplier_reset": [
-   217191.84,
-   401.97,
+   237682.99,
+   408.14,
    false
   ],
   "sfx_multiplier_up": [
-   217843.81,
+   238341.13,
    201.72,
    false
   ],
   "sfx_multiplier_update": [
-   218295.53,
+   238792.86,
    207.82,
    false
   ],
   "sfx_multiplier_win": [
-   218753.36,
-   447.1,
+   239250.68,
+   450.38,
    false
   ],
   "sfx_reel_stop_1": [
-   219450.46,
+   239951.07,
    240.86,
    false
   ],
   "sfx_reel_stop_2": [
-   219941.32,
-   244.29,
+   240441.93,
+   249.64,
    false
   ],
   "sfx_reel_stop_3": [
-   220435.6,
-   244.81,
+   240941.56,
+   252.2,
    false
   ],
   "sfx_reel_stop_4": [
-   220930.41,
+   241443.76,
    237.1,
    false
   ],
   "sfx_reel_stop_5": [
-   221417.51,
+   241930.86,
    242.95,
    false
   ],
   "sfx_royals_landing": [
-   221910.46,
-   324.19,
+   242423.81,
+   328.3,
    false
   ],
   "sfx_scatter_reveal": [
-   222484.65,
-   801.63,
+   243002.11,
+   806.24,
    false
   ],
   "sfx_scatter_toot": [
-   223536.28,
-   447.1,
+   244058.35,
+   384.01,
    false
   ],
   "sfx_scatter_win": [
-   224233.38,
+   244692.36,
    2448.01,
    false
   ],
   "sfx_scatter_win_v2": [
-   226931.39,
+   247390.36,
    2652.29,
    false
   ],
   "sfx_superfreespin": [
-   229833.68,
+   250292.65,
    2448.01,
    false
   ],
   "sfx_symbols_landing": [
-   232531.68,
+   252990.66,
    181.41,
    false
   ],
   "sfx_wild_explode": [
-   232963.09,
-   552.83,
+   253422.07,
+   557.01,
    false
   ],
   "sfx_winlevel_end": [
-   233765.92,
-   706.8,
+   254229.07,
+   716.96,
    false
   ],
   "sfx_winlevel_small": [
-   234722.73,
-   547.23,
+   255196.03,
+   547.78,
    false
   ],
   "sfx_youwon_panel": [
-   235519.96,
-   1310.16,
+   255993.81,
+   1320.27,
    false
   ],
   "tumble_win_1": [
-   237080.12,
+   257564.08,
    448.25,
    false
   ],
   "tumble_win_2": [
-   237778.37,
+   258262.34,
    497.07,
    false
   ],
   "tumble_win_3": [
-   238525.45,
+   259009.41,
    547.1,
    false
   ],
   "tumble_win_4": [
-   239322.55,
+   259806.51,
    622.59,
    false
   ]
@@ -210,7 +225,7 @@
    "volume": 1
   },
   "bgm_main": {
-   "volume": 1
+   "volume": 0.5
   },
   "jng_intro_fs": {
    "volume": 1
@@ -222,6 +237,15 @@
    "volume": 1
   },
   "sfx_applause": {
+   "volume": 1
+  },
+  "sfx_applause_big": {
+   "volume": 1
+  },
+  "sfx_applause_epic": {
+   "volume": 1
+  },
+  "sfx_applause_mega": {
    "volume": 1
   },
   "sfx_bigwin_coinloop": {

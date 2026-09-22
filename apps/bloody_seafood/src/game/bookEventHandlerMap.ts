@@ -5,10 +5,21 @@ import { stateBet } from 'state-shared';
 
 import { eventEmitter } from './eventEmitter';
 import { playBookEvent } from './utils';
-import { winLevelMap, type WinLevel, type WinLevelData } from './winLevelMap';
+import { winLevelMap, type WinLevel, type WinLevelData, type WinLevelAlias } from './winLevelMap';
 import { stateGame, stateGameDerived } from './stateGame.svelte';
 import type { BookEvent, BookEventOfType, BookEventContext } from './typesBookEvent';
 import type { Position } from './types';
+import type { SoundEffectName } from './sound';
+
+// big/mega/epic get their own applause recording; every other win category
+// (including superwin/max) falls back to the generic sfx_applause loop.
+const WIN_LEVEL_APPLAUSE_SFX: Partial<Record<WinLevelAlias, SoundEffectName>> = {
+	big: 'sfx_applause_big',
+	mega: 'sfx_applause_mega',
+	epic: 'sfx_applause_epic',
+};
+
+let activeApplauseSfx: SoundEffectName | undefined;
 
 const winLevelSoundsPlay = ({ winLevelData }: { winLevelData: WinLevelData }) => {
 	if (winLevelData?.alias === 'max') eventEmitter.broadcastAsync({ type: 'uiHide' });
@@ -19,10 +30,11 @@ const winLevelSoundsPlay = ({ winLevelData }: { winLevelData: WinLevelData }) =>
 		eventEmitter.broadcast({ type: 'soundMusic', name: winLevelData.sound.bgm });
 	}
 	// Same celebration sound for every win category while the amount counts
-	// up, rather than a different stinger/bgm per tier - level 1 is "zero",
-	// nothing to applaud.
+	// up, except big/mega/epic which get their own applause recording -
+	// level 1 is "zero", nothing to applaud.
 	if (winLevelData?.level > 1) {
-		eventEmitter.broadcast({ type: 'soundLoop', name: 'sfx_applause' });
+		activeApplauseSfx = WIN_LEVEL_APPLAUSE_SFX[winLevelData.alias] ?? 'sfx_applause';
+		eventEmitter.broadcast({ type: 'soundLoop', name: activeApplauseSfx });
 	}
 	if (winLevelData?.type === 'big') {
 		eventEmitter.broadcast({ type: 'soundLoop', name: 'sfx_bigwin_coinloop' });
@@ -30,7 +42,10 @@ const winLevelSoundsPlay = ({ winLevelData }: { winLevelData: WinLevelData }) =>
 };
 
 const winLevelSoundsStop = () => {
-	eventEmitter.broadcast({ type: 'soundStop', name: 'sfx_applause' });
+	if (activeApplauseSfx) {
+		eventEmitter.broadcast({ type: 'soundStop', name: activeApplauseSfx });
+		activeApplauseSfx = undefined;
+	}
 	eventEmitter.broadcast({ type: 'soundStop', name: 'sfx_bigwin_coinloop' });
 	if (stateBet.activeBetModeKey === 'SUPERSPIN' || stateGame.gameType === 'freeSpins') {
 		// check if SUPERSPIN, when finishing a bet.
