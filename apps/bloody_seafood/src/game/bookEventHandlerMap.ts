@@ -7,6 +7,7 @@ import { eventEmitter } from './eventEmitter';
 import { playBookEvent } from './utils';
 import { winLevelMap, type WinLevel, type WinLevelData, type WinLevelAlias } from './winLevelMap';
 import { stateGame, stateGameDerived } from './stateGame.svelte';
+import { startsInFeature } from './constants';
 import type { BookEvent, BookEventOfType, BookEventContext } from './typesBookEvent';
 import type { Position } from './types';
 import type { SoundEffectName } from './sound';
@@ -58,8 +59,7 @@ const winLevelSoundsStop = () => {
 		eventEmitter.broadcast({ type: 'soundStop', name: activeApplauseSfx });
 		activeApplauseSfx = undefined;
 	}
-	if (stateBet.activeBetModeKey === 'SUPERSPIN' || stateGame.gameType === 'freeSpins') {
-		// check if SUPERSPIN, when finishing a bet.
+	if (startsInFeature(stateBet.activeBetModeKey) || stateGame.gameType === 'freeSpins') {
 		eventEmitter.broadcast({ type: 'soundMusic', name: 'bgm_freespin' });
 	} else {
 		eventEmitter.broadcast({ type: 'soundMusic', name: 'bgm_main' });

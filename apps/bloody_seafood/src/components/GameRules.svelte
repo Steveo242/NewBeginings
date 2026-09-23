@@ -49,6 +49,7 @@
 			<tr><th>5</th><td>12</td></tr>
 			<tr><th>6</th><td>15</td></tr>
 			<tr><th>7</th><td>18</td></tr>
+			<tr><th>8</th><td>20</td></tr>
 		</tbody>
 	</table>
 
@@ -65,15 +66,28 @@
 			<tr><th>3</th><td>+5</td></tr>
 			<tr><th>4</th><td>+8</td></tr>
 			<tr><th>5</th><td>+10</td></tr>
+			<tr><th>6</th><td>+12</td></tr>
+			<tr><th>7</th><td>+15</td></tr>
+			<tr><th>8</th><td>+18</td></tr>
 		</tbody>
 	</table>
 
 	<h2 class="bs-h2">Global multiplier</h2>
 	<p>
-		During free spins a global multiplier applies to every cluster win. It
-		starts at <span class="bs-num">1&times;</span> when the feature begins,
-		climbs as the feature plays out, and its current value is shown beside the
-		board. There is no multiplier in the base game.
+		Both bonus modes carry a global multiplier that applies to every cluster
+		win. It starts at <span class="bs-num">1&times;</span> when the feature
+		begins and rises by <span class="bs-num">1</span> for each winning cluster
+		that contains a <strong>WILD</strong>. It keeps its value for the whole
+		feature and is shown beside the board. There is no multiplier in the base
+		game.
+	</p>
+
+	<h2 class="bs-h2">Carried wilds</h2>
+	<p>
+		In <strong>Play Super</strong> only, wilds carry from one free spin to the
+		next. The number carried grows as more wilds land, up to a maximum of
+		<span class="bs-num">6</span>. Their positions are drawn again each spin,
+		so carried wilds do not stay in the same squares.
 	</p>
 
 	<h2 class="bs-h2">Play modes</h2>

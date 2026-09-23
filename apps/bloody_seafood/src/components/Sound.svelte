@@ -19,14 +19,14 @@
 	import { stateBet } from 'state-shared';
 
 	import { getContext } from '../game/context';
+	import { startsInFeature } from '../game/constants';
 
 	const context = getContext();
 
 	context.eventEmitter.subscribeOnMount({
 		// ui
 		soundBetMode: async ({ betModeKey }) => {
-			if (betModeKey === 'SUPERSPIN') {
-				// check if SUPERSPIN, when changing the bet mode.
+			if (startsInFeature(betModeKey)) {
 				sound.players.once.play({ name: 'sfx_winlevel_end' });
 				await waitForTimeout(SECOND);
 				sound.players.music.play({ name: 'bgm_freespin' });
@@ -48,8 +48,8 @@
 	});
 
 	onMount(() => {
-		if (stateBet.activeBetModeKey === 'SUPERSPIN') {
-			// check if SUPERSPIN, when resume bet and the bet is a super spin.
+		if (startsInFeature(stateBet.activeBetModeKey)) {
+			// Resuming an in-progress Play Bonus / Play Super.
 			sound.players.music.play({ name: 'bgm_freespin' });
 		} else {
 			sound.players.music.play({ name: 'bgm_main' });

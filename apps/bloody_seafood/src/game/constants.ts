@@ -440,3 +440,16 @@ export const MULTIPLIER_BACKGROUND_INFO_MAP = {
 	M_7: backgroundMid,
 	M_10: backgroundHigh,
 };
+
+/**
+ * Play Bonus and Play Super open free spins immediately, so the feature music
+ * should start with the play itself rather than waiting for a trigger.
+ *
+ * Matched case-insensitively on purpose: `stateBet.activeBetModeKey` defaults
+ * to an upper-case 'BASE' while the math names its modes in lower case, and
+ * the shared state looks bet modes up both ways. The SDK template tested for a
+ * 'SUPERSPIN' key, which this game's math never defines - so that branch never
+ * ran and super plays fell through to the base-game music.
+ */
+export const startsInFeature = (betModeKey: string) =>
+	['buy_bonus', 'buy_super'].includes(betModeKey.toLowerCase());
