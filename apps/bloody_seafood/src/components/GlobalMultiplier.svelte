@@ -50,7 +50,20 @@
 
 	context.eventEmitter.subscribeOnMount({
 		globalMultiplierShow: () => (show = true),
-		globalMultiplierHide: () => (show = false),
+		globalMultiplierHide: () => {
+			show = false;
+			// Clear the panel's state here rather than leaving it to the reset
+			// animation. Once hidden, FadeContainer drops its children at alpha 0,
+			// which unmounts the SpineTrack - so the 'complete' event the update
+			// handler awaits can never arrive. Without this, animationName sticks
+			// on 'reset' forever, the closing previousMultiplier sync never runs,
+			// and the next feature reopens the panel still reading the old value.
+			// Releasing oncomplete frees any update still waiting on that event.
+			animationName = 'static';
+			multiplier = 1;
+			previousMultiplier.set(1, { duration: 0 });
+			oncomplete();
+		},
 		globalMultiplierUpdate: async (emitterEvent) => {
 			if (emitterEvent.multiplier === 1 && multiplier !== 1) {
 				animationName = 'reset';
