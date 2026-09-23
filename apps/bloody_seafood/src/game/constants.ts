@@ -453,3 +453,12 @@ export const MULTIPLIER_BACKGROUND_INFO_MAP = {
  */
 export const startsInFeature = (betModeKey: string) =>
 	['buy_bonus', 'buy_super'].includes(betModeKey.toLowerCase());
+
+/**
+ * Whether the active mode is a super one - matching the math's own test
+ * exactly (`game_override.py`'s `_is_super`, which is
+ * `"super" in betmode name`). Covers ante_super and buy_super, and keeps
+ * working if a mode is ever renamed, as long as the math's rule is unchanged.
+ */
+export const isSuperBetMode = (betModeKey: string) =>
+	betModeKey.toLowerCase().includes('super');

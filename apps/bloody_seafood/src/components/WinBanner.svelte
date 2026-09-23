@@ -53,6 +53,25 @@
 
   const DRIPS = [[-0.38, 26], [-0.21, 38], [-0.05, 22], [0.12, 34], [0.29, 28], [0.4, 18]];
 
+  const wordmarkStyle = {
+    fontFamily: "Impact, 'Arial Black', 'Trebuchet MS', sans-serif",
+    fontSize: 76,
+    fontWeight: "bold",
+    letterSpacing: 3,
+    fill: tier.fill,
+    stroke: { color: 0x1a0004, width: 9 },
+    dropShadow: { color: 0x000000, alpha: 0.7, blur: 6, distance: 5, angle: 1.57 },
+  };
+
+  // The wordmark is whatever the caller passes, and the longest of them
+  // ("SUPER FREE SPINS") runs the full width of the ribbon at this size.
+  // Scale it down to fit rather than letting it spill past the band's ends.
+  let wordmarkWidth = $state(0);
+  const wordmarkMax = $derived(W * 0.92);
+  const wordmarkFit = $derived(
+    wordmarkWidth > wordmarkMax ? wordmarkMax / wordmarkWidth : 1,
+  );
+
   const draw = (g: any) => {
     const w = W;
     const h = 290;
@@ -89,19 +108,18 @@
        text is anchor-centred, so the wordmark sits dead centre in the band.
        It used to carry a permanent 4% sine pulse; that is gone - the size
        is static once the intro pop settles. -->
-  <Container y={-75}>
+  <Container y={-75} scale={wordmarkFit}>
+    <Text anchor={0.5} text={props.text ?? ""} style={wordmarkStyle} />
+  </Container>
+  <!-- Invisible sizing probe. Pixi cannot measure a string without a display
+       object, and it has to sit outside the scaled container above - measuring
+       inside it would feed the applied scale back into the measurement. -->
+  <Container alpha={0}>
     <Text
       anchor={0.5}
       text={props.text ?? ""}
-      style={{
-        fontFamily: "Impact, 'Arial Black', 'Trebuchet MS', sans-serif",
-        fontSize: 76,
-        fontWeight: "bold",
-        letterSpacing: 3,
-        fill: tier.fill,
-        stroke: { color: 0x1a0004, width: 9 },
-        dropShadow: { color: 0x000000, alpha: 0.7, blur: 6, distance: 5, angle: 1.57 },
-      }}
+      style={wordmarkStyle}
+      onresize={(r: { width: number }) => (wordmarkWidth = r.width)}
     />
   </Container>
   <Container y={60}>
