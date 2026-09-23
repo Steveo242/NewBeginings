@@ -68,6 +68,14 @@
 		</tbody>
 	</table>
 
+	<h2 class="bs-h2">Global multiplier</h2>
+	<p>
+		During free spins a global multiplier applies to every cluster win. It
+		starts at <span class="bs-num">1&times;</span> when the feature begins,
+		climbs as the feature plays out, and its current value is shown beside the
+		board. There is no multiplier in the base game.
+	</p>
+
 	<h2 class="bs-h2">Play modes</h2>
 	<table class="bs-table">
 		<thead>
