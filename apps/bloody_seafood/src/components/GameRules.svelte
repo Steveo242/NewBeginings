@@ -77,8 +77,9 @@
 		Both bonus modes carry a global multiplier that applies to every cluster
 		win. It starts at <span class="bs-num">1&times;</span> when the feature
 		begins and rises by <span class="bs-num">1</span> for each winning cluster
-		that contains a <strong>WILD</strong>. It keeps its value for the whole
-		feature and is shown beside the board. There is no multiplier in the base
+		that contains a <strong>WILD</strong>. It does not reset between free
+		spins &mdash; it holds whatever it has reached until the feature ends
+		&mdash; and is shown beside the board. There is no multiplier in the base
 		game.
 	</p>
 
