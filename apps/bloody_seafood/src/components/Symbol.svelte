@@ -35,6 +35,8 @@
 		y={props.y}
 		oncomplete={props.oncomplete}
 		bounce={props.state === 'land'}
+		idle={props.state === 'static' || props.state === 'postWinStatic'}
+		spinning={props.state === 'spin'}
 	/>
 {:else if isSpriteSheet}
 	<SymbolAnimatedSprite
