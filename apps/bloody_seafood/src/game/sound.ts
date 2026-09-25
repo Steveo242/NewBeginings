@@ -3,6 +3,7 @@ import { createSound } from 'utils-sound';
 export type MusicName = 'bgm_main' | 'bgm_freespin';
 
 export type SoundEffectName =
+	| 'amb_storm'
 	| 'jng_intro_fs'
 	| 'sfx_anticipation'
 	| 'sfx_applause'
@@ -34,6 +35,8 @@ export type SoundEffectName =
 	| 'sfx_scatter_win'
 	| 'sfx_scatter_win_v2'
 	| 'sfx_superfreespin'
+	| 'sfx_thunder_close'
+	| 'sfx_thunder_far'
 	| 'sfx_symbols_landing'
 	| 'sfx_wild_explode'
 	| 'sfx_win_bell'

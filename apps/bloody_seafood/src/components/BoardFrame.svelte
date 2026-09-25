@@ -5,91 +5,45 @@
 	import { getContext } from '../game/context';
 	import { BOARD_DIMENSIONS, BOARD_SIZES, SYMBOL_SIZE } from '../game/constants';
 	import Bubbles from './Bubbles.svelte';
+	import Caustics from './Caustics.svelte';
 
 	const context = getContext();
 	// Faint solid separators, drawn into one Graphics rather than a Rectangle
 	// per line so the grid costs a single display object.
 	const GRID_LINE_WIDTH = 2;
-	const GRID_LINE_ALPHA = 0.22;
+	const GRID_LINE_ALPHA = 0.16;
 
 	const drawGrid = (graphics: Graphics) => {
 		for (let column = 1; column < BOARD_DIMENSIONS.x; column += 1) {
-			graphics.rect(
-				column * SYMBOL_SIZE - GRID_LINE_WIDTH * 0.5,
-				0,
-				GRID_LINE_WIDTH,
-				BOARD_SIZES.height,
-			);
+			graphics.rect(column * SYMBOL_SIZE - GRID_LINE_WIDTH * 0.5, 0, GRID_LINE_WIDTH, BOARD_SIZES.height);
 		}
 		for (let row = 1; row < BOARD_DIMENSIONS.y; row += 1) {
-			graphics.rect(
-				0,
-				row * SYMBOL_SIZE - GRID_LINE_WIDTH * 0.5,
-				BOARD_SIZES.width,
-				GRID_LINE_WIDTH,
-			);
+			graphics.rect(0, row * SYMBOL_SIZE - GRID_LINE_WIDTH * 0.5, BOARD_SIZES.width, GRID_LINE_WIDTH);
 		}
 		graphics.fill({ color: 0x000000, alpha: GRID_LINE_ALPHA });
 	};
-	const SPRITE_SCALE = { width: 880 / 700, height: 880 / 700 };
-	const BG_RATIO = 1;
-	const POSITION_ADJUSTMENT = 1;
-	// Keeps the water inside the frame's border rather than under it.
-	const WATER_INSET = 0.9;
+	// The tank renders cover 11.2 x 11.2 units (frame, lid handle and plinth) round the 7 x 7 grid, with a 7.2-unit opening.
+	const FRAME_RATIO = 1120 / 700;
+	const OPENING_RATIO = 720 / 700;
 </script>
 
-<Sprite
-	key="frame_bg.png"
-	anchor={0.5}
-	x={context.stateGameDerived.boardLayout().x * POSITION_ADJUSTMENT}
-	y={context.stateGameDerived.boardLayout().y * POSITION_ADJUSTMENT}
-	width={context.stateGameDerived.boardLayout().width * BG_RATIO * SPRITE_SCALE.width}
-	height={context.stateGameDerived.boardLayout().width * SPRITE_SCALE.height}
-/>
-
 <!--
-	The reel window itself is water: the lit gradient plus a bubble field,
-	sandwiched between the board's backing and its frame edge so the frame
-	still draws over the top. Inset slightly so it fills the opening rather
-	than running under the frame's border, and masked to that opening so no
-	bubble escapes into the harbour scene behind.
+	Everything inside the aquarium, drawn UNDER the symbols: the rendered tank
+	interior (back wall and side walls running into depth), drifting caustics and
+	rising bubbles, masked to the frame opening. The frame itself and the glass
+	are drawn over the symbols by BoardFront.
 -->
 {#if true}
 	{@const layout = context.stateGameDerived.boardLayout()}
-	{@const w = layout.width * BG_RATIO * SPRITE_SCALE.width * WATER_INSET}
-	{@const h = layout.width * SPRITE_SCALE.height * WATER_INSET}
-	{@const left = layout.x * POSITION_ADJUSTMENT - w * 0.5}
-	{@const top = layout.y * POSITION_ADJUSTMENT - h * 0.5}
+	{@const size = layout.width * FRAME_RATIO}
+	{@const open = layout.width * OPENING_RATIO}
+	{@const left = layout.x - open * 0.5}
+	{@const top = layout.y - open * 0.5}
+	<Sprite key="tankBack" anchor={0.5} x={layout.x} y={layout.y} width={size} height={size} />
 	<Container>
-		<Rectangle isMask x={left} y={top} width={w} height={h} />
-		<Sprite key="boardWater" x={left} y={top} width={w} height={h} alpha={0.92} />
-		<Bubbles
-			x={left}
-			y={top}
-			width={w}
-			height={h}
-			count={22}
-			opacity={0.55}
-			sizeRange={[0.018, 0.055]}
-		/>
-
-		<!--
-			Faint cell separators over the water, aligned to the symbol grid
-			rather than the frame opening, so the reels read as a grid instead
-			of symbols floating loose. Masked with the water, so the frame's
-			border still covers the ends.
-		-->
-		{@const gridLeft = layout.x * POSITION_ADJUSTMENT - BOARD_SIZES.width * 0.5}
-		{@const gridTop = layout.y * POSITION_ADJUSTMENT - BOARD_SIZES.height * 0.5}
-		<GraphicsNode x={gridLeft} y={gridTop} draw={drawGrid} />
+		<Rectangle isMask x={left} y={top} width={open} height={open} />
+		<Caustics x={left} y={top} width={open} height={open} />
+		<Bubbles x={left} y={top} width={open} height={open} count={22} opacity={0.5} sizeRange={[0.018, 0.055]} />
+		<GraphicsNode x={layout.x - BOARD_SIZES.width * 0.5} y={layout.y - BOARD_SIZES.height * 0.5} draw={drawGrid} />
 	</Container>
 {/if}
-
-<Sprite
-	key="frame_edge.png"
-	anchor={0.5}
-	x={context.stateGameDerived.boardLayout().x * POSITION_ADJUSTMENT}
-	y={context.stateGameDerived.boardLayout().y * POSITION_ADJUSTMENT}
-	width={context.stateGameDerived.boardLayout().width * BG_RATIO * SPRITE_SCALE.width}
-	height={context.stateGameDerived.boardLayout().width * SPRITE_SCALE.height}
-/>

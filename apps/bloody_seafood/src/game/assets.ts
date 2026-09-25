@@ -1,44 +1,72 @@
 export default {
-	bgSky: {
+	stormSky: {
 		type: 'sprite',
-		src: new URL('../../assets/sprites/bgLayers/bg_land_sky.png', import.meta.url).href,
+		src: new URL('../../assets/sprites/storm/bg_sky.webp', import.meta.url).href,
 		preload: true,
 	},
-	bgBoats: {
+	stormSea: {
 		type: 'sprite',
-		src: new URL('../../assets/sprites/bgLayers/bg_land_boats.png', import.meta.url).href,
+		src: new URL('../../assets/sprites/storm/bg_sea.webp', import.meta.url).href,
 		preload: true,
 	},
-	bgWater: {
+	stormHeadland: {
 		type: 'sprite',
-		src: new URL('../../assets/sprites/bgLayers/bg_land_water.png', import.meta.url).href,
+		src: new URL('../../assets/sprites/storm/bg_headland.webp', import.meta.url).href,
 		preload: true,
 	},
-	bgNearBoats: {
+	stormTrawler: {
 		type: 'sprite',
-		src: new URL('../../assets/sprites/bgLayers/bg_land_nearboats.png', import.meta.url).href,
+		src: new URL('../../assets/sprites/storm/bg_trawler.webp', import.meta.url).href,
 		preload: true,
 	},
-	bgDock: {
+	stormDock: {
 		type: 'sprite',
-		src: new URL('../../assets/sprites/bgLayers/bg_land_dock.png', import.meta.url).href,
+		src: new URL('../../assets/sprites/storm/bg_dock.webp', import.meta.url).href,
 		preload: true,
 	},
-	bgGulls: {
+	fxNoise: {
 		type: 'sprite',
-		src: new URL('../../assets/sprites/bgLayers/bg_land_gulls.png', import.meta.url).href,
+		src: new URL('../../assets/sprites/storm/fx_noise.png', import.meta.url).href,
 		preload: true,
 	},
-	bgOverlay: {
+	fxRain: {
 		type: 'sprite',
-		src: new URL('../../assets/sprites/bgLayers/bg_land_overlay.png', import.meta.url).href,
+		src: new URL('../../assets/sprites/storm/fx_rain.webp', import.meta.url).href,
 		preload: true,
 	},
-	// The lit water gradient that fills the reel window - distinct from
-	// bgWater, which is the harbour's own water strip out on the horizon.
-	boardWater: {
+	fxFog: {
 		type: 'sprite',
-		src: new URL('../../assets/sprites/bgLayers/bg_water.png', import.meta.url).href,
+		src: new URL('../../assets/sprites/storm/fx_fog.webp', import.meta.url).href,
+		preload: true,
+	},
+	fxGlow: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/storm/fx_glow.webp', import.meta.url).href,
+		preload: true,
+	},
+	fxBeam: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/storm/fx_beam.webp', import.meta.url).href,
+		preload: true,
+	},
+	fxCaustics: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/storm/fx_caustics.png', import.meta.url).href,
+		preload: true,
+	},
+	tankBack: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/storm/tank_back.webp', import.meta.url).href,
+		preload: true,
+	},
+	tankGlass: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/storm/tank_glass.webp', import.meta.url).href,
+		preload: true,
+	},
+	tankFront: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/storm/tank_front.webp', import.meta.url).href,
 		preload: true,
 	},
 	betUp: {
@@ -85,10 +113,6 @@ export default {
 		type: 'sprite',
 		src: new URL('../../assets/sprites/bgLayers/title_plaque_board.png', import.meta.url).href,
 		preload: true,
-	},
-	reelsFrame: {
-		type: 'sprites',
-		src: new URL('../../assets/sprites/reelsFrame/reels_frame.json', import.meta.url).href,
 	},
 	anticipation: {
 		type: 'spine',

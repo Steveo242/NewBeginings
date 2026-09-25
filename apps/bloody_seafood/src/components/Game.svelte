@@ -22,6 +22,7 @@
 	import Background from './Background.svelte';
 	import LoadingScreen from './LoadingScreen.svelte';
 	import BoardFrame from './BoardFrame.svelte';
+	import BoardFront from './BoardFront.svelte';
 	import BoardBanner from './BoardBanner.svelte';
 	import Board from './Board.svelte';
 	import Anticipations from './Anticipations.svelte';
@@ -71,7 +72,6 @@
 
 		<MainContainer>
 			<BoardFrame />
-			<BoardBanner />
 		</MainContainer>
 
 		<MainContainer>
@@ -90,6 +90,11 @@
 		<MainContainer>
 			<MultiplierBoard />
 			<MultiplierTotal />
+		</MainContainer>
+
+		<MainContainer>
+			<BoardFront />
+			<BoardBanner />
 		</MainContainer>
 
 		<BetBarUI>

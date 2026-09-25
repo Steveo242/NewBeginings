@@ -48,6 +48,8 @@
 	});
 
 	onMount(() => {
+		// storm bed under every mode's music; thunder is triggered by the lightning in Background
+		sound.players.loop.play({ name: 'amb_storm' });
 		if (startsInFeature(stateBet.activeBetModeKey)) {
 			// Resuming an in-progress Play Bonus / Play Super.
 			sound.players.music.play({ name: 'bgm_freespin' });
