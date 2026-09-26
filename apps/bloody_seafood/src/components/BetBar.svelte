@@ -8,6 +8,9 @@
 
 	import { getContext } from '../game/context';
 	import { BOARD_SIZES } from '../game/constants';
+	import BarButton, { type BarButtonKind } from './bar3d/BarButton.svelte';
+	import SpinButton3D from './bar3d/SpinButton3D.svelte';
+	import NineSlice from './bar3d/NineSlice.svelte';
 
 	const props: LayoutUiProps = $props();
 	const context = getContext();
@@ -27,24 +30,18 @@
 	/** Stacked labels draw downwards from their origin, so lift them to sit centred. */
 	const LABEL_SHIFT_Y = -UI_BASE_SIZE * 0.37;
 
-	// Authored widths, which are not uniform: the four incidental buttons are
-	// UI_BASE_SIZE * 1.3, and any button UiButton has no icon asset for draws
-	// a text caption that word-wraps at 200. Budgeting UI_BASE_SIZE for those
-	// is what left SETTINGS/SOUND ON touching and AUTO SPIN/TURBO running off
-	// the right edge.
-	const TEXT_CAPTION_W = 200;
+	// Every control is now a rendered 3D button (bar3d/, art from build_ui3d.py) with an
+	// icon instead of a word-wrapped caption, so the icon slots are uniform again. The
+	// buy-bonus plaque is a wide pill.
 	const SLOT_W: Record<string, number> = {
-		rules: UI_BASE_SIZE * 1.3,
-		pay: UI_BASE_SIZE * 1.3,
-		// "SETTINGS" is one unwrappable word ~236 units wide, so its button
-		// carries a wider plate than the shared default - see
-		// ButtonSettingsWide.svelte.
-		settings: 270,
-		sound: TEXT_CAPTION_W,
-		menu: TEXT_CAPTION_W,
-		auto: TEXT_CAPTION_W,
-		turbo: TEXT_CAPTION_W,
-		buy: UI_BASE_SIZE,
+		rules: UI_BASE_SIZE,
+		pay: UI_BASE_SIZE,
+		settings: UI_BASE_SIZE,
+		sound: UI_BASE_SIZE,
+		menu: UI_BASE_SIZE,
+		auto: UI_BASE_SIZE,
+		turbo: UI_BASE_SIZE,
+		buy: UI_BASE_SIZE * 1.9,
 		dec: UI_BASE_SIZE,
 		inc: UI_BASE_SIZE,
 		spin: SPIN,
@@ -54,12 +51,24 @@
 	};
 
 	const LABEL_KEYS = ['balance', 'win', 'bet'];
-	// These three are `bare`, so UiButton draws their caption in navy with no
-	// plate behind it - invisible against this bar. The amounts have the same
-	// problem: UiLabel's own `tiled` plate draws an asset key this game has
-	// never shipped, so they were landing at roughly 1.4:1 on near-black.
-	const PLATED_KEYS = [...LABEL_KEYS, 'menu', 'auto', 'turbo'];
-	const PLATE_COLOR = 0xe6d8bc;
+	// The amounts draw navy text, and UiLabel's own `tiled` plate draws an asset key this
+	// game has never shipped, so each sits on a rendered cream-enamel plate (brass rim,
+	// corner rivets) - the same contrast the flat cream plates gave.
+	const BUTTON_KEYS: Record<string, BarButtonKind> = {
+		menu: 'menu',
+		rules: 'rules',
+		pay: 'pay',
+		settings: 'settings',
+		sound: 'sound',
+		buy: 'buy',
+		dec: 'dec',
+		inc: 'inc',
+		auto: 'auto',
+		turbo: 'turbo',
+	};
+	/** 9-slice corner sizes, in texture px (build_ui3d.py panel/plate renders) */
+	const PANEL_BORDER = 80;
+	const PLATE_BORDER = 50;
 
 	type Row = { keys: string[]; height: number };
 
@@ -170,7 +179,8 @@
 	const centerX = $derived(canvas.width * 0.5);
 	const centerY = $derived(canvas.height - barHeight * 0.5 - MARGIN);
 
-	const PANEL_PAD = 26;
+	// room for the 3D buttons, whose art (shadow included) is drawn 1.3x their slot
+	const PANEL_PAD = 64;
 
 	const menuRow = $derived(chosen.rows.find((row) => row.keys.includes('menu')));
 	const menuX = $derived(centerX + (menuRow?.centers.menu ?? 0) * chosen.scale);
@@ -178,47 +188,35 @@
 </script>
 
 <Container zIndex={60}>
-	<!-- Dark and semi-transparent so the harbour behind it still shows. -->
-	<Rectangle
-		anchor={0.5}
-		x={centerX}
-		y={centerY}
-		width={(chosen.width + PANEL_PAD * 2) * chosen.scale}
-		height={(chosen.height + PANEL_PAD * 2) * chosen.scale}
-		borderRadius={(chosen.height + PANEL_PAD * 2) * chosen.scale * 0.18}
-		backgroundColor={0x0a1a24}
-		backgroundAlpha={0.82}
-	/>
-
 	<Container x={centerX} y={centerY} scale={chosen.scale}>
+		<!-- A riveted iron strap with a brass rim - the tank frame's own materials. Sized in
+		the bar's authoring units: a 9-slice draws its corners at texture scale, so it has
+		to live inside the scaled container or the corners swamp a small phone bar. -->
+		<NineSlice
+			key="panel.png"
+			width={chosen.width + PANEL_PAD * 2}
+			height={chosen.height + PANEL_PAD * 2}
+			border={PANEL_BORDER}
+		/>
+
 		{#each chosen.rows as row (row.y)}
 			{#each row.keys as key (key)}
 				<Container x={row.centers[key]} y={row.y}>
-					{#if PLATED_KEYS.includes(key)}
-						<Rectangle
-							anchor={0.5}
-							width={SLOT_W[key]}
-							height={LABEL_KEYS.includes(key) ? LABEL_H : UI_BASE_SIZE * 0.66}
-							borderRadius={UI_BASE_SIZE * 0.18}
-							backgroundColor={PLATE_COLOR}
-							backgroundAlpha={0.94}
-						/>
+					{#if LABEL_KEYS.includes(key)}
+						<!-- oversized: the render carries a shadow margin round the plate itself -->
+						<NineSlice key="plate.png" width={SLOT_W[key] * 1.1} height={LABEL_H * 1.25} border={PLATE_BORDER} />
 					{/if}
 					<Container y={LABEL_KEYS.includes(key) ? LABEL_SHIFT_Y : 0}>
-						{#if key === 'menu'}
-							{@render props.buttonMenu({ anchor: 0.5 })}
-						{:else if key === 'rules'}
-							{@render props.buttonGameRules({ anchor: 0.5 })}
-						{:else if key === 'pay'}
-							{@render props.buttonPayTable({ anchor: 0.5 })}
-						{:else if key === 'settings'}
-							{@render props.buttonSettings({ anchor: 0.5 })}
-						{:else if key === 'sound'}
-							{@render props.buttonSoundSwitch({ anchor: 0.5 })}
-						{:else if key === 'buy'}
+						{#if key === 'buy'}
 							{#if !stateUi.freeSpinCounterShow}
-								{@render props.buttonBuyBonus({ anchor: 0.5 })}
+								<BarButton kind="buy" />
 							{/if}
+						{:else if key === 'dec' || key === 'inc'}
+							{#if !counterInBar}
+								<BarButton kind={BUTTON_KEYS[key]} />
+							{/if}
+						{:else if BUTTON_KEYS[key]}
+							<BarButton kind={BUTTON_KEYS[key]} />
 						{:else if key === 'balance'}
 							{@render props.amountBalance({ stacked: true })}
 						{:else if key === 'win'}
@@ -229,22 +227,8 @@
 							{:else}
 								{@render props.amountBet({ stacked: true })}
 							{/if}
-						{:else if key === 'dec'}
-							{#if !counterInBar}
-								{@render props.buttonDecrease({ anchor: 0.5 })}
-							{/if}
-						{:else if key === 'inc'}
-							{#if !counterInBar}
-								{@render props.buttonIncrease({ anchor: 0.5 })}
-							{/if}
 						{:else if key === 'spin'}
-							<Container scale={SPIN / UI_BASE_SIZE}>
-								{@render props.buttonBet({ anchor: 0.5 })}
-							</Container>
-						{:else if key === 'auto'}
-							{@render props.buttonAutoSpin({ anchor: 0.5 })}
-						{:else if key === 'turbo'}
-							{@render props.buttonTurbo({ anchor: 0.5 })}
+							<SpinButton3D size={SPIN} />
 						{/if}
 					</Container>
 				</Container>
@@ -270,19 +254,19 @@
 
 		<Container x={menuX} y={menuY} scale={chosen.scale}>
 			<Container y={-(UI_BASE_SIZE + GAP) * 4}>
-				{@render props.buttonPayTable({ anchor: 0.5 })}
+				<BarButton kind="pay" />
 			</Container>
 			<Container y={-(UI_BASE_SIZE + GAP) * 3}>
-				{@render props.buttonGameRules({ anchor: 0.5 })}
+				<BarButton kind="rules" />
 			</Container>
 			<Container y={-(UI_BASE_SIZE + GAP) * 2}>
-				{@render props.buttonSettings({ anchor: 0.5 })}
+				<BarButton kind="settings" />
 			</Container>
 			<Container y={-(UI_BASE_SIZE + GAP)}>
-				{@render props.buttonSoundSwitch({ anchor: 0.5 })}
+				<BarButton kind="sound" />
 			</Container>
 			<Container>
-				{@render props.buttonMenuClose({ anchor: 0.5 })}
+				<BarButton kind="close" />
 			</Container>
 		</Container>
 	</Container>

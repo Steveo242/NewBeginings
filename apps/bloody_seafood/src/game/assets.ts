@@ -69,6 +69,13 @@ export default {
 		src: new URL('../../assets/sprites/storm/tank_front.webp', import.meta.url).href,
 		preload: true,
 	},
+	// The 3D bet bar (build_ui3d.py -> pack_ui3d.py): every control's idle/hover/pressed
+	// frame, the spin porthole + its turning glyph, and the 9-slice panel and plates.
+	ui3d: {
+		type: 'sprites',
+		src: new URL('../../assets/sprites/ui3d/ui3d.json', import.meta.url).href,
+		preload: true,
+	},
 	betUp: {
 		type: 'sprite',
 		src: new URL('../../assets/sprites/ui/bet_up.png', import.meta.url).href,
