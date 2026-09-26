@@ -7,7 +7,7 @@
 	import { getSymbolBackgroundInfo, getSymbolInfo } from '../game/utils';
 	import type { SymbolState, RawSymbol } from '../game/types';
 	import { getContext } from '../game/context';
-	import { SYMBOL_SIZE } from '../game/constants';
+	import { HIGH_SYMBOLS, SYMBOL_SIZE } from '../game/constants';
 
 	type Props = {
 		x?: number;
@@ -23,6 +23,12 @@
 	const symbolInfo = $derived(getSymbolInfo({ rawSymbol: props.rawSymbol, state: props.state }));
 	const isSprite = $derived(symbolInfo.type === 'sprite');
 	const isSpriteSheet = $derived(symbolInfo.type === 'spriteSheet');
+	// Only the fish (the high symbols) swim gently at rest; the chum pails, crate,
+	// chest, anchor and multipliers sit still until their own land/win animations.
+	const idle = $derived(
+		(props.state === 'static' || props.state === 'postWinStatic') &&
+			HIGH_SYMBOLS.includes(props.rawSymbol.name),
+	);
 	const showWinFrame = $derived(
 		props.state === 'win' && !['S', 'M'].includes(props.rawSymbol.name),
 	);
@@ -35,7 +41,7 @@
 		y={props.y}
 		oncomplete={props.oncomplete}
 		bounce={props.state === 'land'}
-		idle={props.state === 'static' || props.state === 'postWinStatic'}
+		{idle}
 		spinning={props.state === 'spin'}
 	/>
 {:else if isSpriteSheet}

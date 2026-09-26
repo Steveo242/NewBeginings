@@ -118,9 +118,6 @@ export const HIGH_SYMBOLS = ['H1', 'H2', 'H3', 'H4', 'H5'];
 export const INITIAL_SYMBOL_STATE: SymbolState = 'static';
 
 const M_SIZE = 0.3;
-const HIGH_SYMBOL_SIZE = 0.9;
-const LOW_SYMBOL_SIZE = 0.9;
-const SPECIAL_SYMBOL_SIZE = 1;
 
 const SPIN_OPTIONS_SHARED = {
 	reelFallInDelay: 80,
@@ -171,19 +168,24 @@ const explosion = {
 	sizeRatios: { width: 1.25, height: 1.25 },
 };
 
-const h1Static = { type: 'sprite', assetKey: 'h1.webp', sizeRatios: { width: 1, height: 1 } };
-const h2Static = { type: 'sprite', assetKey: 'h2.webp', sizeRatios: { width: 1, height: 1 } };
-const h3Static = { type: 'sprite', assetKey: 'h3.webp', sizeRatios: { width: 1, height: 1 } };
-const h4Static = { type: 'sprite', assetKey: 'h4.webp', sizeRatios: { width: 1, height: 1 } };
-const h5Static = { type: 'sprite', assetKey: 'h5.webp', sizeRatios: { width: 1, height: 1 } };
+// Symbol art fills 176 of its 200px atlas cell; drawing the cell 1.1x makes every
+// symbol near enough fill its reel square (~97%), just short of touching neighbours.
+const SYMBOL_FILL = 1.1;
+const FILL = { width: SYMBOL_FILL, height: SYMBOL_FILL };
 
-const l1Static = { type: 'sprite', assetKey: 'l1.webp', sizeRatios: { width: 1, height: 1 } };
-const l2Static = { type: 'sprite', assetKey: 'l2.webp', sizeRatios: { width: 1, height: 1 } };
-const l3Static = { type: 'sprite', assetKey: 'l3.webp', sizeRatios: { width: 1, height: 1 } };
-const l4Static = { type: 'sprite', assetKey: 'l4.webp', sizeRatios: { width: 1, height: 1 } };
+const h1Static = { type: 'sprite', assetKey: 'h1.webp', sizeRatios: FILL };
+const h2Static = { type: 'sprite', assetKey: 'h2.webp', sizeRatios: FILL };
+const h3Static = { type: 'sprite', assetKey: 'h3.webp', sizeRatios: FILL };
+const h4Static = { type: 'sprite', assetKey: 'h4.webp', sizeRatios: FILL };
+const h5Static = { type: 'sprite', assetKey: 'h5.webp', sizeRatios: FILL };
 
-const sStatic = { type: 'sprite', assetKey: 's.png', sizeRatios: { width: 1, height: 1 } };
-const wStatic = { type: 'sprite', assetKey: 'w.png', sizeRatios: { width: 1, height: 1 } };
+const l1Static = { type: 'sprite', assetKey: 'l1.webp', sizeRatios: FILL };
+const l2Static = { type: 'sprite', assetKey: 'l2.webp', sizeRatios: FILL };
+const l3Static = { type: 'sprite', assetKey: 'l3.webp', sizeRatios: FILL };
+const l4Static = { type: 'sprite', assetKey: 'l4.webp', sizeRatios: FILL };
+
+const sStatic = { type: 'sprite', assetKey: 's.png', sizeRatios: FILL };
+const wStatic = { type: 'sprite', assetKey: 'w.png', sizeRatios: FILL };
 
 const m2Static = {
 	type: 'sprite',
@@ -198,13 +200,6 @@ const m4Static = {
 const m5Static = { type: 'sprite', assetKey: 'm2_5x.png', sizeRatios: { width: 1, height: 1 } };
 const m7Static = { type: 'sprite', assetKey: 'm2_7x.png', sizeRatios: { width: 1, height: 1 } };
 const m10Static = { type: 'sprite', assetKey: 'm3_10x.png', sizeRatios: { width: 1, height: 1 } };
-
-const wSizeRatios = { width: 1.5 * 0.9, height: SPECIAL_SYMBOL_SIZE * 1.15 };
-// SymbolSprite draws to this box outright rather than fitting to the art, so
-// the height tracks the scatter plate's own aspect: cropping the studio floor
-// off the bottom took the art from 310 to 244 rows, and leaving the height at
-// 2.3 would have stretched the chest to fill the difference.
-const sSizeRatios = { width: 2.5, height: SPECIAL_SYMBOL_SIZE * 1.81 };
 
 // Rust radial glow behind the tag (spec s3: "sits behind, static
 // position... no hard edges"). Every M state is now static: spec s3 says
@@ -260,7 +255,7 @@ export const SYMBOL_INFO_MAP = {
 		win: {
 			type: 'spriteSheet',
 			assetKey: 'H1_win',
-			sizeRatios: { width: 0.5 * 1.15, height: HIGH_SYMBOL_SIZE * 0.57 },
+			sizeRatios: FILL,
 		},
 		postWinStatic: h1Static,
 		static: h1Static,
@@ -272,7 +267,7 @@ export const SYMBOL_INFO_MAP = {
 		win: {
 			type: 'spriteSheet',
 			assetKey: 'H2_win',
-			sizeRatios: { width: 0.5, height: HIGH_SYMBOL_SIZE * 0.57 },
+			sizeRatios: FILL,
 		},
 		postWinStatic: h2Static,
 		static: h2Static,
@@ -286,8 +281,9 @@ export const SYMBOL_INFO_MAP = {
 			assetKey: 'H3_win',
 			// Rendered from the rigged 3D clownfish: each frame covers 1.3x the static
 			// cell around the same centre (pack_symbol3d.py WIN_RATIO), so drawing it at
-			// 1.3x registers the win exactly on the resting fish.
-			sizeRatios: { width: 1.3, height: 1.3 },
+			// 1.3x the static registers the win exactly on the resting fish. The other
+			// win sheets are cut from the same canvas as their static, so they use FILL.
+			sizeRatios: { width: 1.3 * SYMBOL_FILL, height: 1.3 * SYMBOL_FILL },
 		},
 		postWinStatic: h3Static,
 		static: h3Static,
@@ -299,7 +295,7 @@ export const SYMBOL_INFO_MAP = {
 		win: {
 			type: 'spriteSheet',
 			assetKey: 'H4_win',
-			sizeRatios: { width: 0.5 * 0.9, height: HIGH_SYMBOL_SIZE * 0.53 },
+			sizeRatios: FILL,
 		},
 		postWinStatic: h4Static,
 		static: h4Static,
@@ -324,7 +320,7 @@ export const SYMBOL_INFO_MAP = {
 		win: {
 			type: 'spriteSheet',
 			assetKey: 'L1_win',
-			sizeRatios: { width: 0.5 * 0.75, height: LOW_SYMBOL_SIZE * 0.65 },
+			sizeRatios: FILL,
 		},
 		postWinStatic: l1Static,
 		static: l1Static,
@@ -336,7 +332,7 @@ export const SYMBOL_INFO_MAP = {
 		win: {
 			type: 'spriteSheet',
 			assetKey: 'L2_win',
-			sizeRatios: { width: 0.5 * 0.75, height: LOW_SYMBOL_SIZE * 0.65 },
+			sizeRatios: FILL,
 		},
 		postWinStatic: l2Static,
 		static: l2Static,
@@ -348,7 +344,7 @@ export const SYMBOL_INFO_MAP = {
 		win: {
 			type: 'spriteSheet',
 			assetKey: 'L3_win',
-			sizeRatios: { width: 0.5 * 0.75, height: LOW_SYMBOL_SIZE * 0.63 },
+			sizeRatios: FILL,
 		},
 		postWinStatic: l3Static,
 		static: l3Static,
