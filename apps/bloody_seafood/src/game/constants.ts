@@ -173,6 +173,18 @@ const explosion = {
 const SYMBOL_FILL = 1.1;
 const FILL = { width: SYMBOL_FILL, height: SYMBOL_FILL };
 
+// Win sheets rendered from the rigged 3D models (pack_symbol3d.py). Each frame covers
+// `ratio` x the static cell around the same centre, so drawing it at ratio x the static
+// registers the win on the resting symbol, and leaves room for the fish to lunge out of
+// its square. The 1.2 s wins are rendered at 30 fps, hence animationSpeed 0.5 (the
+// SpriteSheet otherwise advances one frame per 60 Hz tick).
+const win3d = (assetKey: string, ratio: number, animationSpeed = 1) => ({
+	type: 'spriteSheet',
+	assetKey,
+	sizeRatios: { width: ratio * SYMBOL_FILL, height: ratio * SYMBOL_FILL },
+	animationSpeed,
+});
+
 const h1Static = { type: 'sprite', assetKey: 'h1.webp', sizeRatios: FILL };
 const h2Static = { type: 'sprite', assetKey: 'h2.webp', sizeRatios: FILL };
 const h3Static = { type: 'sprite', assetKey: 'h3.webp', sizeRatios: FILL };
@@ -252,11 +264,7 @@ const backgroundHigh = {
 export const SYMBOL_INFO_MAP = {
 	H1: {
 		explosion,
-		win: {
-			type: 'spriteSheet',
-			assetKey: 'H1_win',
-			sizeRatios: FILL,
-		},
+		win: win3d('H1_win', 1.9, 0.5),
 		postWinStatic: h1Static,
 		static: h1Static,
 		spin: h1Static,
@@ -264,11 +272,7 @@ export const SYMBOL_INFO_MAP = {
 	},
 	H2: {
 		explosion,
-		win: {
-			type: 'spriteSheet',
-			assetKey: 'H2_win',
-			sizeRatios: { width: 1.3 * SYMBOL_FILL, height: 1.3 * SYMBOL_FILL },
-		},
+		win: win3d('H2_win', 1.8, 0.5),
 		postWinStatic: h2Static,
 		static: h2Static,
 		spin: h2Static,
@@ -276,15 +280,7 @@ export const SYMBOL_INFO_MAP = {
 	},
 	H3: {
 		explosion,
-		win: {
-			type: 'spriteSheet',
-			assetKey: 'H3_win',
-			// Rendered from the rigged 3D clownfish: each frame covers 1.3x the static
-			// cell around the same centre (pack_symbol3d.py WIN_RATIO), so drawing it at
-			// 1.3x the static registers the win exactly on the resting fish. The other
-			// win sheets are cut from the same canvas as their static, so they use FILL.
-			sizeRatios: { width: 1.3 * SYMBOL_FILL, height: 1.3 * SYMBOL_FILL },
-		},
+		win: win3d('H3_win', 1.8, 0.5),
 		postWinStatic: h3Static,
 		static: h3Static,
 		spin: h3Static,
@@ -292,11 +288,7 @@ export const SYMBOL_INFO_MAP = {
 	},
 	H4: {
 		explosion,
-		win: {
-			type: 'spriteSheet',
-			assetKey: 'H4_win',
-			sizeRatios: { width: 1.3 * SYMBOL_FILL, height: 1.3 * SYMBOL_FILL },
-		},
+		win: win3d('H4_win', 1.8, 0.5),
 		postWinStatic: h4Static,
 		static: h4Static,
 		spin: h4Static,
@@ -317,11 +309,7 @@ export const SYMBOL_INFO_MAP = {
 	},
 	L1: {
 		explosion,
-		win: {
-			type: 'spriteSheet',
-			assetKey: 'L1_win',
-			sizeRatios: FILL,
-		},
+		win: win3d('L1_win', 1.8, 0.5),
 		postWinStatic: l1Static,
 		static: l1Static,
 		spin: l1Static,
@@ -329,11 +317,7 @@ export const SYMBOL_INFO_MAP = {
 	},
 	L2: {
 		explosion,
-		win: {
-			type: 'spriteSheet',
-			assetKey: 'L2_win',
-			sizeRatios: FILL,
-		},
+		win: win3d('L2_win', 2.0, 0.5),
 		postWinStatic: l2Static,
 		static: l2Static,
 		spin: l2Static,
@@ -341,11 +325,7 @@ export const SYMBOL_INFO_MAP = {
 	},
 	L3: {
 		explosion,
-		win: {
-			type: 'spriteSheet',
-			assetKey: 'L3_win',
-			sizeRatios: { width: 1.3 * SYMBOL_FILL, height: 1.3 * SYMBOL_FILL },
-		},
+		win: win3d('L3_win', 2.0, 0.5),
 		postWinStatic: l3Static,
 		static: l3Static,
 		spin: l3Static,

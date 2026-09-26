@@ -23,6 +23,7 @@
 	key={props.symbolInfo.assetKey}
 	width={SYMBOL_SIZE * props.symbolInfo.sizeRatios.width}
 	height={SYMBOL_SIZE * props.symbolInfo.sizeRatios.height}
+	animationSpeed={'animationSpeed' in props.symbolInfo ? props.symbolInfo.animationSpeed : 1}
 	loop={props.loop ?? false}
 	play={true}
 	onComplete={props.oncomplete}
