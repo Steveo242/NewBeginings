@@ -284,7 +284,10 @@ export const SYMBOL_INFO_MAP = {
 		win: {
 			type: 'spriteSheet',
 			assetKey: 'H3_win',
-			sizeRatios: { width: 0.5 * 0.9, height: HIGH_SYMBOL_SIZE * 0.53 },
+			// Rendered from the rigged 3D clownfish: each frame covers 1.3x the static
+			// cell around the same centre (pack_symbol3d.py WIN_RATIO), so drawing it at
+			// 1.3x registers the win exactly on the resting fish.
+			sizeRatios: { width: 1.3, height: 1.3 },
 		},
 		postWinStatic: h3Static,
 		static: h3Static,
