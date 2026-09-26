@@ -158,46 +158,29 @@
 		--plank-dark: #3a2415;
 		--plank-mid: #5b3a22;
 		--plank-light: #7a5232;
-		--brass: #c8a24a;
+		--brass: #e3b858;
 		--blood: #a4161a;
 		--bone: #f2e8d5;
 
 		color: var(--bone);
 		font-family: 'Trebuchet MS', 'Segoe UI', system-ui, sans-serif;
-		padding: 1.25rem;
-		border: 0.4rem solid var(--plank-dark);
-		border-radius: 0.4rem;
-		box-shadow:
-			inset 0 0 0 0.18rem var(--brass),
-			inset 0 0 3rem rgba(0, 0, 0, 0.55),
-			0 0.5rem 1.5rem rgba(0, 0, 0, 0.6);
-		background-color: var(--plank-mid);
-		background-image:
-			repeating-linear-gradient(
-				90deg,
-				rgba(0, 0, 0, 0.28) 0 0.12rem,
-				rgba(0, 0, 0, 0) 0.12rem 7.5rem
-			),
-			repeating-linear-gradient(
-				0deg,
-				rgba(255, 255, 255, 0.035) 0 0.08rem,
-				rgba(0, 0, 0, 0.07) 0.08rem 0.5rem
-			),
-			linear-gradient(180deg, var(--plank-light), var(--plank-dark));
+		/* no panel of its own: MenuSkin frames every menu in the rendered iron-and-brass
+		   plate, so this only sets the type */
+		padding: 0.25rem 0.5rem;
 	}
 
 	.bs-title {
 		margin: 0 0 1rem;
 		text-align: center;
+		font-family: Georgia, 'Times New Roman', serif;
 		font-size: 1.9rem;
-		font-weight: 900;
-		letter-spacing: 0.06em;
+		font-weight: bold;
+		letter-spacing: 0.08em;
 		text-transform: uppercase;
-		color: var(--bone);
-		-webkit-text-stroke: 0.09rem var(--plank-dark);
+		color: var(--brass);
 		text-shadow:
-			0 0.14rem 0 var(--plank-dark),
-			0 0 0.9rem rgba(200, 162, 74, 0.45);
+			0 0.1rem 0 #000,
+			0 0 0.6rem rgba(227, 184, 88, 0.35);
 	}
 
 	.bs-h2 {

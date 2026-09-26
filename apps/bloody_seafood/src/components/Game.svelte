@@ -37,6 +37,7 @@
 	import FreeSpinCounter from './FreeSpinCounter.svelte';
 	import FreeSpinOutro from './FreeSpinOutro.svelte';
 	import Transition from './Transition.svelte';
+	import MenuSkin from './MenuSkin.svelte';
 	
 	const context = getContext();
 
@@ -127,6 +128,7 @@
 			{/if}
 </App>
 
+<MenuSkin />
 <Modals>
 	{#snippet version()}
 		<GameVersion version="1.0.0" />
