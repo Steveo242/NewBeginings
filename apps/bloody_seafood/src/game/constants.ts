@@ -267,7 +267,7 @@ export const SYMBOL_INFO_MAP = {
 		win: {
 			type: 'spriteSheet',
 			assetKey: 'H2_win',
-			sizeRatios: FILL,
+			sizeRatios: { width: 1.3 * SYMBOL_FILL, height: 1.3 * SYMBOL_FILL },
 		},
 		postWinStatic: h2Static,
 		static: h2Static,
@@ -295,7 +295,7 @@ export const SYMBOL_INFO_MAP = {
 		win: {
 			type: 'spriteSheet',
 			assetKey: 'H4_win',
-			sizeRatios: FILL,
+			sizeRatios: { width: 1.3 * SYMBOL_FILL, height: 1.3 * SYMBOL_FILL },
 		},
 		postWinStatic: h4Static,
 		static: h4Static,
