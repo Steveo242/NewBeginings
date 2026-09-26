@@ -344,7 +344,7 @@ export const SYMBOL_INFO_MAP = {
 		win: {
 			type: 'spriteSheet',
 			assetKey: 'L3_win',
-			sizeRatios: FILL,
+			sizeRatios: { width: 1.3 * SYMBOL_FILL, height: 1.3 * SYMBOL_FILL },
 		},
 		postWinStatic: l3Static,
 		static: l3Static,
