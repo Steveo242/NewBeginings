@@ -17,14 +17,14 @@
   const context = getContext();
 
   const TITLE_FRAMES: Record<string, string> = {
-    "BIG WIN": "big.png",
-    "SUPER WIN": "superwin.png",
-    "MEGA WIN": "mega.png",
-    "EPIC WIN!": "epic.png",
-    "MAX WIN": "max.png",
-    "FREE SPINS": "freespins.png",
-    "SUPER FREE SPINS": "superfreespins.png",
-    "TOTAL HAUL": "totalhaul.png",
+    "BIG WIN": "wintitle_big.png",
+    "SUPER WIN": "wintitle_superwin.png",
+    "MEGA WIN": "wintitle_mega.png",
+    "EPIC WIN!": "wintitle_epic.png",
+    "MAX WIN": "wintitle_max.png",
+    "FREE SPINS": "wintitle_freespins.png",
+    "SUPER FREE SPINS": "wintitle_superfreespins.png",
+    "TOTAL HAUL": "wintitle_totalhaul.png",
   };
   // halo + burst grow with the tier
   // halo is always warm gold (additive red over the teal board just greys out); the

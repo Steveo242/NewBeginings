@@ -35,6 +35,7 @@
 	import Win from './Win.svelte';
 	import FreeSpinIntro from './FreeSpinIntro.svelte';
 	import FreeSpinCounter from './FreeSpinCounter.svelte';
+	import TriggerGlow from './TriggerGlow.svelte';
 	import FreeSpinOutro from './FreeSpinOutro.svelte';
 	import Transition from './Transition.svelte';
 	import MenuSkin from './MenuSkin.svelte';
@@ -78,7 +79,12 @@
 		<MainContainer>
 			<Board />
 			<Anticipations />
-			
+		</MainContainer>
+
+		<!-- gold glow on the chests that trigger free spins (over the resting symbols,
+		     under the 3D win, which plays in the board's unmasked animate layer) -->
+		<MainContainer>
+			<TriggerGlow />
 		</MainContainer>
 
 		<MainContainer>

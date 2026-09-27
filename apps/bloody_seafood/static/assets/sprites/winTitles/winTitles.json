@@ -1,6 +1,6 @@
 {
 	"frames": {
-		"totalhaul.png": {
+		"wintitle_totalhaul.png": {
 			"frame": {
 				"x": 2,
 				"y": 2,
@@ -20,7 +20,7 @@
 				"h": 170
 			}
 		},
-		"epic.png": {
+		"wintitle_epic.png": {
 			"frame": {
 				"x": 2,
 				"y": 174,
@@ -40,7 +40,7 @@
 				"h": 170
 			}
 		},
-		"freespins.png": {
+		"wintitle_freespins.png": {
 			"frame": {
 				"x": 2,
 				"y": 346,
@@ -60,7 +60,7 @@
 				"h": 170
 			}
 		},
-		"mega.png": {
+		"wintitle_mega.png": {
 			"frame": {
 				"x": 2,
 				"y": 518,
@@ -80,7 +80,7 @@
 				"h": 170
 			}
 		},
-		"max.png": {
+		"wintitle_max.png": {
 			"frame": {
 				"x": 1053,
 				"y": 518,
@@ -100,7 +100,7 @@
 				"h": 170
 			}
 		},
-		"superfreespins.png": {
+		"wintitle_superfreespins.png": {
 			"frame": {
 				"x": 2,
 				"y": 690,
@@ -120,7 +120,7 @@
 				"h": 170
 			}
 		},
-		"big.png": {
+		"wintitle_big.png": {
 			"frame": {
 				"x": 2,
 				"y": 862,
@@ -140,7 +140,7 @@
 				"h": 170
 			}
 		},
-		"superwin.png": {
+		"wintitle_superwin.png": {
 			"frame": {
 				"x": 837,
 				"y": 862,
