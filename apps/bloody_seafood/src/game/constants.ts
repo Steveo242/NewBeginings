@@ -346,11 +346,7 @@ export const SYMBOL_INFO_MAP = {
 		postWinStatic: wStatic,
 		static: wStatic,
 		spin: wStatic,
-		win: {
-			type: 'spriteSheet',
-			assetKey: 'W_win',
-			sizeRatios: wStatic.sizeRatios,
-		},
+		win: win3d('W_win', 1.8, 0.5),
 		land: wStatic,
 	},
 	S: {
@@ -358,11 +354,8 @@ export const SYMBOL_INFO_MAP = {
 		postWinStatic: sStatic,
 		static: sStatic,
 		spin: sStatic,
-		win: {
-			type: 'spriteSheet',
-			assetKey: 'S_win',
-			sizeRatios: sStatic.sizeRatios,
-		},
+		// 2.5x: the chest hops and its coins fountain well above the cell
+		win: win3d('S_win', 2.5, 0.5),
 		land: sStatic,
 	},
 	M_2: {
