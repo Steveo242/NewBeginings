@@ -6,82 +6,72 @@
 </script>
 
 <script lang="ts">
- import WinAmountText from "./WinAmountText.svelte";
 	import { Tween } from 'svelte/motion';
+	import { cubicOut } from 'svelte/easing';
 
-	import {
-		BitmapText,
-		Container,
-		SpineEventEmitterProvider,
-		SpineProvider,
-		SpineSlot,
-		SpineTrack,
-	} from 'pixi-svelte';
+	import { Container, Sprite, Text } from 'pixi-svelte';
 	import { FadeContainer } from 'components-pixi';
 	import { stateBetDerived } from 'state-shared';
-	import { waitForResolve, waitForTimeout } from 'utils-shared/wait';
+	import { waitForTimeout } from 'utils-shared/wait';
 
 	import BoardContainer from './BoardContainer.svelte';
+	import NineSlice from './bar3d/NineSlice.svelte';
 	import { getContext } from '../game/context';
 	import { SYMBOL_SIZE } from '../game/constants';
+	import { DISPLAY_FONT, displayTextStyle } from '../game/fonts';
+	import { HUD_PANEL_W, hudColumn } from '../game/hud';
 
-	type AnimationName = 'static' | 'win' | 'reset' | 'increment';
-
-	const PANEL_WIDTH = SYMBOL_SIZE * 0.641;
+	// The free-spin multiplier is the bonus's whole story (+1 for every winning cluster
+	// with a wild in it, kept for the entire feature), so it gets a real meter: an iron
+	// plaque with a big brass number that slams in on every increase. It used to be a
+	// tiny badge tucked beside the logo on the tank's top-right corner.
 	const context = getContext();
-	const scale = $derived(context.stateLayoutDerived.isStacked() ? 1.28 : 1);
-	const desktopPosition = $derived({
-		x: context.stateGameDerived.boardLayout().width - PANEL_WIDTH * 1.3,
-		y: -SYMBOL_SIZE * 1.1,
-	});
-	const portraitPosition = $derived({
-		x: context.stateGameDerived.boardLayout().width - PANEL_WIDTH * 1.5,
-		y: -SYMBOL_SIZE * 0.55,
-	});
-	const position = $derived(
-		context.stateLayoutDerived.isStacked() ? portraitPosition : desktopPosition,
-	);
+
+	const H = SYMBOL_SIZE * 1.8;
+	const PANEL_SCALE = 0.45;
+	const PANEL_BORDER = 80;
+	const position = $derived(hudColumn(context, 'multiplier'));
 
 	let show = $state(false);
-	let animationName = $state<AnimationName>('static');
 	let multiplier = $state(1);
-	let previousMultiplier = new Tween(1);
-	let oncomplete = $state(() => {});
+	const pop = new Tween(1, { easing: cubicOut });
+	const flash = new Tween(0, { easing: cubicOut });
+
+	const captionStyle = {
+		fontFamily: DISPLAY_FONT,
+		fontWeight: 'bold',
+		fontSize: SYMBOL_SIZE * 0.21,
+		fill: 0xe9dcc0,
+		letterSpacing: SYMBOL_SIZE * 0.035,
+		dropShadow: { color: 0x000000, alpha: 0.8, blur: 2, distance: 2, angle: Math.PI / 2 },
+	} as const;
 
 	context.eventEmitter.subscribeOnMount({
 		globalMultiplierShow: () => (show = true),
 		globalMultiplierHide: () => {
 			show = false;
-			// Clear the panel's state here rather than leaving it to the reset
-			// animation. Once hidden, FadeContainer drops its children at alpha 0,
-			// which unmounts the SpineTrack - so the 'complete' event the update
-			// handler awaits can never arrive. Without this, animationName sticks
-			// on 'reset' forever, the closing previousMultiplier sync never runs,
-			// and the next feature reopens the panel still reading the old value.
-			// Releasing oncomplete frees any update still waiting on that event.
-			animationName = 'static';
 			multiplier = 1;
-			previousMultiplier.set(1, { duration: 0 });
-			oncomplete();
+			pop.set(1, { duration: 0 });
+			flash.set(0, { duration: 0 });
 		},
 		globalMultiplierUpdate: async (emitterEvent) => {
+			const speed = stateBetDerived.timeScale();
 			if (emitterEvent.multiplier === 1 && multiplier !== 1) {
-				animationName = 'reset';
-				await waitForTimeout(300);
 				context.eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_multiplier_reset' });
-				previousMultiplier.set(emitterEvent.multiplier);
+				await pop.set(0.6, { duration: 180 / speed });
+				multiplier = 1;
+				await pop.set(1, { duration: 220 / speed });
+				return;
 			}
-
 			if (emitterEvent.multiplier > multiplier) {
 				context.eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_multiplier_update' });
-				animationName = 'increment';
-			}
-
-			if (animationName !== 'static') {
 				multiplier = emitterEvent.multiplier;
-				await waitForResolve((resolve) => (oncomplete = resolve));
-				animationName = 'static';
-				previousMultiplier.set(multiplier, { duration: 0 });
+				// slam: big and bright, then settle with a flash behind the number
+				pop.set(1.9, { duration: 0 });
+				flash.set(1, { duration: 0 });
+				flash.set(0, { duration: 700 / speed });
+				await pop.set(1, { duration: 380 / speed });
+				await waitForTimeout(120 / speed);
 			}
 		},
 	});
@@ -89,41 +79,29 @@
 
 <FadeContainer {show}>
 	<BoardContainer>
-		<Container x={position.x} y={position.y} {scale}>
-			<SpineProvider key="globalMultiplier" width={PANEL_WIDTH}>
-				<SpineTrack
-					trackIndex={0}
-					{animationName}
-					timeScale={stateBetDerived.timeScale()}
-					listener={{
-						complete: () => {
-							oncomplete();
-						},
-					}}
+		<Container x={position.x} y={position.y}>
+			<Container scale={PANEL_SCALE}>
+				<NineSlice
+					key="panel.png"
+					width={HUD_PANEL_W / PANEL_SCALE}
+					height={H / PANEL_SCALE}
+					border={PANEL_BORDER}
 				/>
-				<SpineEventEmitterProvider>
-					<SpineSlot slotName="slot_multi">
-						<WinAmountText
-							anchor={0.5}
-							text={`${Math.round(previousMultiplier.current)}×`}
-							style={{
-								fontFamily: 'gold',
-								fontSize: SYMBOL_SIZE * 5.2,
-							}}
-						/>
-					</SpineSlot>
-					<SpineSlot slotName="slot_multi_next">
-						<WinAmountText
-							anchor={0.5}
-							text={`${multiplier}×`}
-							style={{
-								fontFamily: 'gold',
-								fontSize: SYMBOL_SIZE * 5.2,
-							}}
-						/>
-					</SpineSlot>
-				</SpineEventEmitterProvider>
-			</SpineProvider>
+			</Container>
+			<Text anchor={0.5} y={-H * 0.3} text="MULTIPLIER" style={captionStyle} />
+			<Sprite
+				key="fxGlow"
+				anchor={0.5}
+				y={H * 0.1}
+				width={HUD_PANEL_W * 1.6}
+				height={H * 1.6}
+				tint={0xffc870}
+				alpha={flash.current}
+				blendMode="add"
+			/>
+			<Container y={H * 0.12} scale={pop.current}>
+				<Text anchor={0.5} text={`${multiplier}×`} style={displayTextStyle(SYMBOL_SIZE * 1.02)} />
+			</Container>
 		</Container>
 	</BoardContainer>
 </FadeContainer>

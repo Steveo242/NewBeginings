@@ -6,49 +6,38 @@
 </script>
 
 <script lang="ts">
- import WinAmountText from "./WinAmountText.svelte";
-import { stateUi } from 'state-shared';
-	import { MainContainer } from 'components-layout';
+	import { stateUi } from 'state-shared';
 	import { FadeContainer } from 'components-pixi';
+	import { Container, Text } from 'pixi-svelte';
 
+	import BoardContainer from './BoardContainer.svelte';
+	import NineSlice from './bar3d/NineSlice.svelte';
 	import { getContext } from '../game/context';
 	import { SYMBOL_SIZE } from '../game/constants';
-	import { anchorToPivot, BitmapText, Container, Sprite, type Sizes } from 'pixi-svelte';
+	import { DISPLAY_FONT, displayTextStyle } from '../game/fonts';
+	import { HUD_PANEL_W, hudColumn } from '../game/hud';
 
+	// "FREE SPINS 5 / 8" on an iron plaque at the top of the free-spins HUD column
+	// (the multiplier meter hangs below it). Its panel sprite, Frame_FSCounter.png,
+	// never shipped with this game - the count floated as bare text over the sky.
 	const context = getContext();
-	const PANEL_KEY_DESKTOP = 'Frame_FSCounter.png';
-	const PANEL_RATIO_DESKTOP = 824 / 622;
-	const panelKey = PANEL_KEY_DESKTOP;
-	const panelWidth = $derived(SYMBOL_SIZE * 2);
-	const panelSizes = $derived({
-		width: panelWidth,
-		height: panelWidth / PANEL_RATIO_DESKTOP,
-	});
-	const scale = 1;
-	const position = $derived({
-		x:
-			context.stateGameDerived.boardLayout().x -
-			context.stateGameDerived.boardLayout().width * 0.5 -
-			panelSizes.width -
-			SYMBOL_SIZE * 0.7,
-		y:
-			context.stateGameDerived.boardLayout().y -
-			context.stateGameDerived.boardLayout().height * 0.5,
-	});
+	const H = SYMBOL_SIZE * 1.15;
+	const PANEL_SCALE = 0.45;
+	const PANEL_BORDER = 80;
+	const position = $derived(hudColumn(context, 'counter'));
 
-	const fontSize = SYMBOL_SIZE * 0.275;
+	const captionStyle = {
+		fontFamily: DISPLAY_FONT,
+		fontWeight: 'bold',
+		fontSize: SYMBOL_SIZE * 0.19,
+		fill: 0xe9dcc0,
+		letterSpacing: SYMBOL_SIZE * 0.035,
+		dropShadow: { color: 0x000000, alpha: 0.8, blur: 2, distance: 2, angle: Math.PI / 2 },
+	} as const;
 
 	let show = $state(false);
 	let current = $state(0);
 	let total = $state(0);
-	let titleSizes: Sizes = $state({ width: 0, height: 0 });
-	let counterSizes: Sizes = $state({ width: 0, height: 0 });
-
-	const textContainerSizes = $derived({
-		width: titleSizes.width,
-		height: titleSizes.height + counterSizes.height,
-	});
-	const counterPosition = $derived({ x: titleSizes.width / 2, y: titleSizes.height });
 
 	context.eventEmitter.subscribeOnMount({
 		freeSpinCounterShow: () => (show = stateUi.freeSpinCounterShow = true),
@@ -60,36 +49,14 @@ import { stateUi } from 'state-shared';
 	});
 </script>
 
-<MainContainer>
-	<FadeContainer {show} {...position} {scale}>
-		<Sprite key={panelKey} {...panelSizes} />
-		<Container
-			x={panelSizes.width * 0.5}
-			y={panelSizes.height * 0.48}
-			pivot={anchorToPivot({
-				sizes: textContainerSizes,
-				anchor: { x: 0.5, y: 0.5 },
-			})}
-		>
-			<WinAmountText
-				text={'FREE SPIN'}
-				style={{
-					fontFamily: 'gold',
-					fontSize,
-					wordWrap: false,
-				}}
-				onresize={(sizes) => (titleSizes = sizes)}
-			/>
-			<WinAmountText
-				text={`${current} OF ${total}`}
-				{...counterPosition}
-				anchor={{ x: 0.5, y: 0 }}
-				style={{
-					fontFamily: 'gold',
-					fontSize,
-				}}
-				onresize={(sizes) => (counterSizes = sizes)}
-			/>
+<FadeContainer {show}>
+	<BoardContainer>
+		<Container x={position.x} y={position.y}>
+			<Container scale={PANEL_SCALE}>
+				<NineSlice key="panel.png" width={HUD_PANEL_W / PANEL_SCALE} height={H / PANEL_SCALE} border={PANEL_BORDER} />
+			</Container>
+			<Text anchor={0.5} y={-H * 0.24} text="FREE SPINS" style={captionStyle} />
+			<Text anchor={0.5} y={H * 0.14} text={`${current} / ${total}`} style={displayTextStyle(SYMBOL_SIZE * 0.5)} />
 		</Container>
-	</FadeContainer>
-</MainContainer>
+	</BoardContainer>
+</FadeContainer>
