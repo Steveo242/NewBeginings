@@ -194,6 +194,10 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		stateGame.gameType = 'basegame';
 		eventEmitter.broadcast({ type: 'boardFrameGlowHide' });
 		eventEmitter.broadcast({ type: 'globalMultiplierHide' });
+		// clear the in-feature HUD before TOTAL HAUL, not after it - they used to sit
+		// under the outro (a stale "FREE SPIN 8 OF 8" and a TUMBLE WIN of $0.00)
+		eventEmitter.broadcast({ type: 'freeSpinCounterHide' });
+		eventEmitter.broadcast({ type: 'tumbleWinAmountHide' });
 		eventEmitter.broadcast({ type: 'freeSpinOutroShow' });
 		eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_youwon_panel' });
 		winLevelSoundsPlay({ winLevelData });

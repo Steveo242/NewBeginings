@@ -67,12 +67,13 @@
 					}}
 				/>
 
-				<CanvasSizeRectangle backgroundColor={0x000000} backgroundAlpha={0.5} />
+				<!-- dark enough that the plaque owns the screen -->
+					<CanvasSizeRectangle backgroundColor={0x000000} backgroundAlpha={0.7} />
 
 				<MainContainer>
   <Container x={context.stateGameDerived.boardLayout().x} y={context.stateGameDerived.boardLayout().y}>
     <WinBanner text="TOTAL HAUL" alias="big">
-      <WinAmountText anchor={0.5} text={bookEventAmountToCurrencyString(countUpAmount)} style={{ fontSize: 100 }} />
+      <WinAmountText anchor={0.5} text={bookEventAmountToCurrencyString(countUpAmount)} measureText={bookEventAmountToCurrencyString(amount)} maxWidth={context.stateGameDerived.boardLayout().width * 0.76} style={{ fontSize: 120 }} />
     </WinBanner>
   </Container>
 </MainContainer>

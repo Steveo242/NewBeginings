@@ -48,7 +48,8 @@
 		<WinCountUpProvider {amount} {duration} oncomplete={() => onCountUpComplete()}>
 			{#snippet children({ countUpAmount, startCountUp, finishCountUp, countUpCompleted })}
 				{#if isBigWin}
-					<CanvasSizeRectangle backgroundColor={0x000000} backgroundAlpha={0.5} />
+					<!-- dark enough that the plaque owns the screen -->
+					<CanvasSizeRectangle backgroundColor={0x000000} backgroundAlpha={0.7} />
 				{/if}
 
 				<OnMount
@@ -68,7 +69,7 @@
 							<WinBanner text={winLevelData.text} alias={winLevelData.alias}>
 								<WinAmountText
 									anchor={0.5}
-									maxWidth={2130}
+									maxWidth={context.stateGameDerived.boardLayout().width * 0.76}
 									text={bookEventAmountToCurrencyString(countUpAmount)}
 									measureText={bookEventAmountToCurrencyString(amount)}
 									style={{

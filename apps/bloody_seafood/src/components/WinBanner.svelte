@@ -1,40 +1,82 @@
 <script lang="ts">
   import type { Snippet } from "svelte";
   import { Container, Graphics, Sprite, Text } from "pixi-svelte";
-  import { getContext } from "../game/context";
 
+  import NineSlice from "./bar3d/NineSlice.svelte";
+  import WinBurst from "./WinBurst.svelte";
+  import { getContext } from "../game/context";
+  import { displayTextStyle } from "../game/fonts";
+
+  // The celebration plaque behind every big win, the free-spins intro and TOTAL HAUL.
+  // Built from the same 3D kit as the tank and the bet bar: a riveted iron 9-slice with
+  // a brass rim (ui3d panel.png), crowned by a rendered 3D title (winTitles atlas, real
+  // extruded lettering: bone -> gold -> blood as the tiers climb) that breaks over the
+  // plaque's top edge. It replaces a code-drawn navy box with Impact lettering.
   type Props = { text?: string | null; alias?: string; children: Snippet };
   const props: Props = $props();
   const context = getContext();
 
-  const TIERS: Record<string, { fill: number; band: number }> = {
-    big: { fill: 0xffd27a, band: 0xa30d24 },
-    superwin: { fill: 0xffb347, band: 0xb3121f },
-    mega: { fill: 0xff7a7a, band: 0x8b0000 },
-    epic: { fill: 0xff3b3b, band: 0x5c0011 },
-    max: { fill: 0xffffff, band: 0xc8102e },
+  const TITLE_FRAMES: Record<string, string> = {
+    "BIG WIN": "big.png",
+    "SUPER WIN": "superwin.png",
+    "MEGA WIN": "mega.png",
+    "EPIC WIN!": "epic.png",
+    "MAX WIN": "max.png",
+    "FREE SPINS": "freespins.png",
+    "SUPER FREE SPINS": "superfreespins.png",
+    "TOTAL HAUL": "totalhaul.png",
   };
-  const tier = $derived(TIERS[props.alias ?? "big"] ?? TIERS.big);
-  const W = $derived(context.stateGameDerived.boardLayout().width * 0.85);
+  // halo + burst grow with the tier
+  // halo is always warm gold (additive red over the teal board just greys out); the
+  // rays carry the tier's colour and get stronger as the tiers climb
+  const TIER_FX: Record<string, { glow: number; rays: number; rayTint: number; burst: number }> = {
+    big: { glow: 0.55, rays: 0.3, rayTint: 0xffe2a8, burst: 0.8 },
+    superwin: { glow: 0.65, rays: 0.38, rayTint: 0xffc861, burst: 1 },
+    mega: { glow: 0.75, rays: 0.46, rayTint: 0xff7a5a, burst: 1.15 },
+    epic: { glow: 0.85, rays: 0.55, rayTint: 0xff4a3a, burst: 1.3 },
+    max: { glow: 1, rays: 0.65, rayTint: 0xffd060, burst: 1.5 },
+  };
+  const RAYS = 14;
+  // each ray fades out along its length (fine bands of falling alpha) - flat hard-edged
+  // wedges read as clip art. (No blur filter: filtering drops the additive blend.)
+  const BANDS = Array.from({ length: 10 }, (_, b) => Math.pow(1 - b / 10, 1.6));
+  const drawRays = (g: any) => {
+    g.clear();
+    const r = W * 1.1;
+    const spin = t * 0.22;
+    const fade = fx.rays * Math.min(1, t * 2.5);
+    for (let i = 0; i < RAYS; i++) {
+      const a = spin + (i / RAYS) * Math.PI * 2;
+      const half = (Math.PI / RAYS) * 0.42;
+      const cA = Math.cos(a - half), sA = Math.sin(a - half) * 0.7;
+      const cB = Math.cos(a + half), sB = Math.sin(a + half) * 0.7;
+      BANDS.forEach((k, b) => {
+        const r0 = (b / BANDS.length) * r, r1 = ((b + 1) / BANDS.length) * r;
+        g.poly([cA * r0, sA * r0, cA * r1, sA * r1, cB * r1, sB * r1, cB * r0, sB * r0])
+          .fill({ color: fx.rayTint, alpha: fade * k * (i % 2 ? 0.55 : 1) });
+      });
+    }
+  };
 
-  /** Content aspect of title_plaque_board.png, measured off its alpha bounds. */
-  const LOGO_ASPECT = 2.573;
-  /** Wider than the plaque so the logo overhangs it on both sides. */
-  const LOGO_WIDTH_RATIO = 1.32;
-  /**
-   * Bottom edge sits just inside the ribbon band's top (-125), so the logo
-   * crowns the plaque and its blood drips dangle over the band rather than
-   * floating clear of it. The wordmark below is at -75 and stays uncovered.
-   */
-  const LOGO_BOTTOM = -120;
-  const logoWidth = $derived(W * LOGO_WIDTH_RATIO);
-  const logoHeight = $derived(logoWidth / LOGO_ASPECT);
+  const fx = $derived(TIER_FX[props.alias ?? "big"] ?? TIER_FX.big);
+  const titleFrame = $derived(TITLE_FRAMES[props.text ?? ""]);
+  const titleTexture = $derived(
+    titleFrame ? (context.stateApp.loadedAssets?.[titleFrame] as { width: number; height: number } | undefined) : undefined,
+  );
 
-  // The whole banner is drawn at its original dimensions and then scaled
-  // down as a unit, so the plaque, wordmark and amount keep their
-  // proportions. At 1x the plaque measures 755px against a 700px board -
-  // wider than the reels it sits over - which is why it read so large.
-  const BANNER_SCALE = 0.5;
+  // sized off the board so it scales with every layout
+  const W = $derived(context.stateGameDerived.boardLayout().width * 0.86);
+  const H = $derived(W * 0.34);
+  // panel.png's corners are 80 texture px; drawn at this scale they stay rivet-sized
+  const PANEL_SCALE = 0.55;
+  const PANEL_BORDER = 80;
+
+  // the title: as tall as ~62% of the plaque, never wider than the plaque + overhang
+  const titleH = $derived(H * 0.62);
+  const titleW = $derived(
+    titleTexture ? Math.min(W * 1.06, (titleTexture.width / titleTexture.height) * titleH) : 0,
+  );
+  const titleHFit = $derived(titleTexture ? titleW * (titleTexture.height / titleTexture.width) : 0);
 
   let t = $state(0);
   $effect(() => {
@@ -49,80 +91,47 @@
   });
 
   const easeOutBack = (x: number) => 1 + 2.70158 * Math.pow(x - 1, 3) + 1.70158 * Math.pow(x - 1, 2);
-  const pop = $derived(t < 0.4 ? easeOutBack(t / 0.4) : 1);
-
-  const DRIPS = [[-0.38, 26], [-0.21, 38], [-0.05, 22], [0.12, 34], [0.29, 28], [0.4, 18]];
-
-  const wordmarkStyle = {
-    fontFamily: "Impact, 'Arial Black', 'Trebuchet MS', sans-serif",
-    fontSize: 76,
-    fontWeight: "bold",
-    letterSpacing: 3,
-    fill: tier.fill,
-    stroke: { color: 0x1a0004, width: 9 },
-    dropShadow: { color: 0x000000, alpha: 0.7, blur: 6, distance: 5, angle: 1.57 },
-  };
-
-  // The wordmark is whatever the caller passes, and the longest of them
-  // ("SUPER FREE SPINS") runs the full width of the ribbon at this size.
-  // Scale it down to fit rather than letting it spill past the band's ends.
-  let wordmarkWidth = $state(0);
-  const wordmarkMax = $derived(W * 0.92);
-  const wordmarkFit = $derived(
-    wordmarkWidth > wordmarkMax ? wordmarkMax / wordmarkWidth : 1,
-  );
-
-  const draw = (g: any) => {
-    const w = W;
-    const h = 290;
-    const top = -125;
-    const bh = 100;
-    const tail = 60;
-    const L = -w / 2 - 20;
-    const R = w / 2 + 20;
-    g.clear();
-    g.roundRect(-w / 2, -h / 2, w, h, 24).fill({ color: 0x0b1a26, alpha: 0.9 }).stroke({ width: 6, color: 0xd4a44a });
-    g.poly([L, top, L - tail, top, L - tail * 0.55, top + bh / 2, L - tail, top + bh, L, top + bh]).fill({ color: tier.band, alpha: 0.8 });
-    g.poly([R, top, R + tail, top, R + tail * 0.55, top + bh / 2, R + tail, top + bh, R, top + bh]).fill({ color: tier.band, alpha: 0.8 });
-    g.rect(L, top, R - L, bh).fill({ color: tier.band });
-    g.rect(L, top + 6, R - L, 4).fill({ color: 0xd4a44a });
-    g.rect(L, top + bh - 10, R - L, 4).fill({ color: 0xd4a44a });
-    for (const [fx, len] of DRIPS) {
-      const x = fx * w;
-      g.roundRect(x - 5, top + bh - 4, 10, len, 5).fill({ color: tier.band });
-      g.circle(x, top + bh - 4 + len, 8).fill({ color: tier.band });
-    }
-  };
+  // plaque pops in; the title slams down onto it a beat later, overshooting
+  const pop = $derived(t < 0.35 ? easeOutBack(t / 0.35) : 1);
+  const slamT = $derived(Math.max(0, Math.min(1, (t - 0.12) / 0.28)));
+  const slam = $derived(1 + (1 - easeOutBack(slamT)) * 0.9);
+  const titleAlpha = $derived(Math.min(1, slamT * 3));
+  // a slow breathe on the halo once it has landed
+  const glowPulse = $derived(1 + Math.sin(t * 2.4) * 0.06);
 </script>
 
-<Container scale={pop * BANNER_SCALE}>
-  <Graphics {draw} />
+<Container scale={pop}>
+  <!-- light rays + halo behind the plaque -->
+  <Graphics draw={drawRays} blendMode="add" />
   <Sprite
-    key="titlePlaqueBoard"
+    key="fxGlow"
     anchor={0.5}
-    width={logoWidth}
-    height={logoHeight}
-    y={LOGO_BOTTOM - logoHeight * 0.5}
+    width={W * 1.7 * glowPulse}
+    height={W * 1.05 * glowPulse}
+    tint={0xffc870}
+    alpha={fx.glow * Math.min(1, t * 3)}
+    blendMode="add"
   />
-  <!-- y is the ribbon band's exact centre (band runs -125..-25), and the
-       text is anchor-centred, so the wordmark sits dead centre in the band.
-       It used to carry a permanent 4% sine pulse; that is gone - the size
-       is static once the intro pop settles. -->
-  <Container y={-75} scale={wordmarkFit}>
-    <Text anchor={0.5} text={props.text ?? ""} style={wordmarkStyle} />
+  {#if t < 1.6}
+    <WinBurst radius={W * 0.5} strength={fx.burst} count={Math.round(56 * fx.burst)} />
+  {/if}
+
+  <!-- the plaque -->
+  <Container scale={PANEL_SCALE}>
+    <NineSlice key="panel.png" width={W / PANEL_SCALE} height={H / PANEL_SCALE} border={PANEL_BORDER} />
   </Container>
-  <!-- Invisible sizing probe. Pixi cannot measure a string without a display
-       object, and it has to sit outside the scaled container above - measuring
-       inside it would feed the applied scale back into the measurement. -->
-  <Container alpha={0}>
-    <Text
-      anchor={0.5}
-      text={props.text ?? ""}
-      style={wordmarkStyle}
-      onresize={(r: { width: number }) => (wordmarkWidth = r.width)}
-    />
-  </Container>
-  <Container y={60}>
+
+  <!-- the amount / spin count, centred in the plaque below the title -->
+  <Container y={H * 0.1}>
     {@render props.children()}
+  </Container>
+
+  <!-- the 3D title, breaking over the top edge -->
+  <Container y={-H * 0.5} scale={slam} alpha={titleAlpha}>
+    {#if titleTexture}
+      <Sprite key={titleFrame} anchor={0.5} width={titleW} height={titleHFit} />
+    {:else if props.text}
+      <Text anchor={0.5} text={props.text} style={displayTextStyle(H * 0.4)} />
+    {/if}
   </Container>
 </Container>

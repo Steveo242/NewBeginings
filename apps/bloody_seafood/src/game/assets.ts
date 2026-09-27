@@ -69,6 +69,13 @@ export default {
 		src: new URL('../../assets/sprites/storm/tank_front.webp', import.meta.url).href,
 		preload: true,
 	},
+	// Rendered 3D win titles (build_win_titles.py -> pack_win_titles.py): BIG WIN .. MAX WIN,
+	// FREE SPINS, SUPER FREE SPINS, TOTAL HAUL - frames named <tier key>.png.
+	winTitles: {
+		type: 'sprites',
+		src: new URL('../../assets/sprites/winTitles/winTitles.json', import.meta.url).href,
+		preload: true,
+	},
 	// The 3D bet bar (build_ui3d.py -> pack_ui3d.py): every control's idle/hover/pressed
 	// frame, the spin porthole + its turning glyph, and the 9-slice panel and plates.
 	ui3d: {

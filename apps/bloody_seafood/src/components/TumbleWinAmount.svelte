@@ -39,7 +39,8 @@
 	});
 </script>
 
-<TumbleWinAmountWrap {show}>
+<!-- never an empty plaque: a reset total ($0.00) hides it -->
+<TumbleWinAmountWrap show={show && amount > 0}>
 	<TumbleWinAmountFrame>
 		{#snippet children({ frameSizes })}
 			<TumbleWinAmountText {amount} {animate} {oncomplete} width={frameSizes.width} />

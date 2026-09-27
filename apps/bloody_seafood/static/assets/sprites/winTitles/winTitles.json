@@ -1,0 +1,173 @@
+{
+	"frames": {
+		"totalhaul.png": {
+			"frame": {
+				"x": 2,
+				"y": 2,
+				"w": 1311,
+				"h": 170
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1311,
+				"h": 170
+			},
+			"sourceSize": {
+				"w": 1311,
+				"h": 170
+			}
+		},
+		"epic.png": {
+			"frame": {
+				"x": 2,
+				"y": 174,
+				"w": 1005,
+				"h": 170
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1005,
+				"h": 170
+			},
+			"sourceSize": {
+				"w": 1005,
+				"h": 170
+			}
+		},
+		"freespins.png": {
+			"frame": {
+				"x": 2,
+				"y": 346,
+				"w": 1187,
+				"h": 170
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1187,
+				"h": 170
+			},
+			"sourceSize": {
+				"w": 1187,
+				"h": 170
+			}
+		},
+		"mega.png": {
+			"frame": {
+				"x": 2,
+				"y": 518,
+				"w": 1049,
+				"h": 170
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1049,
+				"h": 170
+			},
+			"sourceSize": {
+				"w": 1049,
+				"h": 170
+			}
+		},
+		"max.png": {
+			"frame": {
+				"x": 1053,
+				"y": 518,
+				"w": 931,
+				"h": 170
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 931,
+				"h": 170
+			},
+			"sourceSize": {
+				"w": 931,
+				"h": 170
+			}
+		},
+		"superfreespins.png": {
+			"frame": {
+				"x": 2,
+				"y": 690,
+				"w": 1890,
+				"h": 170
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1890,
+				"h": 170
+			},
+			"sourceSize": {
+				"w": 1890,
+				"h": 170
+			}
+		},
+		"big.png": {
+			"frame": {
+				"x": 2,
+				"y": 862,
+				"w": 833,
+				"h": 170
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 833,
+				"h": 170
+			},
+			"sourceSize": {
+				"w": 833,
+				"h": 170
+			}
+		},
+		"superwin.png": {
+			"frame": {
+				"x": 837,
+				"y": 862,
+				"w": 1120,
+				"h": 170
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1120,
+				"h": 170
+			},
+			"sourceSize": {
+				"w": 1120,
+				"h": 170
+			}
+		}
+	},
+	"meta": {
+		"image": "winTitles.webp",
+		"format": "RGBA8888",
+		"size": {
+			"w": 2048,
+			"h": 1034
+		},
+		"scale": "1"
+	}
+}

@@ -51,7 +51,8 @@
 </script>
 
 <FadeContainer {show}>
-	<CanvasSizeRectangle backgroundColor={0x000000} backgroundAlpha={0.5} />
+	<!-- dark enough that the plaque owns the screen -->
+					<CanvasSizeRectangle backgroundColor={0x000000} backgroundAlpha={0.7} />
 
 	<MainContainer>
  <Container x={context.stateGameDerived.boardLayout().x} y={context.stateGameDerived.boardLayout().y}>

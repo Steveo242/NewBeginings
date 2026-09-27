@@ -6,7 +6,8 @@
 		reel: number; // 0 | 1 | 2 | 3 | 4 | 5;
 		row: number; // 1 | 2 | 3 | 4 | 5; // excluding the off top row and the off bottom row
 	};
-	export type Win = RawWin & { oncomplete: () => void };
+	/** x/y: the label's centre in cells, after ClusterWinAmounts' overlap pass */
+	export type Win = RawWin & { x: number; y: number; oncomplete: () => void };
 </script>
 
 <script lang="ts">
@@ -64,8 +65,8 @@
 	}}
 >
 	<WinAmountText
-		x={SYMBOL_SIZE * (props.win.reel + 0.5)}
-		y={SYMBOL_SIZE * (props.win.row - 0.5) + y.current}
+		x={SYMBOL_SIZE * props.win.x}
+		y={SYMBOL_SIZE * props.win.y + y.current}
 		scale={scale.current}
 		text={showMultiplier
 			? `${bookEventAmountToCurrencyString(props.win.win)} X ${props.win.mult}`
