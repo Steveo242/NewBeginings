@@ -1,6 +1,8 @@
 <script lang="ts">
   import { Container, Text } from "pixi-svelte";
 
+  import { displayTextStyle } from "../game/fonts";
+
   let {
     text = "",
     /**
@@ -22,15 +24,7 @@
   // width - and therefore the scale - jittered up and down continuously.
   const fit = $derived(maxWidth && w > maxWidth ? maxWidth / w : 1);
   const size = $derived((style?.fontSize ?? 100) * 0.9);
-  const textStyle = $derived({
-    fontFamily: "Georgia, serif",
-    fontSize: size,
-    fontWeight: "bold",
-    align: "center",
-    fill: 0xffd27a,
-    stroke: { color: 0x3a0008, width: 8 },
-    dropShadow: { color: 0x000000, alpha: 0.6, blur: 4, distance: 4, angle: 1.57 },
-  });
+  const textStyle = $derived(displayTextStyle(size));
 </script>
 
 <Container {...rest} scale={fit}>

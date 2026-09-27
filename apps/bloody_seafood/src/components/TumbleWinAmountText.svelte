@@ -51,7 +51,8 @@
 			anchor={0.5}
 			style={{
 				fontFamily: 'gold',
-				fontSize: 0.65 * SYMBOL_SIZE,
+				// the spine scales its slot down to the plaque, so this is large on purpose
+				fontSize: 0.8 * SYMBOL_SIZE,
 			}}
 			text={bookEventAmountToCurrencyString(amount.current)}
 			maxWidth={props.width}

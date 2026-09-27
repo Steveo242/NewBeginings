@@ -96,7 +96,7 @@
 	.bs-title {
 		margin: 0 0 1rem;
 		text-align: center;
-		font-family: Georgia, 'Times New Roman', serif;
+		font-family: BloodySeafoodDisplay, Georgia, 'Times New Roman', serif;
 		font-size: 1.9rem;
 		font-weight: bold;
 		letter-spacing: 0.08em;

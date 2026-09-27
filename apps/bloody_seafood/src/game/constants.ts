@@ -172,29 +172,42 @@ const explosion = {
 // symbol near enough fill its reel square (~97%), just short of touching neighbours.
 const SYMBOL_FILL = 1.1;
 const FILL = { width: SYMBOL_FILL, height: SYMBOL_FILL };
+// The lows (bucket, tub, crate) are chunky objects that fill their square edge to edge,
+// while the fish are long and slim - at equal scale the cheapest symbols dominated the
+// board (43-47% of the cell vs the shark's 12%). Drawn a step smaller, the fish read as
+// the prizes they are.
+const LOW_SCALE = 0.86;
+const LOW_FILL = { width: SYMBOL_FILL * LOW_SCALE, height: SYMBOL_FILL * LOW_SCALE };
 
 // Win sheets rendered from the rigged 3D models (pack_symbol3d.py). Each frame covers
 // `ratio` x the static cell around the same centre, so drawing it at ratio x the static
 // registers the win on the resting symbol, and leaves room for the fish to lunge out of
 // its square. The 1.2 s wins are rendered at 30 fps, hence animationSpeed 0.5 (the
 // SpriteSheet otherwise advances one frame per 60 Hz tick).
-const win3d = (assetKey: string, ratio: number, animationSpeed = 1) => ({
+const win3d = (assetKey: string, ratio: number, animationSpeed = 1, scale = 1) => ({
 	type: 'spriteSheet',
 	assetKey,
-	sizeRatios: { width: ratio * SYMBOL_FILL, height: ratio * SYMBOL_FILL },
+	sizeRatios: { width: ratio * SYMBOL_FILL * scale, height: ratio * SYMBOL_FILL * scale },
 	animationSpeed,
 });
 
-const h1Static = { type: 'sprite', assetKey: 'h1.webp', sizeRatios: FILL };
+// The shark is the top symbol, shot as a nose-up three-quarter lunge (camera below and
+// ahead of it) and allowed to break its square a little - premium symbols should.
+const H1_SCALE = 1.18;
+const h1Static = {
+	type: 'sprite',
+	assetKey: 'h1.webp',
+	sizeRatios: { width: SYMBOL_FILL * H1_SCALE, height: SYMBOL_FILL * H1_SCALE },
+};
 const h2Static = { type: 'sprite', assetKey: 'h2.webp', sizeRatios: FILL };
 const h3Static = { type: 'sprite', assetKey: 'h3.webp', sizeRatios: FILL };
 const h4Static = { type: 'sprite', assetKey: 'h4.webp', sizeRatios: FILL };
 const h5Static = { type: 'sprite', assetKey: 'h5.webp', sizeRatios: FILL };
 
-const l1Static = { type: 'sprite', assetKey: 'l1.webp', sizeRatios: FILL };
-const l2Static = { type: 'sprite', assetKey: 'l2.webp', sizeRatios: FILL };
-const l3Static = { type: 'sprite', assetKey: 'l3.webp', sizeRatios: FILL };
-const l4Static = { type: 'sprite', assetKey: 'l4.webp', sizeRatios: FILL };
+const l1Static = { type: 'sprite', assetKey: 'l1.webp', sizeRatios: LOW_FILL };
+const l2Static = { type: 'sprite', assetKey: 'l2.webp', sizeRatios: LOW_FILL };
+const l3Static = { type: 'sprite', assetKey: 'l3.webp', sizeRatios: LOW_FILL };
+const l4Static = { type: 'sprite', assetKey: 'l4.webp', sizeRatios: LOW_FILL };
 
 const sStatic = { type: 'sprite', assetKey: 's.png', sizeRatios: FILL };
 const wStatic = { type: 'sprite', assetKey: 'w.png', sizeRatios: FILL };
@@ -264,7 +277,7 @@ const backgroundHigh = {
 export const SYMBOL_INFO_MAP = {
 	H1: {
 		explosion,
-		win: win3d('H1_win', 1.9, 0.5),
+		win: win3d('H1_win', 1.9, 0.5, H1_SCALE),
 		postWinStatic: h1Static,
 		static: h1Static,
 		spin: h1Static,
@@ -309,7 +322,7 @@ export const SYMBOL_INFO_MAP = {
 	},
 	L1: {
 		explosion,
-		win: win3d('L1_win', 1.8, 0.5),
+		win: win3d('L1_win', 1.8, 0.5, LOW_SCALE),
 		postWinStatic: l1Static,
 		static: l1Static,
 		spin: l1Static,
@@ -317,7 +330,7 @@ export const SYMBOL_INFO_MAP = {
 	},
 	L2: {
 		explosion,
-		win: win3d('L2_win', 2.0, 0.5),
+		win: win3d('L2_win', 2.0, 0.5, LOW_SCALE),
 		postWinStatic: l2Static,
 		static: l2Static,
 		spin: l2Static,
@@ -325,7 +338,7 @@ export const SYMBOL_INFO_MAP = {
 	},
 	L3: {
 		explosion,
-		win: win3d('L3_win', 2.0, 0.5),
+		win: win3d('L3_win', 2.0, 0.5, LOW_SCALE),
 		postWinStatic: l3Static,
 		static: l3Static,
 		spin: l3Static,

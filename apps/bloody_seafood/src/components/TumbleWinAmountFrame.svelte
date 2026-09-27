@@ -1,43 +1,49 @@
 <script lang="ts">
- import WinAmountText from "./WinAmountText.svelte";
 	import type { Snippet } from 'svelte';
 
-	import { BitmapText, Container, Sprite, type Sizes } from 'pixi-svelte';
+	import { Container, Text, type Sizes } from 'pixi-svelte';
 
+	import NineSlice from './bar3d/NineSlice.svelte';
 	import { SYMBOL_SIZE } from '../game/constants';
+	import { DISPLAY_FONT } from '../game/fonts';
 
 	type Props = {
 		children: Snippet<[{ frameSizes: Sizes }]>;
 	};
 
 	const props: Props = $props();
-	const TITLE_KEY = 'Frame_TumbleWin.png';
-	const TITLE_RATIO = 532 / 143;
-	const TITLE_HEIGHT = SYMBOL_SIZE * 0.28;
-	const TITLE_SIZES = {
-		width: TITLE_HEIGHT * TITLE_RATIO,
-		height: TITLE_HEIGHT,
-	};
 
-	const PANEL_KEY = 'Frame_Tumble.png';
-	const PANEL_RATIO = 1442 / 374;
-	const PANEL_HEIGHT = SYMBOL_SIZE * 0.8;
-	const PANEL_SIZES = {
-		width: PANEL_HEIGHT * PANEL_RATIO,
-		height: PANEL_HEIGHT,
-	};
+	// The running cascade total, on a plaque cut from the bet bar's riveted iron
+	// strap (ui3d panel.png) so it reads as part of the tank. The old Frame_Tumble
+	// sprites were never shipped with this game - the total floated on nothing.
+	const PANEL_SIZES = { width: SYMBOL_SIZE * 3.6, height: SYMBOL_SIZE * 1.12 };
+	// panel.png's corners are 80 texture px; drawn at this scale they stay rivet-sized
+	const PANEL_SCALE = 0.4;
+	const PANEL_BORDER = 80;
+
+	const AMOUNT_SIZES = { width: SYMBOL_SIZE * 3.1, height: SYMBOL_SIZE * 0.7 };
+
+	const captionStyle = {
+		fontFamily: DISPLAY_FONT,
+		fontWeight: 'bold',
+		fontSize: SYMBOL_SIZE * 0.2,
+		fill: 0xe9dcc0,
+		letterSpacing: SYMBOL_SIZE * 0.03,
+		dropShadow: { color: 0x000000, alpha: 0.8, blur: 2, distance: 2, angle: Math.PI / 2 },
+	} as const;
 </script>
 
-<Sprite anchor={0.5} key={PANEL_KEY} {...PANEL_SIZES} />
-
-<Container y={-TITLE_HEIGHT * 1.2}>
-	<Sprite anchor={0.5} key={TITLE_KEY} {...TITLE_SIZES} />
-	<WinAmountText
-		anchor={0.5}
-		y={-TITLE_HEIGHT * 0.025}
-		text="TUMBLE WIN"
-		style={{ fontFamily: 'gold', fontSize: TITLE_HEIGHT * 0.45 }}
+<Container scale={PANEL_SCALE}>
+	<NineSlice
+		key="panel.png"
+		width={PANEL_SIZES.width / PANEL_SCALE}
+		height={PANEL_SIZES.height / PANEL_SCALE}
+		border={PANEL_BORDER}
 	/>
 </Container>
 
-{@render props.children({ frameSizes: PANEL_SIZES })}
+<Text anchor={0.5} y={-PANEL_SIZES.height * 0.28} text="TUMBLE WIN" style={captionStyle} />
+
+<Container y={PANEL_SIZES.height * 0.12}>
+	{@render props.children({ frameSizes: AMOUNT_SIZES })}
+</Container>

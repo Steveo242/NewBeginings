@@ -104,7 +104,11 @@
 
 				{#if false}<WinCoins emit={!countUpCompleted} levelAlias={winLevelData?.alias} />{/if}
 
-				<PressToContinue onpress={() => (countUpCompleted ? oncomplete() : finishCountUp())} />
+				<!-- Only the celebration tiers wait on the player. Smaller wins count up
+				     and move on by themselves, so a prompt there only flashed. -->
+				{#if isBigWin}
+					<PressToContinue onpress={() => (countUpCompleted ? oncomplete() : finishCountUp())} />
+				{/if}
 			{/snippet}
 		</WinCountUpProvider>
 	{/if}

@@ -3,9 +3,6 @@
 
 	import { EnableSpaceHold } from 'components-shared';
 	import UiFadeContainer from 'components-ui-pixi/src/components/UiFadeContainer.svelte';
-	import LabelBalance from 'components-ui-pixi/src/components/LabelBalance.svelte';
-	import LabelWin from 'components-ui-pixi/src/components/LabelWin.svelte';
-	import LabelBet from 'components-ui-pixi/src/components/LabelBet.svelte';
 	import ButtonPayTable from 'components-ui-pixi/src/components/ButtonPayTable.svelte';
 	import ButtonGameRules from 'components-ui-pixi/src/components/ButtonGameRules.svelte';
 	import ButtonSettingsWide from './ButtonSettingsWide.svelte';
@@ -20,6 +17,7 @@
 	import ButtonSoundSwitch from 'components-ui-pixi/src/components/ButtonSoundSwitch.svelte';
 
 	import BetBar from './BetBar.svelte';
+	import BarAmount from './bar3d/BarAmount.svelte';
 
 	type Props = {
 		gameName: Snippet;
@@ -50,15 +48,15 @@
 		{/snippet}
 
 		{#snippet amountBalance(labelProps)}
-			<LabelBalance {...labelProps} />
+			<BarAmount kind="balance" {...labelProps} />
 		{/snippet}
 
 		{#snippet amountWin(labelProps)}
-			<LabelWin {...labelProps} />
+			<BarAmount kind="win" {...labelProps} />
 		{/snippet}
 
 		{#snippet amountBet(labelProps)}
-			<LabelBet {...labelProps} />
+			<BarAmount kind="bet" {...labelProps} />
 		{/snippet}
 
 		{#snippet buttonBuyBonus(buttonProps)}

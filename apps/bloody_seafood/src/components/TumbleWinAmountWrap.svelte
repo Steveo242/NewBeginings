@@ -16,23 +16,28 @@
 	const props: Props = $props();
 	const context = getContext();
 
+	// Mounted on the tank's bottom beam (the strip of iron between the last row
+	// and the bet bar). It used to sit above the top row, under the front frame
+	// and the logo - drawn first, so the frame painted straight over it.
+	const beamY = $derived(context.stateGameDerived.boardLayout().height + SYMBOL_SIZE * 0.4);
+
 	const desktopPosition = $derived({
 		x: context.stateGameDerived.boardLayout().width * 0.5,
-		y: -SYMBOL_SIZE * 0.8 * 0.58,
+		y: beamY,
 	});
 
 	const portraitPosition = $derived({
 		x:
 			context.stateGameDerived.boardLayout().width *
 			(context.stateGame.gameType === 'basegame' ? 0.5 : 0.37),
-		y: -SYMBOL_SIZE * 0.8 * 0.68,
+		y: beamY,
 	});
 
 	const position = $derived(
 		context.stateLayoutDerived.isStacked() ? portraitPosition : desktopPosition,
 	);
 
-	const scale = $derived(context.stateLayoutDerived.isStacked() ? 1.28 : 1);
+	const scale = 1;
 </script>
 
 <FadeContainer show={props.show}>

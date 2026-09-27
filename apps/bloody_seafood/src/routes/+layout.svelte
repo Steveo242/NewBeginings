@@ -5,6 +5,7 @@
 	import Game from '../components/Game.svelte';
 	import PublisherIntro from '../components/PublisherIntro.svelte';
 	import { setContext } from '../game/context';
+	import { loadDisplayFont } from '../game/fonts';
 
 	import messagesMap from '../i18n/messagesMap';
 
@@ -15,6 +16,7 @@
 	const introUrl = new URL('../../steel_gaming_intro.mp4', import.meta.url).href;
 
 	setContext();
+	loadDisplayFont();
 </script>
 
 <GlobalStyle>

@@ -78,7 +78,6 @@
 		<MainContainer>
 			<Board />
 			<Anticipations />
-			<TumbleWinAmount />
 			
 		</MainContainer>
 
@@ -96,6 +95,10 @@
 		<MainContainer>
 			<BoardFront />
 			<BoardBanner />
+		</MainContainer>
+
+		<MainContainer>
+			<TumbleWinAmount />
 		</MainContainer>
 
 		<BetBarUI>

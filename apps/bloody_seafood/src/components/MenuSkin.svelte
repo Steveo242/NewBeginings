@@ -94,7 +94,7 @@
 	}
 	:global(.pop-up-wrap .ui-modal-title-wrap),
 	:global(.pop-up-wrap .subtitle) {
-		font-family: Georgia, 'Times New Roman', serif;
+		font-family: BloodySeafoodDisplay, Georgia, 'Times New Roman', serif;
 		font-weight: bold;
 		letter-spacing: 0.08em;
 		color: var(--m3-brass);
@@ -149,7 +149,7 @@
 	}
 	:global(.pop-up-wrap button.button .base-button-content) {
 		color: var(--m3-bone) !important;
-		font-family: Georgia, 'Times New Roman', serif;
+		font-family: BloodySeafoodDisplay, Georgia, 'Times New Roman', serif;
 		font-weight: bold;
 		letter-spacing: 0.06em;
 		text-shadow: 0 0.08rem 0.15rem #000;
@@ -203,7 +203,7 @@
 		filter: drop-shadow(0 0.3rem 0.5rem rgba(0, 0, 0, 0.45));
 	}
 	:global(.pop-up-wrap .bonus-card-wrap .title) {
-		font-family: Georgia, 'Times New Roman', serif;
+		font-family: BloodySeafoodDisplay, Georgia, 'Times New Roman', serif;
 		font-weight: bold;
 		letter-spacing: 0.05em;
 		color: var(--m3-brass);
@@ -214,14 +214,14 @@
 		opacity: 0.9;
 	}
 	:global(.pop-up-wrap .bonus-card-wrap .price) {
-		font-family: Georgia, 'Times New Roman', serif;
+		font-family: BloodySeafoodDisplay, Georgia, 'Times New Roman', serif;
 		font-weight: bold;
 		font-size: 1.25rem;
 		color: #fff4c8;
 		text-shadow: 0 0 0.5rem rgba(227, 184, 88, 0.5);
 	}
 	:global(.pop-up-wrap .toggle-wrap .amount) {
-		font-family: Georgia, 'Times New Roman', serif;
+		font-family: BloodySeafoodDisplay, Georgia, 'Times New Roman', serif;
 		font-weight: bold;
 		font-size: 1.4rem;
 		color: #fff4c8;
@@ -262,12 +262,12 @@
 	:global(.pop-up-wrap .toggle),
 	:global(.pop-up-wrap .full-width),
 	:global(.pop-up-wrap .content-wrap) {
-		font-family: Georgia, 'Times New Roman', serif;
+		font-family: BloodySeafoodDisplay, Georgia, 'Times New Roman', serif;
 		letter-spacing: 0.04em;
 		color: var(--m3-bone);
 	}
 	:global(.pop-up-wrap .value) {
-		font-family: Georgia, 'Times New Roman', serif;
+		font-family: BloodySeafoodDisplay, Georgia, 'Times New Roman', serif;
 		color: #fff4c8;
 	}
 	:global(.pop-up-wrap input.checkbox) {

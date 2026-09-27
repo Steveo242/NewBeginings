@@ -25,6 +25,7 @@
 	import ButtonBetAutoSpinsCounter from 'components-ui-pixi/src/components/ButtonBetAutoSpinsCounter.svelte';
 
 	import Button3D from './Button3D.svelte';
+	import { DISPLAY_FONT } from '../../game/fonts';
 	import { getContext } from '../../game/context';
 
 	const { kind }: { kind: BarButtonKind } = $props();
@@ -160,7 +161,7 @@
 				wordWrap: true,
 				wordWrapWidth: UI_BASE_SIZE * 1.0,
 				lineHeight: UI_BASE_FONT_SIZE * 0.85,
-				fontFamily: 'Georgia, serif',
+				fontFamily: DISPLAY_FONT,
 				fontWeight: 'bold',
 				fontSize: UI_BASE_FONT_SIZE * 0.72,
 				fill: 0xf2ecde,
