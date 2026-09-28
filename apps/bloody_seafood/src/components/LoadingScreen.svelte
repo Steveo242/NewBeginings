@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { SpineProvider, SpineTrack, Container, Sprite, Rectangle } from 'pixi-svelte';
+	import { SpineProvider, SpineTrack, Container, Sprite } from 'pixi-svelte';
 	import { FadeContainer, LoadingProgress } from 'components-pixi';
 	import { MainContainer } from 'components-layout';
 
 	import { getContext } from '../game/context';
+	import { LOGO_ASPECT } from '../game/constants';
 	import TransitionAnimation from './TransitionAnimation.svelte';
 	import PressToContinue from './PressToContinue.svelte';
 
@@ -24,9 +25,7 @@
 			x={context.stateLayoutDerived.mainLayout().width * 0.5}
 			y={context.stateLayoutDerived.mainLayout().height * 0.5}
 		>
-			<Rectangle anchor={0.5} x={0} y={-330} width={1180} height={34} backgroundColor={0x3B2A18} />
-			<Rectangle anchor={0.5} x={0} y={-346} width={1180} height={8} backgroundColor={0x6B4E2E} />
-			<Sprite key="titlePlaque" anchor={0.5} width={1040} height={560} y={-60} />
+			<Sprite key="titlePlaque" anchor={0.5} width={1100} height={1100 / LOGO_ASPECT} y={-60} />
 			{#if !context.stateApp.loaded}
 				<LoadingProgress y={250} width={1967 * 0.2} height={346 * 0.2}>
 					{#snippet background(sizes)}

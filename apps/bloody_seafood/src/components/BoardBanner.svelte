@@ -2,20 +2,15 @@
 	import { Container, Sprite } from 'pixi-svelte';
 
 	import { getContext } from '../game/context';
-	import { BOARD_SIZES } from '../game/constants';
+	import { BOARD_SIZES, LOGO_ASPECT } from '../game/constants';
 
 	const context = getContext();
 
 	const main = $derived(context.stateLayoutDerived.mainLayout());
 	const board = $derived(context.stateGameDerived.boardLayout());
 
-	/**
-	 * Content aspect of title_plaque_board.png, measured off its alpha bounds.
-	 * That is the loading screen's plaque with its hanging rods, rings and
-	 * their drop shadows removed - mounted over the board it is not hanging
-	 * from anything, so the hardware read as loose clutter.
-	 */
-	const BANNER_ASPECT = 2.573;
+	/** logo3d.webp's aspect: the 3D logo (bs-render build_logo3d.py), tight-cropped. */
+	const BANNER_ASPECT = LOGO_ASPECT;
 	const MARGIN = 10;
 	/** Never let the banner crowd the reels by outgrowing the board itself. */
 	const MAX_WIDTH_RATIO = 0.92;

@@ -19,6 +19,11 @@
 	import minusHover from '../menus3d/minus_hover.webp';
 	import closeIdle from '../menus3d/close_idle.webp';
 	import closeHover from '../menus3d/close_hover.webp';
+	// buy-bonus card heroes, cut from the symbol renders (bs-render build_bonus_art.py)
+	import bonus1 from '../menus3d/bonus_1.webp';
+	import bonus2 from '../menus3d/bonus_2.webp';
+	import bonus3 from '../menus3d/bonus_3.webp';
+	import bonus4 from '../menus3d/bonus_4.webp';
 
 	// vite hashes the image URLs, so the global rules below get them as custom properties
 	// on the document root (the menus aren't inside this component, so it must be :root)
@@ -34,6 +39,10 @@
 		'--m3-minus-hover': minusHover,
 		'--m3-close': closeIdle,
 		'--m3-close-hover': closeHover,
+		'--m3-bonus-1': bonus1,
+		'--m3-bonus-2': bonus2,
+		'--m3-bonus-3': bonus3,
+		'--m3-bonus-4': bonus4,
 	};
 
 	$effect(() => {
@@ -201,6 +210,129 @@
 		border-radius: 0 !important;
 		padding: 0.4rem 0.3rem 0.2rem !important;
 		filter: drop-shadow(0 0.3rem 0.5rem rgba(0, 0, 0, 0.45));
+	}
+	/* The cards come alive: each tier's hero art bobbing over its own water, bubbles
+	   rising through it, a glint sweeping across, and a glow that climbs with the tier
+	   (teal -> blood -> gold -> molten). The brass-and-iron card frame keeps its rim but
+	   drops its leather fill so the water shows. Cards are addressed by position: two
+	   .content.row blocks of two cards each, in bet-mode order. */
+	:global(.pop-up-wrap .bonus-card-wrap) {
+		--tier-glow: 60, 200, 210;
+		--tier-deep: #04161a;
+		--tier-mid: #0d3b40;
+		--tier-art: var(--m3-bonus-1);
+		--tier-delay: 0s;
+		position: relative;
+		overflow: hidden;
+		border-image: var(--m3-card) 137 142 153 126 / 24px 25px 27px 22px / 7px 7px 9px 5px stretch !important;
+		background:
+			radial-gradient(circle at 20% 110%, rgba(255, 255, 255, 0.35) 0 2px, transparent 3px) 0 0 / 70px 90px,
+			radial-gradient(circle at 70% 110%, rgba(255, 255, 255, 0.25) 0 1.5px, transparent 2.5px) 0 0 / 55px 120px,
+			radial-gradient(ellipse at 50% 0%, rgba(var(--tier-glow), 0.35), transparent 65%),
+			linear-gradient(180deg, var(--tier-mid), var(--tier-deep)) !important;
+		background-clip: padding-box !important;
+		animation: m3-bubbles 6s linear infinite;
+		transition: transform 0.2s ease, filter 0.2s ease;
+	}
+	:global(.pop-up-wrap .bonus-card-wrap:hover) {
+		transform: translateY(-3px);
+		filter: drop-shadow(0 0 0.9rem rgba(var(--tier-glow), 0.55)) drop-shadow(0 0.3rem 0.5rem rgba(0, 0, 0, 0.45));
+	}
+	:global(.pop-up-wrap .bonuses-wrap > .bonus-card-wrap:nth-of-type(2)),
+	:global(.pop-up-wrap .bonuses > .content.row:nth-of-type(1) > .bonus-card-wrap:nth-of-type(2)) {
+		--tier-glow: 220, 30, 40;
+		--tier-deep: #140405;
+		--tier-mid: #43090f;
+		--tier-art: var(--m3-bonus-2);
+		--tier-delay: 1.1s;
+	}
+	:global(.pop-up-wrap .bonuses-wrap > .bonus-card-wrap:nth-of-type(3)),
+	:global(.pop-up-wrap .bonuses > .content.row:nth-of-type(2) > .bonus-card-wrap:nth-of-type(1)) {
+		--tier-glow: 255, 190, 70;
+		--tier-deep: #140d04;
+		--tier-mid: #3f2c0b;
+		--tier-art: var(--m3-bonus-3);
+		--tier-delay: 2.2s;
+	}
+	:global(.pop-up-wrap .bonuses-wrap > .bonus-card-wrap:nth-of-type(4)),
+	:global(.pop-up-wrap .bonuses > .content.row:nth-of-type(2) > .bonus-card-wrap:nth-of-type(2)) {
+		--tier-glow: 255, 140, 20;
+		--tier-deep: #1a0c02;
+		--tier-mid: #52300a;
+		--tier-art: var(--m3-bonus-4);
+		--tier-delay: 3.3s;
+		animation:
+			m3-bubbles 6s linear infinite,
+			m3-molten 2.4s ease-in-out infinite;
+	}
+	/* the hero art, in the card's flow above the title */
+	:global(.pop-up-wrap .bonus-card-wrap::before) {
+		content: '';
+		display: block;
+		height: 6.5rem;
+		margin: 0.2rem 0 -0.2rem;
+		background: var(--tier-art) center / contain no-repeat;
+		animation: m3-bob 3.2s ease-in-out infinite;
+		animation-delay: calc(var(--tier-delay) * -1);
+		pointer-events: none;
+	}
+	/* a glint sweeping across the card, staggered card to card */
+	:global(.pop-up-wrap .bonus-card-wrap::after) {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(105deg, transparent 38%, rgba(255, 244, 210, 0.22) 50%, transparent 62%) no-repeat;
+		background-size: 260% 100%;
+		mix-blend-mode: screen;
+		animation: m3-glint 4.4s ease-in-out infinite;
+		animation-delay: var(--tier-delay);
+		pointer-events: none;
+	}
+	:global(.pop-up-wrap .bonus-card-wrap > *) {
+		position: relative;
+		z-index: 1;
+	}
+	@keyframes -global-m3-bubbles {
+		from { background-position: 0 0, 0 0, 0 0, 0 0; }
+		to { background-position: 0 -90px, 0 -240px, 0 0, 0 0; }
+	}
+	@keyframes -global-m3-bob {
+		0%, 100% { transform: translateY(0) rotate(-1.2deg); }
+		50% { transform: translateY(-0.35rem) rotate(1.2deg); }
+	}
+	@keyframes -global-m3-glint {
+		0% { background-position: 130% 0; }
+		45%, 100% { background-position: -130% 0; }
+	}
+	@keyframes -global-m3-molten {
+		0%, 100% { filter: drop-shadow(0 0 0.35rem rgba(255, 140, 20, 0.35)) drop-shadow(0 0.3rem 0.5rem rgba(0, 0, 0, 0.45)); }
+		50% { filter: drop-shadow(0 0 1.1rem rgba(255, 160, 40, 0.8)) drop-shadow(0 0.3rem 0.5rem rgba(0, 0, 0, 0.45)); }
+	}
+	@media (max-width: 600px) {
+		:global(.pop-up-wrap .bonus-card-wrap::before) {
+			height: 4.2rem;
+		}
+		/* a phone's buttons are shorter than the pill's 9-slice borders: the squeezed
+		   slices resampled into visible seams. One stretched image has none. */
+		:global(.pop-up-wrap button.button:not([data-test='down-button']):not([data-test='up-button']) .rectangle) {
+			border: 0 !important;
+			border-image: none !important;
+			height: 2.3rem !important;
+			background: var(--m3-btn) center / 100% 100% no-repeat !important;
+		}
+		:global(.pop-up-wrap button.button:not([data-test='down-button']):not([data-test='up-button']) .rectangle[style*='white']) {
+			background-image: var(--m3-btn-hover) !important;
+		}
+		:global(.pop-up-wrap button.button:not([data-test='down-button']):not([data-test='up-button']):active:not(:disabled) .rectangle) {
+			background-image: var(--m3-btn-pressed) !important;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		:global(.pop-up-wrap .bonus-card-wrap),
+		:global(.pop-up-wrap .bonus-card-wrap::before),
+		:global(.pop-up-wrap .bonus-card-wrap::after) {
+			animation: none !important;
+		}
 	}
 	:global(.pop-up-wrap .bonus-card-wrap .title) {
 		font-family: BloodySeafoodDisplay, Georgia, 'Times New Roman', serif;

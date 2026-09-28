@@ -113,6 +113,9 @@ export const PORTRAIT_MAIN_SIZES = {
 	height: PORTRAIT_HEIGHT,
 };
 
+/** Width / height of static/assets/sprites/bgLayers/logo3d.webp (the 3D logo). */
+export const LOGO_ASPECT = 1976 / 796;
+
 export const HIGH_SYMBOLS = ['H1', 'H2', 'H3', 'H4', 'H5'];
 
 export const INITIAL_SYMBOL_STATE: SymbolState = 'static';
@@ -120,8 +123,8 @@ export const INITIAL_SYMBOL_STATE: SymbolState = 'static';
 const M_SIZE = 0.3;
 
 // Overall pace of the symbol animations (wins, bursts): 1 = as rendered. Players found
-// them rushed; 0.7 plays every win and burst ~40% longer. Turbo is unaffected.
-export const ANIM_PACE = 0.7;
+// them rushed; 0.6 plays every win and burst ~65% longer. Turbo is unaffected.
+export const ANIM_PACE = 0.6;
 
 const SPIN_OPTIONS_SHARED = {
 	reelFallInDelay: 80,
@@ -387,7 +390,9 @@ export const SYMBOL_INFO_MAP = {
 		static: sStatic,
 		spin: sStatic,
 		// 2.5x: the chest hops and its coins fountain well above the cell
-		win: win3d('S_win', 2.5, 0.5),
+		// 71 frames: the 30 fps render doubled with optical-flow in-betweens (pack_symbol3d.py
+		// INTERP=1), so it plays ~1.6x slower than the other wins without stepping
+		win: win3d('S_win', 2.5, 0.625),
 		land: sStatic,
 	},
 	M_2: {

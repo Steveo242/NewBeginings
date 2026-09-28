@@ -21,6 +21,13 @@ import {
 } from './constants';
 
 const PREMIUMS = ['H1', 'H2', 'H3', 'H4'];
+const REEL_STOP_SFX = [
+	'sfx_reel_stop_1',
+	'sfx_reel_stop_2',
+	'sfx_reel_stop_3',
+	'sfx_reel_stop_4',
+	'sfx_reel_stop_5',
+] as const;
 
 /** When a scatter last snapped the anticipation rope (Anticipations holds the strain off briefly after). */
 export const rope = { snappedAt: -Infinity };
@@ -67,9 +74,11 @@ const board = _.range(BOARD_DIMENSIONS.x).map((reelIndex) => {
 		initialSymbols: INITIAL_BOARD[reelIndex],
 		initialSymbolState: INITIAL_SYMBOL_STATE,
 		onReelStopping: () => {
+			// stops 1-5 are one thud pitched up a step each (161 -> 238 Hz): climb them
+			// across the seven reels instead of the same thud seven times
 			eventEmitter.broadcast({
 				type: 'soundOnce',
-				name: 'sfx_reel_stop_1',
+				name: REEL_STOP_SFX[Math.min(4, Math.round((reelIndex * 4) / (BOARD_DIMENSIONS.x - 1)))],
 				forcePlay: !stateBet.isTurbo,
 			});
 		},

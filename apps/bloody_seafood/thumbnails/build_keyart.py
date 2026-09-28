@@ -83,7 +83,7 @@ paste(chest, CX + 170, 1120)
 paste(shark, CX - 235, 935)
 
 # ---------------------------------------------------------------------- logo
-logo = fit(Image.open(f'{SPR}/bgLayers/title_plaque.png').convert('RGBA'), 1580)
+logo = fit(Image.open(f'{SPR}/bgLayers/logo3d.webp').convert('RGBA'), 1580)
 # The wordmark is red and bone over a bright sky, so it needs a soft dark
 # halo to hold its edges - without it the red letters vibrate against blue.
 halo = Image.new('RGBA', logo.size, (0, 0, 0, 0))

@@ -89,7 +89,7 @@ paste(shark, CX - 40, 845)
 paste(chest, CX + 60, 1150)
 
 # ---------------------------------------------------------------------- logo
-logo = fit(Image.open(f'{S}/title_plaque.png').convert('RGBA'), 1010)
+logo = fit(Image.open(f'{S}/logo3d.webp').convert('RGBA'), 1010)
 halo = Image.new('RGBA', logo.size, (0, 0, 0, 0))
 halo.putalpha(logo.getchannel('A').point(lambda v: int(v * 0.5)))
 halo = pad(halo, 70).filter(ImageFilter.GaussianBlur(30))
