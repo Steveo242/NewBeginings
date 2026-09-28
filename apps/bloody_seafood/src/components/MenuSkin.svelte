@@ -8,6 +8,8 @@
 	// border-image slices are measured off the renders: shadow margin + corner radius, in
 	// image px. border-image-outset pushes the shadow margin back outside the element box
 	// so the brass edge lands on the element's own edge.
+	import { stateMeta } from 'state-shared';
+
 	import frame from '../menus3d/frame.webp';
 	import card from '../menus3d/card.webp';
 	import btnIdle from '../menus3d/btn_idle.webp';
@@ -44,6 +46,26 @@
 		'--m3-bonus-3': bonus3,
 		'--m3-bonus-4': bonus4,
 	};
+
+	// The buy-bonus confirm dialog is the shared one, with nothing in its markup to say
+	// which bonus it is for except the title. Tag it with the tier (1-4, bet-mode order,
+	// titles from betModeMeta.ts) so it can wear the same art and water as that card.
+	const TIER_MODES = ['ante_bonus', 'ante_super', 'buy_bonus', 'buy_super'];
+	const tagConfirmTier = () => {
+		const wrap = document.querySelector<HTMLElement>(
+			".pop-up-wrap .ui-popup-standard-content-wrap:has([data-test='confirm-button'])",
+		);
+		if (!wrap) return;
+		const title = wrap.querySelector('.ui-modal-title-wrap')?.textContent?.trim();
+		const meta = stateMeta.betModeMeta as Record<string, { text: { title: string } }>;
+		const tier = TIER_MODES.findIndex((mode) => meta[mode]?.text.title === title) + 1;
+		if (tier && wrap.dataset.bsTier !== String(tier)) wrap.dataset.bsTier = String(tier);
+	};
+	$effect(() => {
+		const observer = new MutationObserver(tagConfirmTier);
+		observer.observe(document.body, { childList: true, subtree: true });
+		return () => observer.disconnect();
+	});
 
 	$effect(() => {
 		const root = document.documentElement.style;
@@ -234,10 +256,67 @@
 		animation: m3-bubbles 6s linear infinite;
 		transition: transform 0.2s ease, filter 0.2s ease;
 	}
+	/* the confirm dialog after picking a card wears that card's tier: same water, art
+	   and glint, on the menu frame (its leather fill dropped). Tier 1's values are the
+	   defaults here too; tiers 2-4 share the card rules above. */
+	:global(.pop-up-wrap .ui-popup-standard-content-wrap[data-bs-tier]) {
+		--tier-glow: 60, 200, 210;
+		--tier-deep: #04161a;
+		--tier-mid: #0d3b40;
+		--tier-art: var(--m3-bonus-1);
+		--tier-delay: 0s;
+		position: relative;
+		overflow: hidden;
+		border-image: var(--m3-frame) 155 190 175 170 / 31px 38px 35px 34px / 6px 13px 10px 9px stretch !important;
+		background:
+			radial-gradient(circle at 20% 110%, rgba(255, 255, 255, 0.35) 0 2px, transparent 3px) 0 0 / 70px 90px,
+			radial-gradient(circle at 70% 110%, rgba(255, 255, 255, 0.25) 0 1.5px, transparent 2.5px) 0 0 / 55px 120px,
+			radial-gradient(ellipse at 50% 0%, rgba(var(--tier-glow), 0.4), transparent 70%),
+			linear-gradient(180deg, var(--tier-mid), var(--tier-deep)) !important;
+		background-clip: padding-box !important;
+		animation: m3-bubbles 6s linear infinite;
+		min-width: min(26rem, calc(100vw - 2.5rem));
+	}
+	:global(.pop-up-wrap .ui-popup-standard-content-wrap[data-bs-tier='4']) {
+		animation:
+			m3-bubbles 6s linear infinite,
+			m3-molten 2.4s ease-in-out infinite;
+	}
+	:global(.pop-up-wrap .ui-popup-standard-content-wrap[data-bs-tier]::before) {
+		content: '';
+		display: block;
+		align-self: stretch;                /* a centred flex column: it had no width */
+		height: 9rem;
+		margin: -0.4rem 0 0.2rem;
+		background: var(--tier-art) center / contain no-repeat;
+		animation: m3-bob 3.2s ease-in-out infinite;
+		pointer-events: none;
+	}
+	:global(.pop-up-wrap .ui-popup-standard-content-wrap[data-bs-tier]::after) {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(105deg, transparent 38%, rgba(255, 244, 210, 0.22) 50%, transparent 62%) no-repeat;
+		background-size: 260% 100%;
+		mix-blend-mode: screen;
+		animation: m3-glint 4.4s ease-in-out infinite;
+		pointer-events: none;
+	}
+	:global(.pop-up-wrap .ui-popup-standard-content-wrap[data-bs-tier] > *) {
+		position: relative;
+		z-index: 1;
+	}
+	:global(.pop-up-wrap .ui-popup-standard-content-wrap[data-bs-tier] .ui-modal-title-wrap) {
+		font-size: 1.9rem;
+		text-shadow:
+			0 0.1rem 0 #000,
+			0 0 0.9rem rgba(var(--tier-glow), 0.7);
+	}
 	:global(.pop-up-wrap .bonus-card-wrap:hover) {
 		transform: translateY(-3px);
 		filter: drop-shadow(0 0 0.9rem rgba(var(--tier-glow), 0.55)) drop-shadow(0 0.3rem 0.5rem rgba(0, 0, 0, 0.45));
 	}
+	:global(.pop-up-wrap .ui-popup-standard-content-wrap[data-bs-tier='2']),
 	:global(.pop-up-wrap .bonuses-wrap > .bonus-card-wrap:nth-of-type(2)),
 	:global(.pop-up-wrap .bonuses > .content.row:nth-of-type(1) > .bonus-card-wrap:nth-of-type(2)) {
 		--tier-glow: 220, 30, 40;
@@ -246,6 +325,7 @@
 		--tier-art: var(--m3-bonus-2);
 		--tier-delay: 1.1s;
 	}
+	:global(.pop-up-wrap .ui-popup-standard-content-wrap[data-bs-tier='3']),
 	:global(.pop-up-wrap .bonuses-wrap > .bonus-card-wrap:nth-of-type(3)),
 	:global(.pop-up-wrap .bonuses > .content.row:nth-of-type(2) > .bonus-card-wrap:nth-of-type(1)) {
 		--tier-glow: 255, 190, 70;
@@ -254,6 +334,7 @@
 		--tier-art: var(--m3-bonus-3);
 		--tier-delay: 2.2s;
 	}
+	:global(.pop-up-wrap .ui-popup-standard-content-wrap[data-bs-tier='4']),
 	:global(.pop-up-wrap .bonuses-wrap > .bonus-card-wrap:nth-of-type(4)),
 	:global(.pop-up-wrap .bonuses > .content.row:nth-of-type(2) > .bonus-card-wrap:nth-of-type(2)) {
 		--tier-glow: 255, 140, 20;
@@ -330,7 +411,10 @@
 	@media (prefers-reduced-motion: reduce) {
 		:global(.pop-up-wrap .bonus-card-wrap),
 		:global(.pop-up-wrap .bonus-card-wrap::before),
-		:global(.pop-up-wrap .bonus-card-wrap::after) {
+		:global(.pop-up-wrap .bonus-card-wrap::after),
+		:global(.pop-up-wrap .ui-popup-standard-content-wrap[data-bs-tier]),
+		:global(.pop-up-wrap .ui-popup-standard-content-wrap[data-bs-tier]::before),
+		:global(.pop-up-wrap .ui-popup-standard-content-wrap[data-bs-tier]::after) {
 			animation: none !important;
 		}
 	}
