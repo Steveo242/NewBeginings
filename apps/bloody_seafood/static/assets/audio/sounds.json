@@ -393,6 +393,18 @@
 		},
 		"amb_storm": {
 			"volume": 0.32
+		},
+		"sfx_premium_land": {
+			"volume": 0.8
+		},
+		"sfx_rope_snap": {
+			"volume": 0.8
+		},
+		"sfx_rope_strain": {
+			"volume": 0.8
+		},
+		"sfx_rope_taut": {
+			"volume": 0.8
 		}
 	}
 }
