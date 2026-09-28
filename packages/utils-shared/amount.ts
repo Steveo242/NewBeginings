@@ -29,14 +29,22 @@ export const bookEventAmountToNormalisedAmount = (bookEventAmount: number) => {
 
 export const numberToFloat = (value: number) => Number.parseFloat(`${value}`);
 
+// Sub-cent amounts (e.g. a 0.1x win on a small play) would round to 0.00, so they keep
+// up to 4 decimals; anything from one cent up stays at 2.
+const fractionDigits = (value: number) => (value !== 0 && Math.abs(value) < 0.01 ? 4 : 2);
+
 export const numberToCurrencyString = (value: number) => {
+	const maximumFractionDigits = fractionDigits(value);
+
 	if (stateBet.currency in NO_LOCALISATION_CURRENCY_MAP) {
-		return `${NO_LOCALISATION_CURRENCY_MAP[stateBet.currency]} ${numberToFloat(value).toFixed(2)}`;
+		const fixed = numberToFloat(value).toFixed(maximumFractionDigits);
+		const trimmed = maximumFractionDigits > 2 ? fixed.replace(/0{1,2}$/, '') : fixed;
+		return `${NO_LOCALISATION_CURRENCY_MAP[stateBet.currency]} ${trimmed}`;
 	}
 
 	return stateI18n.i18n.number(value, {
 		minimumFractionDigits: 2,
-		maximumFractionDigits: 2,
+		maximumFractionDigits,
 		style: 'currency',
 		currency: stateBet.currency,
 		// numberingSystem: 'latn',

@@ -4,13 +4,15 @@
 	import { BLACK } from 'constants-shared/colors';
 	import type { LayoutUiProps } from 'components-ui-pixi/src/types';
 	import { UI_BASE_SIZE } from 'components-ui-pixi/src/constants';
-	import LabelFreeSpinCounter from 'components-ui-pixi/src/components/LabelFreeSpinCounter.svelte';
 
 	import { getContext } from '../game/context';
 	import { BOARD_SIZES } from '../game/constants';
 	import BarButton, { type BarButtonKind } from './bar3d/BarButton.svelte';
 	import SpinButton3D from './bar3d/SpinButton3D.svelte';
+	import ReplayButton3D from './bar3d/ReplayButton3D.svelte';
+	import { isReplay } from '../game/replay';
 	import NineSlice from './bar3d/NineSlice.svelte';
+	import BarLabel from './bar3d/BarLabel.svelte';
 
 	const props: LayoutUiProps = $props();
 	const context = getContext();
@@ -105,6 +107,16 @@
 		] as Row[],
 	});
 
+	// A replay only watches one finished round: no balance, no changing the play amount,
+	// no bonus purchase or autoplay. The play slot becomes the replay-again button.
+	const REPLAY_HIDDEN = ['balance', 'buy', 'dec', 'inc', 'auto'];
+	const forMode = (rows: Row[]) =>
+		isReplay()
+			? rows
+					.map((row) => ({ ...row, keys: row.keys.filter((key) => !REPLAY_HIDDEN.includes(key)) }))
+					.filter((row) => row.keys.length > 0)
+			: rows;
+
 	const WIDTH_RATIO = 0.92;
 	const MAX_SCALE = 0.4;
 	const MARGIN = 8;
@@ -159,7 +171,9 @@
 	// comfortable does the biggest win.
 	const MIN_COMFORT = 0.3;
 	const chosen = $derived.by(() => {
-		const candidates = [arrangements.wide, arrangements.compact, arrangements.stacked].map(measure);
+		const candidates = [arrangements.wide, arrangements.compact, arrangements.stacked]
+			.map(forMode)
+			.map(measure);
 		return (
 			candidates.find((candidate) => candidate.scale >= MIN_COMFORT) ??
 			candidates.reduce((best, candidate) => (candidate.scale > best.scale ? candidate : best))
@@ -223,12 +237,20 @@
 							{@render props.amountWin({ stacked: true })}
 						{:else if key === 'bet'}
 							{#if counterInBar}
-								<LabelFreeSpinCounter stacked />
+								<!-- the shared LabelFreeSpinCounter draws a plate asset this game never shipped -->
+								<BarLabel
+									label="FREE SPINS"
+									value={`${stateUi.freeSpinCounterCurrent} / ${stateUi.freeSpinCounterTotal}`}
+								/>
 							{:else}
 								{@render props.amountBet({ stacked: true })}
 							{/if}
 						{:else if key === 'spin'}
-							<SpinButton3D size={SPIN} />
+							{#if isReplay()}
+								<ReplayButton3D size={SPIN} />
+							{:else}
+								<SpinButton3D size={SPIN} />
+							{/if}
 						{/if}
 					</Container>
 				</Container>

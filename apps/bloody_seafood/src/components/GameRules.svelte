@@ -123,7 +123,8 @@
 	<h2 class="bs-h2">Return to player &amp; max win</h2>
 	<p>
 		Theoretical RTP is <span class="bs-num">96.70%</span>. Maximum win is
-		<span class="bs-num bs-num--blood">10,000&times;</span> your play. A round
+		<span class="bs-num bs-num--blood">10,000&times;</span> the base play amount in every mode,
+		including the ante and bonus modes. A round
 		ends immediately once the maximum win is reached.
 	</p>
 

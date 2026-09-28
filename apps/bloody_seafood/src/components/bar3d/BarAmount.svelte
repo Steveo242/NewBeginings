@@ -8,6 +8,7 @@
 	import { i18nDerived } from 'components-ui-pixi/src/i18n/i18nDerived';
 
 	import BarLabel from './BarLabel.svelte';
+	import { isReplay, replayCost, replayCostMultiplier } from '../../game/replay';
 
 	// The shared LabelBalance / LabelWin / LabelBet, logic unchanged, drawn with
 	// BarLabel so the bar's amounts use the game's display face.
@@ -26,22 +27,27 @@
 		winTween.set(stateBet.winBookEventAmount);
 	});
 
+	const betLabel = $derived(stateBetDerived.activeBetMode()?.text.betAmountLabel || i18nDerived.bet());
+
+	// A replay has to state what the round cost and the mode multiplier applied to it.
 	const label = $derived(
 		props.kind === 'balance'
 			? i18nDerived.balance()
 			: props.kind === 'win'
 				? i18nDerived.win()
-				: stateBetDerived.activeBetMode()?.text.betAmountLabel || i18nDerived.bet(),
+				: isReplay()
+					? `${betLabel} ${replayCostMultiplier()}×`
+					: betLabel,
 	);
 	const value = $derived(
 		props.kind === 'balance'
 			? numberToCurrencyString(balanceTween.current)
 			: props.kind === 'win'
 				? bookEventAmountToCurrencyString(winTween.current)
-				: numberToCurrencyString(stateBetDerived.betCost()),
+				: numberToCurrencyString(isReplay() ? replayCost() : stateBetDerived.betCost()),
 	);
 
-	const betDisabled = $derived(!context.stateXstateDerived.isIdle());
+	const betDisabled = $derived(isReplay() || !context.stateXstateDerived.isIdle());
 	const onBetPress = () => {
 		if (betDisabled) return;
 		context.eventEmitter.broadcast({ type: 'soundPressGeneral' });

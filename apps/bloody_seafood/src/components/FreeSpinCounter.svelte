@@ -43,13 +43,19 @@
 		freeSpinCounterShow: () => (show = stateUi.freeSpinCounterShow = true),
 		freeSpinCounterHide: () => (show = stateUi.freeSpinCounterShow = false),
 		freeSpinCounterUpdate: (emitterEvent) => {
-			if (emitterEvent.current !== undefined) current = emitterEvent.current;
-			if (emitterEvent.total !== undefined) total = emitterEvent.total;
+			if (emitterEvent.current !== undefined) current = stateUi.freeSpinCounterCurrent = emitterEvent.current;
+			if (emitterEvent.total !== undefined) total = stateUi.freeSpinCounterTotal = emitterEvent.total;
 		},
 	});
+
+	// Mounted on every layout: it owns stateUi's counter state, which the bet bar reads to
+	// swap its play-amount label for the spin count on stacked (phone) layouts. The plaque
+	// itself only has room beside the tank on wide layouts. (Mounting the whole component
+	// only on wide layouts left phones with no spin count at all.)
+	const wide = $derived(['desktop', 'landscape'].includes(context.stateLayoutDerived.layoutType()));
 </script>
 
-<FadeContainer {show}>
+<FadeContainer show={show && wide}>
 	<BoardContainer>
 		<Container x={position.x} y={position.y}>
 			<Container scale={PANEL_SCALE}>

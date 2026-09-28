@@ -128,9 +128,7 @@
 		<!-- the free-spins HUD column (board-relative, so plain MainContainer) - drawn
 		     before Win so a big-win banner covers it -->
 		<MainContainer>
-			{#if ['desktop', 'landscape'].includes(context.stateLayoutDerived.layoutType())}
-				<FreeSpinCounter />
-			{/if}
+			<FreeSpinCounter />
 			<GlobalMultiplier />
 		</MainContainer>
 		<Win />
