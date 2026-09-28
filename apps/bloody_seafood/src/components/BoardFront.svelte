@@ -14,5 +14,7 @@
 	reflections as pure added light (glints and polished edges, never a darkening
 	film), then the riveted iron frame, lid handle and plinth.
 -->
-<Sprite key="tankGlass" anchor={0.5} x={layout.x} y={layout.y} width={size} height={size} blendMode="add" />
+<!-- half strength: its two reflection streaks added up to 35/255 of light across the middle
+     reels and washed out the symbols under them -->
+<Sprite key="tankGlass" anchor={0.5} x={layout.x} y={layout.y} width={size} height={size} blendMode="add" alpha={0.5} />
 <Sprite key="tankFront" anchor={0.5} x={layout.x} y={layout.y} width={size} height={size} />

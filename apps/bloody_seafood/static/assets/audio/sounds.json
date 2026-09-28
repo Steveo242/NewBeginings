@@ -229,6 +229,26 @@
 			272429.09,
 			14000.0,
 			true
+		],
+		"sfx_premium_land": [
+			286929.09,
+			699.98,
+			false
+		],
+		"sfx_rope_strain": [
+			287879.07,
+			2666.67,
+			true
+		],
+		"sfx_rope_taut": [
+			290795.74,
+			750.0,
+			false
+		],
+		"sfx_rope_snap": [
+			291795.74,
+			1300.0,
+			false
 		]
 	},
 	"src": [

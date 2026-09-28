@@ -16,11 +16,35 @@ import {
 	BOARD_DIMENSIONS,
 	SPIN_OPTIONS_DEFAULT,
 	SPIN_OPTIONS_FAST,
+	SPIN_OPTIONS_ANTICIPATED,
 	INITIAL_SYMBOL_STATE,
 } from './constants';
 
-const onSymbolLand = ({ rawSymbol }: { rawSymbol: RawSymbol }) => {
+const PREMIUMS = ['H1', 'H2', 'H3', 'H4'];
+
+/** When a scatter last snapped the anticipation rope (Anticipations holds the strain off briefly after). */
+export const rope = { snappedAt: -Infinity };
+
+const onSymbolLand = ({
+	rawSymbol,
+	anticipating,
+}: {
+	rawSymbol: RawSymbol;
+	anticipating: boolean;
+}) => {
+	// a heavy thump + iron clang; not forced, so a run of premiums landing together
+	// plays one hit instead of stacking into a wall of noise
+	if (PREMIUMS.includes(rawSymbol.name)) {
+		eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_premium_land' });
+	}
+
 	if (rawSymbol.name === 'S') {
+		// a scatter dropping into a straining reel breaks the rope: the strain stops dead
+		if (anticipating) {
+			eventEmitter.broadcast({ type: 'soundStop', name: 'sfx_rope_strain' });
+			eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_rope_snap', forcePlay: true });
+			rope.snappedAt = performance.now();
+		}
 		eventEmitter.broadcast({ type: 'soundScatterCounterIncrease' });
 		eventEmitter.broadcast({
 			type: 'soundOnce',
@@ -49,11 +73,16 @@ const board = _.range(BOARD_DIMENSIONS.x).map((reelIndex) => {
 				forcePlay: !stateBet.isTurbo,
 			});
 		},
-		onSymbolLand,
+		onSymbolLand: ({ rawSymbol }) =>
+			onSymbolLand({ rawSymbol, anticipating: reel.reelState.anticipating }),
 	});
 
 	reel.reelState.spinOptions = () =>
-		reel.reelState.spinType === 'fast' ? SPIN_OPTIONS_FAST : SPIN_OPTIONS_DEFAULT;
+		reel.reelState.spinType === 'fast'
+			? SPIN_OPTIONS_FAST
+			: reel.reelState.spinType === 'anticipated'
+				? SPIN_OPTIONS_ANTICIPATED
+				: SPIN_OPTIONS_DEFAULT;
 
 	return reel;
 });

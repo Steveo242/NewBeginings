@@ -119,6 +119,10 @@ export const INITIAL_SYMBOL_STATE: SymbolState = 'static';
 
 const M_SIZE = 0.3;
 
+// Overall pace of the symbol animations (wins, bursts): 1 = as rendered. Players found
+// them rushed; 0.7 plays every win and burst ~40% longer. Turbo is unaffected.
+export const ANIM_PACE = 0.7;
+
 const SPIN_OPTIONS_SHARED = {
 	reelFallInDelay: 80,
 	reelPaddingMultiplierNormal: 1.25,
@@ -126,12 +130,26 @@ const SPIN_OPTIONS_SHARED = {
 	reelFallOutDelay: 145,
 };
 
+// normal drops a fifth slower than they were (3.5 / 30 ms): the board settled too fast to follow
 export const SPIN_OPTIONS_DEFAULT = {
 	...SPIN_OPTIONS_SHARED,
-	symbolFallInSpeed: 3.5,
-	symbolFallInInterval: 30,
-	symbolFallInBounceSpeed: 0.15,
+	symbolFallInSpeed: 2.8,
+	symbolFallInInterval: 38,
+	symbolFallInBounceSpeed: 0.12,
 	symbolFallInBounceSizeMulti: 0.5,
+	symbolFallOutSpeed: 2.8,
+	symbolFallOutInterval: 25,
+};
+
+// An anticipated reel (one scatter short of the feature) drops its symbols slowly, one
+// after another, and lands them heavily: the suspense has to be felt, and at the normal
+// fall speed it was over before it registered.
+export const SPIN_OPTIONS_ANTICIPATED = {
+	...SPIN_OPTIONS_SHARED,
+	symbolFallInSpeed: 1.2,
+	symbolFallInInterval: 115,
+	symbolFallInBounceSpeed: 0.1,
+	symbolFallInBounceSizeMulti: 0.6,
 	symbolFallOutSpeed: 3.5,
 	symbolFallOutInterval: 20,
 };
@@ -166,6 +184,7 @@ const explosion = {
 	type: 'spriteSheet',
 	assetKey: 'symbolExplode',
 	sizeRatios: { width: 1.25, height: 1.25 },
+	animationSpeed: ANIM_PACE,
 };
 
 // Symbol art fills 176 of its 200px atlas cell; drawing the cell 1.1x makes every
@@ -188,7 +207,7 @@ const win3d = (assetKey: string, ratio: number, animationSpeed = 1, scale = 1) =
 	type: 'spriteSheet',
 	assetKey,
 	sizeRatios: { width: ratio * SYMBOL_FILL * scale, height: ratio * SYMBOL_FILL * scale },
-	animationSpeed,
+	animationSpeed: animationSpeed * ANIM_PACE,
 });
 
 // The shark is the top symbol, shot as a nose-up three-quarter lunge (camera below and
