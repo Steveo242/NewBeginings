@@ -6,6 +6,9 @@ import { stateBet } from 'state-shared';
 const NO_LOCALISATION_CURRENCY_MAP: Record<string, string> = {
 	XGC: 'GC',
 	XSC: 'SC',
+	// the bare codes too: Intl rejects them as currencies and would throw
+	GC: 'GC',
+	SC: 'SC',
 };
 
 // bookEventAmount: is the amount or win numbers in the events of books, e.g. the amount in setTotalWin bookEvent

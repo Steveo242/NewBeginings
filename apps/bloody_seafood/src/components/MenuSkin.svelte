@@ -52,9 +52,10 @@
 	// titles from betModeMeta.ts) so it can wear the same art and water as that card.
 	const TIER_MODES = ['ante_bonus', 'ante_super', 'buy_bonus', 'buy_super'];
 	const tagConfirmTier = () => {
-		const wrap = document.querySelector<HTMLElement>(
-			".pop-up-wrap .ui-popup-standard-content-wrap:has([data-test='confirm-button'])",
-		);
+		// (no :has() - older iOS/Android throw on it in querySelector)
+		const wrap = document
+			.querySelector("[data-test='confirm-button']")
+			?.closest<HTMLElement>('.pop-up-wrap .ui-popup-standard-content-wrap');
 		if (!wrap) return;
 		const title = wrap.querySelector('.ui-modal-title-wrap')?.textContent?.trim();
 		const meta = stateMeta.betModeMeta as Record<string, { text: { title: string } }>;

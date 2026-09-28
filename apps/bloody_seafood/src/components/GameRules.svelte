@@ -85,7 +85,8 @@
 
 	<h2 class="bs-h2">Carried wilds</h2>
 	<p>
-		In <strong>Play Super</strong> only, wilds carry from one free spin to the
+		In the super bonus only &mdash; free spins played in <strong>Blood Tide</strong> or
+		<strong>The Motherlode</strong> &mdash; wilds carry from one free spin to the
 		next. The number carried grows as more wilds land, up to a maximum of
 		<span class="bs-num">6</span>. Their positions are drawn again each spin,
 		so carried wilds do not stay in the same squares.
@@ -102,20 +103,20 @@
 				<td>Standard play</td>
 			</tr>
 			<tr>
-				<th>Ante Bonus</th><td>1.5&times;</td>
-				<td>Improved chance of triggering free spins</td>
+				<th>Deep Waters</th><td>1.5&times;</td>
+				<td>Improved chance of triggering free spins. Stays on until turned off.</td>
 			</tr>
 			<tr>
-				<th>Ante Super</th><td>2&times;</td>
-				<td>Improved chance of triggering the super bonus</td>
+				<th>Blood Tide</th><td>2&times;</td>
+				<td>Improved chance of triggering free spins, which play as the super bonus. Stays on until turned off.</td>
 			</tr>
 			<tr>
-				<th>Play Bonus</th><td>100&times;</td>
+				<th>The Haul</th><td>100&times;</td>
 				<td>Starts free spins immediately from 3 or more scatters</td>
 			</tr>
 			<tr>
-				<th>Play Super</th><td>500&times;</td>
-				<td>Starts free spins immediately from 5 or more scatters</td>
+				<th>The Motherlode</th><td>500&times;</td>
+				<td>Starts the super bonus immediately from 5 or more scatters</td>
 			</tr>
 		</tbody>
 	</table>
@@ -132,13 +133,13 @@
 	<ul>
 		<li>Press the play button, or the space bar, to spin.</li>
 		<li>Use the play menu to change your play amount or switch play mode.</li>
-		<li>Play Bonus and Play Super ask you to confirm before the play is placed.</li>
+		<li>The Haul and The Motherlode ask you to confirm before the play is placed.</li>
 		<li>Auto play repeats your current play; you can stop it at any time.</li>
 		<li>Sound can be turned off in settings.</li>
 	</ul>
 
 	<div class="bs-note">
-		Every result is determined the moment you come and play, independently of
+		Every result is determined the moment the play is placed, independently of
 		every other play. Nothing you do during a round changes the outcome. Play
 		responsibly.
 

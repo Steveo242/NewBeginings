@@ -30,7 +30,7 @@
 	<h1 class="bs-title">Paytable</h1>
 
 	<p>
-		Values are multiplied by your total play. Clusters of
+		Values are multiplied by your base play amount. Clusters of
 		<span class="bs-num">5</span> or more matching symbols win.
 	</p>
 

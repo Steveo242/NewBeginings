@@ -23,6 +23,9 @@
 	const loadMessages = (lang: Language) => {
 		const messages = props.messagesMap[lang];
 		if (props.debug) console.log({ messages });
+		// an unknown ?lang= must fall back to English, not activate a locale the number
+		// formatting may reject (a malformed tag makes Intl throw on every amount)
+		if (!messages) throw new Error(`no messages for lang "${lang}"`);
 		return messages;
 	};
 
