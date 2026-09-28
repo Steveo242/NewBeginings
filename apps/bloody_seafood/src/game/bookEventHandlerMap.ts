@@ -54,12 +54,14 @@ const winLevelSoundsPlay = ({ winLevelData }: { winLevelData: WinLevelData }) =>
 	}
 };
 
-const winLevelSoundsStop = () => {
+const winLevelSoundsStop = ({ featureOver = false } = {}) => {
 	if (activeApplauseSfx) {
 		eventEmitter.broadcast({ type: 'soundStop', name: activeApplauseSfx });
 		activeApplauseSfx = undefined;
 	}
-	if (startsInFeature(stateBet.activeBetModeKey) || stateGame.gameType === 'freeSpins') {
+	// featureOver: the bonus has just ended. A bought bonus leaves the buy mode active,
+	// so the mode check alone kept the bonus track playing on into the base game.
+	if (!featureOver && (startsInFeature(stateBet.activeBetModeKey) || stateGame.gameType === 'freeSpins')) {
 		eventEmitter.broadcast({ type: 'soundMusic', name: 'bgm_freespin' });
 	} else {
 		eventEmitter.broadcast({ type: 'soundMusic', name: 'bgm_main' });
@@ -207,7 +209,7 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 			amount: bookEvent.amount,
 			winLevelData,
 		});
-		winLevelSoundsStop();
+		winLevelSoundsStop({ featureOver: true });
 		eventEmitter.broadcast({ type: 'freeSpinOutroHide' });
 		eventEmitter.broadcast({ type: 'freeSpinCounterHide' });
 		eventEmitter.broadcast({ type: 'globalMultiplierHide' });
