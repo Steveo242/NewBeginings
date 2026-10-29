@@ -9,6 +9,7 @@
 	// image px. border-image-outset pushes the shadow margin back outside the element box
 	// so the brass edge lands on the element's own edge.
 	import { stateMeta } from 'state-shared';
+	import { stateBonus } from 'components-ui-html/src/stateBonus.svelte';
 
 	import frame from '../menus3d/frame.webp';
 	import card from '../menus3d/card.webp';
@@ -52,14 +53,20 @@
 	// titles from betModeMeta.ts) so it can wear the same art and water as that card.
 	const TIER_MODES = ['ante_bonus', 'ante_super', 'buy_bonus', 'buy_super'];
 	const tagConfirmTier = () => {
-		// (no :has() - older iOS/Android throw on it in querySelector)
+		// (no :has() - older iOS/Android throw on it in querySelector.) Only the popup's own
+		// copy: the page holds a second, never-shown confirm outside .pop-up-wrap, and
+		// tagging that one left the visible dialog plain.
 		const wrap = document
-			.querySelector("[data-test='confirm-button']")
-			?.closest<HTMLElement>('.pop-up-wrap .ui-popup-standard-content-wrap');
+			.querySelector(".pop-up-wrap [data-test='confirm-button']")
+			?.closest<HTMLElement>('.ui-popup-standard-content-wrap');
 		if (!wrap) return;
-		const title = wrap.querySelector('.ui-modal-title-wrap')?.textContent?.trim();
+		// the confirm shows stateBonus's selected mode: key the tier on that (live, the
+		// titles can come from the platform's config), the title only as a fallback
+		const key = String(stateBonus.selectedBetModeKey ?? '').toLowerCase();
+		const title = wrap.querySelector('.ui-modal-title-wrap')?.textContent?.trim().toUpperCase();
 		const meta = stateMeta.betModeMeta as Record<string, { text: { title: string } }>;
-		const tier = TIER_MODES.findIndex((mode) => meta[mode]?.text.title === title) + 1;
+		let tier = TIER_MODES.indexOf(key) + 1;
+		if (!tier) tier = TIER_MODES.findIndex((mode) => meta[mode]?.text.title?.toUpperCase() === title) + 1;
 		if (tier && wrap.dataset.bsTier !== String(tier)) wrap.dataset.bsTier = String(tier);
 	};
 	$effect(() => {
