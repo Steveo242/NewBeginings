@@ -48,3 +48,18 @@ export const sparkleTexture = () =>
 			else ctx.fillRect(c - 1.5, 0, 3, 64);
 		}
 	}));
+
+let vivid: PIXI.ColorMatrixFilter | undefined;
+/**
+ * The board's colour grade: richer colour, a touch more contrast and light, so the fish
+ * and chum read saturated and bright against the dark tank rather than photo-flat.
+ * One shared filter on the symbol layer, not one per symbol.
+ */
+export const vividFilter = () => {
+	if (vivid) return vivid;
+	vivid = new PIXI.ColorMatrixFilter();
+	vivid.saturate(0.32, false);
+	vivid.contrast(0.14, true);
+	vivid.brightness(1.07, true);
+	return vivid;
+};

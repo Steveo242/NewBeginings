@@ -190,15 +190,16 @@ const explosion = {
 	animationSpeed: ANIM_PACE,
 };
 
-// Symbol art fills 176 of its 200px atlas cell; drawing the cell 1.1x makes every
-// symbol near enough fill its reel square (~97%), just short of touching neighbours.
-const SYMBOL_FILL = 1.1;
+// Symbol art fills ~88% of its atlas cell. Drawn 1.2x, the fish reach just past their
+// reel square (~105%) and the symbols read big and bold against the tank, the way the
+// top studios fill a board - at 1.1x they sat in a dark grid of gaps and looked small.
+const SYMBOL_FILL = 1.2;
 const FILL = { width: SYMBOL_FILL, height: SYMBOL_FILL };
 // The lows (bucket, tub, crate) are chunky objects that fill their square edge to edge,
 // while the fish are long and slim - at equal scale the cheapest symbols dominated the
 // board (43-47% of the cell vs the shark's 12%). Drawn a step smaller, the fish read as
 // the prizes they are.
-const LOW_SCALE = 0.86;
+const LOW_SCALE = 0.88;
 const LOW_FILL = { width: SYMBOL_FILL * LOW_SCALE, height: SYMBOL_FILL * LOW_SCALE };
 
 // Win sheets rendered from the rigged 3D models (pack_symbol3d.py). Each frame covers
@@ -215,7 +216,7 @@ const win3d = (assetKey: string, ratio: number, animationSpeed = 1, scale = 1) =
 
 // The shark is the top symbol, shot as a nose-up three-quarter lunge (camera below and
 // ahead of it) and allowed to break its square a little - premium symbols should.
-const H1_SCALE = 1.18;
+const H1_SCALE = 1.12;
 const h1Static = {
 	type: 'sprite',
 	assetKey: 'h1.webp',

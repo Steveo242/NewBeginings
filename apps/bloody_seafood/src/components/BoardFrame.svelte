@@ -25,7 +25,7 @@
 	// The tank renders cover 11.2 x 11.2 units (frame, lid handle and plinth) round the 7 x 7 grid, with a 7.2-unit opening.
 	const FRAME_RATIO = 1120 / 700;
 	const OPENING_RATIO = 720 / 700;
-	const TANK_WATER_TINT = 0x5f787e;
+	const TANK_WATER_TINT = 0x5a8c96;
 </script>
 
 <!--

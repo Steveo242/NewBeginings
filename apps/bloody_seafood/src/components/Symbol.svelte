@@ -5,6 +5,7 @@
 	import SymbolSprite from './SymbolSprite.svelte';
 	import SymbolAnimatedSprite from './SymbolAnimatedSprite.svelte';
 	import SymbolGlow from './SymbolGlow.svelte';
+	import WinFlash from './WinFlash.svelte';
 	import { getSymbolBackgroundInfo, getSymbolInfo } from '../game/utils';
 	import type { SymbolState, RawSymbol } from '../game/types';
 	import { getContext } from '../game/context';
@@ -114,4 +115,8 @@
 			},
 		}}
 	/>
+{/if}
+
+{#if props.state === 'win' && props.rawSymbol.name !== 'M'}
+	<WinFlash x={props.x} y={props.y} premium={HIGH_SYMBOLS.includes(props.rawSymbol.name) || props.rawSymbol.name === 'W'} />
 {/if}

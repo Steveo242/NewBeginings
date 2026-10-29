@@ -23,6 +23,11 @@
 	const h = $derived(props.size * (props.aspect ?? 1));
 	/** rendered frame / button body: the frame carries shadow and margin round the body */
 	const ART = 1.3;
+	// The drop shadow falls down-right, so the body sits up-left of the frame's centre
+	// (measured off the atlas: round bodies span 20-223 of 256 px, the buy pill 50-383 x
+	// 13-132 of 448 x 160). Anchoring on the body, not the frame, is what centres the
+	// hit area, and every caption and counter drawn over it, on the button face.
+	const anchor = $derived(props.icon === 'buy' ? { x: 0.483, y: 0.453 } : { x: 0.475, y: 0.475 });
 </script>
 
 <Button anchor={0.5} sizes={{ width: w, height: h }} onpress={props.onpress} disabled={props.disabled}>
@@ -37,7 +42,7 @@
 		<Sprite
 			key={`${props.icon}_${state}.png`}
 			{...center}
-			anchor={0.5}
+			{anchor}
 			width={w * ART}
 			height={h * ART}
 			tint={props.disabled ? 0x8a8a8a : 0xffffff}

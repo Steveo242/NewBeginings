@@ -152,8 +152,9 @@
 		<ButtonBetAutoSpinsCounter />
 	{:else if kind === 'buy'}
 		<!-- live, never baked into the art: social=true swaps BUY BONUS -> PLAY BONUS -->
+		<!-- centred in the plaque's open face, right of the hook -->
 		<Text
-			x={UI_BASE_SIZE * 0.26}
+			x={UI_BASE_SIZE * 0.2}
 			anchor={0.5}
 			text={spec.active ? i18nDerived.disable() : i18nDerived.buyBonus()}
 			style={{

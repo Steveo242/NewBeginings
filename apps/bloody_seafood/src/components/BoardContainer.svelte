@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import type { Filter } from 'pixi.js';
 
 	import { Container } from 'pixi-svelte';
 
@@ -7,6 +8,7 @@
 
 	type Props = {
 		children: Snippet;
+		filters?: Filter[];
 	};
 
 	const props: Props = $props();
@@ -18,6 +20,7 @@
 	x={context.stateGameDerived.boardLayout().x}
 	y={context.stateGameDerived.boardLayout().y}
 	pivot={context.stateGameDerived.boardLayout().pivot}
+	filters={props.filters}
 >
 	{@render props.children()}
 </Container>

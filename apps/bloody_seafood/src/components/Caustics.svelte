@@ -42,7 +42,7 @@
 		caustics.source.addressMode = 'repeat';
 		noiseTex.source.addressMode = 'repeat';
 		// kept faint: bright caustics competed with the symbols for attention
-		for (const [scale, alpha] of [[0.9, 0.055], [1.45, 0.04]] as const) {
+		for (const [scale, alpha] of [[0.9, 0.075], [1.45, 0.055]] as const) {
 			const s = new PIXI.TilingSprite({ texture: caustics, width: 10, height: 10 });
 			s.tileScale.set(scale);
 			s.alpha = alpha;

@@ -7,6 +7,7 @@ import { createGetWinLevelDataByWinLevelAlias } from 'utils-shared/winLevel';
 
 import type { GameType, RawSymbol, SymbolState } from './types';
 import { stateLayoutDerived } from './stateLayout';
+import { stackedBoardCenterY } from './barLayout';
 import { winLevelMap } from './winLevelMap';
 import { eventEmitter } from './eventEmitter';
 import {
@@ -132,9 +133,20 @@ export const stateGame = $state({
  */
 const BOARD_CENTER_Y_RATIO = 0.47;
 
+/**
+ * Stacked layouts size the bet bar first, to a fixed share of the screen, and stand the
+ * board in the space left above it (game/barLayout.ts).
+ */
+const boardCenterY = () => {
+	const main = stateLayoutDerived.mainLayout();
+	if (!stateLayoutDerived.isStacked()) return main.height * BOARD_CENTER_Y_RATIO;
+	const canvas = stateLayoutDerived.canvasSizes();
+	return main.height * 0.5 + (stackedBoardCenterY(canvas, main.scale) - canvas.height * 0.5) / main.scale;
+};
+
 const boardLayout = () => ({
 	x: stateLayoutDerived.mainLayout().width * 0.5,
-	y: stateLayoutDerived.mainLayout().height * BOARD_CENTER_Y_RATIO,
+	y: boardCenterY(),
 	anchor: { x: 0.5, y: 0.5 },
 	pivot: { x: BOARD_SIZES.width / 2, y: BOARD_SIZES.height / 2 },
 	...BOARD_SIZES,

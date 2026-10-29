@@ -11,9 +11,9 @@
 	import SpinButton3D from './bar3d/SpinButton3D.svelte';
 	import ReplayButton3D from './bar3d/ReplayButton3D.svelte';
 	import { isReplay } from '../game/replay';
-	import NineSlice from './bar3d/NineSlice.svelte';
 	import BarLabel from './bar3d/BarLabel.svelte';
 	import LabelPlate from './bar3d/LabelPlate.svelte';
+	import { STACKED, STACKED_ROW_H, STACKED_ROW_W, stackedBar } from '../game/barLayout';
 
 	const props: LayoutUiProps = $props();
 	const context = getContext();
@@ -31,18 +31,20 @@
 	//   right of the tank - bet -/+, a big spin with autoplay and turbo either side - the
 	//   bonus buy is a large plaque in the sky left of it, and balance, win and the menu
 	//   icons sit on a slim dark strip along the bottom edge.
-	// - BOTTOM (portrait, near-square): one riveted panel under the board.
-	// Reviewers marked the old single strip of equal-sized portholes down three times
-	// ("poor bet UI bar"): the spin barely outranked the icons and the amounts read as
-	// form fields.
+	// - BOTTOM (portrait, near-square): one row of controls over a slim info strip, sized
+	//   first to a fixed share of the screen (game/barLayout.ts) with the board stood in
+	//   what is left - filling the band under the board let it take ~40% of a phone.
+	// Size follows importance in both: the spin is by far the biggest, the bonus buy next,
+	// play -/+ and autoplay/turbo a step down, and the menu icons smallest of all.
 	const B = UI_BASE_SIZE;
 	const GAP = 46;
 	const LABEL_W = 400;
 	const LABEL_H = 132;
 	const PLATE_H = LABEL_H * 1.12;
-	/** Stacked labels draw downwards from their origin, so lift them to sit centred. */
-	const LABEL_SHIFT_Y = -LABEL_H * 0.4;
-	const MARGIN = 8;
+	/** play -/+, autoplay and turbo, as a share of a full UI_BASE_SIZE button */
+	const STEP_K = 0.85;
+	/** rules, paytable, settings, sound */
+	const ICON_K = 0.68;
 
 	// ------------------------------------------------------------- board geometry
 	// Where the tank actually is on the canvas, from the board's own layout, so the
@@ -59,9 +61,13 @@
 	const tankBottom = $derived(boardBottom + FRAME_BELOW * main.scale);
 
 	// ------------------------------------------------------------------ SIDE mode
-	const SPIN_BIG = B * 2.1;
+	const SPIN_BIG = B * 2.3;
+	const STEP = B * STEP_K;
 	const SIDE_GAP = 30;
-	const CLUSTER_W = B + SIDE_GAP + LABEL_W + SIDE_GAP + B;
+	const CLUSTER_W = Math.max(
+		STEP + SIDE_GAP + LABEL_W + SIDE_GAP + STEP,
+		STEP + SIDE_GAP + SPIN_BIG + SIDE_GAP + STEP,
+	);
 	const CLUSTER_H = LABEL_H + GAP + SPIN_BIG;
 	const SIDE_MARGIN = 16;
 	/** the spin never needs to be bigger than this on screen (px): top-studio desktop size */
@@ -70,10 +76,11 @@
 	/** the buy plaque, relative to BarButton's own buy size (1.9 B wide) */
 	const BUY_K = 1.5;
 
-	const STRIP_UNITS = B + 30;
+	const STRIP_UNITS = PLATE_H + 24;
 	const ICONS = ['rules', 'pay', 'settings', 'sound'] as const;
-	const ICON_GAP = 30;
-	const ICONS_W = ICONS.length * B + (ICONS.length - 1) * ICON_GAP;
+	const ICON = B * ICON_K;
+	const ICON_GAP = 26;
+	const ICONS_W = ICONS.length * ICON + (ICONS.length - 1) * ICON_GAP;
 	const STRIP_LABEL_SPACING = LABEL_W + 60;
 
 	const side = $derived.by(() => {
@@ -106,110 +113,31 @@
 	});
 
 	// ---------------------------------------------------------------- BOTTOM mode
-	const SPIN = B * 1.8;
-
-	const SLOT_W: Record<string, number> = {
-		menu: B,
-		auto: B,
-		turbo: B,
-		buy: B * 1.9,
-		dec: B,
-		inc: B,
-		spin: SPIN,
-		balance: LABEL_W,
-		win: LABEL_W,
-		bet: LABEL_W,
+	const stacked = $derived(stackedBar(canvas));
+	const sq = $derived(stacked.scale);
+	const S = STACKED;
+	const stripCy = $derived(canvas.height - (S.STRIP_H * sq) / 2);
+	const rowCy = $derived(canvas.height - (S.STRIP_H + S.ROW_PAD + STACKED_ROW_H / 2) * sq);
+	/** row positions from the spin's centre, in bar units */
+	const ROW = {
+		dec: -(S.SPIN / 2 + S.GAP + S.STEP / 2),
+		buy: -(S.SPIN / 2 + S.GAP * 2 + S.STEP + (B * 1.9 * S.BUY_K) / 2),
+		inc: S.SPIN / 2 + S.GAP + S.STEP / 2,
+		auto: S.SPIN / 2 + S.GAP * 2 + S.STEP + S.SMALL / 2,
+		turbo: S.SPIN / 2 + S.GAP * 2.6 + S.STEP + S.SMALL * 1.5,
 	};
-
-	const LABEL_KEYS = ['balance', 'win', 'bet'];
-	const BUTTON_KEYS: Record<string, BarButtonKind> = {
-		menu: 'menu',
-		buy: 'buy',
-		dec: 'dec',
-		inc: 'inc',
-		auto: 'auto',
-		turbo: 'turbo',
-	};
-	/** 9-slice corner size, in texture px (build_ui3d.py panel render) */
-	const PANEL_BORDER = 80;
-	// room round the controls for the panel's rim, and for the 3D buttons, whose art
-	// (shadow included) is drawn 1.3x their slot
-	const PANEL_PAD = 64;
-	const ROW_GAP = 32;
-
-	type Row = { keys: string[]; height: number };
-
-	const arrangements: Row[][] = [
-		[
-			{ height: LABEL_H, keys: ['balance', 'win', 'bet'] },
-			{ height: SPIN, keys: ['menu', 'buy', 'dec', 'spin', 'inc', 'auto', 'turbo'] },
-		],
-		[
-			{ height: LABEL_H, keys: ['balance', 'win'] },
-			{ height: SPIN, keys: ['menu', 'auto', 'spin', 'turbo', 'buy'] },
-			{ height: B, keys: ['dec', 'bet', 'inc'] },
-		],
-	];
+	/** the strip's amounts: drawn a step down from the plates' size */
+	const STRIP_LABEL_K = 0.86;
+	const stripLeft = -STACKED_ROW_W / 2;
+	const menuStripX = stripLeft + S.ICON / 2;
+	const stripAmountsLeft = stripLeft + S.ICON + S.GAP;
+	const stripSlot = (STACKED_ROW_W / 2 - stripAmountsLeft) / 3;
+	const stripX = (i: number) => stripAmountsLeft + stripSlot * (i + 0.5);
 
 	// A replay only watches one finished round: no balance, no changing the play amount,
 	// no bonus purchase or autoplay. The play slot becomes the replay-again button.
 	const REPLAY_HIDDEN = ['balance', 'buy', 'dec', 'inc', 'auto'];
 	const shown = (key: string) => !(isReplay() && REPLAY_HIDDEN.includes(key));
-	const forMode = (rows: Row[]) =>
-		rows
-			.map((row) => ({ ...row, keys: row.keys.filter(shown) }))
-			.filter((row) => row.keys.length > 0);
-
-	const WIDTH_RATIO = 0.96;
-	const MAX_SCALE = 0.42;
-
-	// The band left under the tank is the bar's real height budget - sizing against it
-	// rather than a flat fraction of the canvas is what keeps the bar off the reels.
-	const roomBelowBoard = $derived(canvas.height - boardBottom - MARGIN);
-
-	const measure = (rows: Row[]) => {
-		const laid = rows.map((row) => {
-			const width =
-				row.keys.reduce((sum, key) => sum + SLOT_W[key], 0) + GAP * (row.keys.length - 1);
-			const centers: Record<string, number> = {};
-			let cursor = -width * 0.5;
-			for (const key of row.keys) {
-				centers[key] = cursor + SLOT_W[key] * 0.5;
-				cursor += SLOT_W[key] + GAP;
-			}
-			return { ...row, width, centers };
-		});
-
-		const width = Math.max(...laid.map((row) => row.width));
-		const height = laid.reduce((sum, row) => sum + row.height, 0) + ROW_GAP * (laid.length - 1);
-
-		let cursor = -height * 0.5;
-		const placed = laid.map((row) => {
-			const y = cursor + row.height * 0.5;
-			cursor += row.height + ROW_GAP;
-			return { ...row, y };
-		});
-
-		// the panel (rim included) is what has to fit - measuring only the controls let
-		// its bottom run off the canvas on desktop
-		const scale = Math.min(
-			(canvas.width * WIDTH_RATIO) / (width + PANEL_PAD * 2),
-			Math.max(roomBelowBoard, 1) / (height + PANEL_PAD * 2),
-			MAX_SCALE,
-		);
-
-		return { rows: placed, width, height, scale };
-	};
-
-	// the single two-row panel while it stays comfortable, else the three-row stack
-	const MIN_COMFORT = 0.3;
-	const chosen = $derived.by(() => {
-		const candidates = arrangements.map(forMode).map(measure);
-		return (
-			candidates.find((candidate) => candidate.scale >= MIN_COMFORT) ??
-			candidates.reduce((best, candidate) => (candidate.scale > best.scale ? candidate : best))
-		);
-	});
 
 	// Game.svelte only renders the side counter panel on wide layouts, so
 	// everywhere else the bet slot has to carry the count itself.
@@ -218,18 +146,13 @@
 			!['desktop', 'landscape'].includes(context.stateLayoutDerived.layoutType()),
 	);
 
-	const barHeight = $derived((chosen.height + PANEL_PAD * 2) * chosen.scale);
-	const centerX = $derived(canvas.width * 0.5);
-	const centerY = $derived(canvas.height - barHeight * 0.5 - MARGIN);
-
-	const menuRow = $derived(chosen.rows.find((row) => row.keys.includes('menu')));
-	const menuX = $derived(centerX + (menuRow?.centers.menu ?? 0) * chosen.scale);
-	const menuY = $derived(centerY + (menuRow?.y ?? 0) * chosen.scale);
-	const useMenu = $derived(!side.ok && !!menuRow);
+	const menuX = $derived(canvas.width * 0.5 + menuStripX * sq);
+	const menuY = $derived(stripCy);
+	const useMenu = $derived(!side.ok);
 
 	// The buy plaque breathes while the game is idle - a slow swell and a warm glow, the
 	// way bonus buys invite a tap in the big studios' games - and holds still otherwise.
-	const buyVisible = $derived(side.ok && shown('buy') && !stateUi.freeSpinCounterShow);
+	const buyVisible = $derived(shown('buy') && !stateUi.freeSpinCounterShow);
 	const idle = $derived(context.stateXstateDerived.isIdle());
 	let breath = $state(0);
 	$effect(() => {
@@ -248,23 +171,25 @@
 	});
 </script>
 
+{#snippet amountValue(key: string)}
+	{#if key === 'balance'}
+		{@render props.amountBalance({ stacked: true })}
+	{:else if key === 'win'}
+		{@render props.amountWin({ stacked: true })}
+	{:else if counterInBar}
+		<!-- the shared LabelFreeSpinCounter draws a plate asset this game never shipped -->
+		<BarLabel
+			label="FREE SPINS"
+			value={`${stateUi.freeSpinCounterCurrent} / ${stateUi.freeSpinCounterTotal}`}
+		/>
+	{:else}
+		{@render props.amountBet({ stacked: true })}
+	{/if}
+{/snippet}
+
 {#snippet amount(key: string)}
 	<LabelPlate width={LABEL_W * 1.06} height={PLATE_H} />
-	<Container y={LABEL_SHIFT_Y}>
-		{#if key === 'balance'}
-			{@render props.amountBalance({ stacked: true })}
-		{:else if key === 'win'}
-			{@render props.amountWin({ stacked: true })}
-		{:else if counterInBar}
-			<!-- the shared LabelFreeSpinCounter draws a plate asset this game never shipped -->
-			<BarLabel
-				label="FREE SPINS"
-				value={`${stateUi.freeSpinCounterCurrent} / ${stateUi.freeSpinCounterTotal}`}
-			/>
-		{:else}
-			{@render props.amountBet({ stacked: true })}
-		{/if}
-	</Container>
+	{@render amountValue(key)}
 {/snippet}
 
 {#snippet spin(size: number)}
@@ -273,6 +198,30 @@
 	{:else}
 		<SpinButton3D {size} />
 	{/if}
+{/snippet}
+
+{#snippet step(kind: BarButtonKind)}
+	<Container scale={STEP_K}>
+		<BarButton {kind} />
+	</Container>
+{/snippet}
+
+<!-- The bonus buy breathes while the game is idle - a slow swell and a warm glow, the way
+     bonus buys invite a tap in the big studios' games - and holds still otherwise. -->
+{#snippet buyPlaque()}
+	<Sprite key="fxGlow" anchor={0.5} width={B * 3.6} height={B * 1.9} tint={0x000000} alpha={0.5} />
+	<Sprite
+		key="fxGlow"
+		anchor={0.5}
+		width={B * 3.0}
+		height={B * 1.5}
+		tint={0xffb54a}
+		alpha={0.18 + 0.4 * breath}
+		blendMode="add"
+	/>
+	<Container scale={1 + 0.05 * breath}>
+		<BarButton kind="buy" />
+	</Container>
 {/snippet}
 
 {#if side.ok}
@@ -298,7 +247,7 @@
 		/>
 		<Container x={SIDE_MARGIN} y={canvas.height - side.stripH * 0.5} scale={side.stripScale}>
 			{#each ICONS as key, i (key)}
-				<Container x={B * 0.5 + i * (B + ICON_GAP)}>
+				<Container x={ICON * 0.5 + 12 + i * (ICON + ICON_GAP)} scale={ICON_K}>
 					<BarButton kind={key} />
 				</Container>
 			{/each}
@@ -328,26 +277,26 @@
 		/>
 		<Container y={-CLUSTER_H * 0.5 + LABEL_H * 0.5}>
 			{#if shown('dec')}
-				<Container x={-(LABEL_W + B) * 0.5 - SIDE_GAP}>
-					<BarButton kind="dec" />
+				<Container x={-(LABEL_W + STEP) * 0.5 - SIDE_GAP}>
+					{@render step('dec')}
 				</Container>
 			{/if}
 			{@render amount('bet')}
 			{#if shown('inc')}
-				<Container x={(LABEL_W + B) * 0.5 + SIDE_GAP}>
-					<BarButton kind="inc" />
+				<Container x={(LABEL_W + STEP) * 0.5 + SIDE_GAP}>
+					{@render step('inc')}
 				</Container>
 			{/if}
 		</Container>
 		<Container y={CLUSTER_H * 0.5 - SPIN_BIG * 0.5}>
 			{@render spin(SPIN_BIG)}
 			{#if shown('auto')}
-				<Container x={-(SPIN_BIG + B) * 0.5 - SIDE_GAP} y={SPIN_BIG * 0.18}>
-					<BarButton kind="auto" />
+				<Container x={-(SPIN_BIG + STEP) * 0.5 - SIDE_GAP} y={SPIN_BIG * 0.2}>
+					{@render step('auto')}
 				</Container>
 			{/if}
-			<Container x={(SPIN_BIG + B) * 0.5 + SIDE_GAP} y={SPIN_BIG * 0.18}>
-				<BarButton kind="turbo" />
+			<Container x={(SPIN_BIG + STEP) * 0.5 + SIDE_GAP} y={SPIN_BIG * 0.2}>
+				{@render step('turbo')}
 			</Container>
 		</Container>
 	</Container>
@@ -356,55 +305,69 @@
 	     spot while it is hidden during free spins) -->
 	{#if buyVisible}
 		<Container zIndex={60} x={side.lx} y={side.cy} scale={side.q * BUY_K}>
-			<Sprite key="fxGlow" anchor={0.5} width={B * 3.6} height={B * 1.9} tint={0x000000} alpha={0.5} />
-			<Sprite
-				key="fxGlow"
-				anchor={0.5}
-				width={B * 3.0}
-				height={B * 1.5}
-				tint={0xffb54a}
-				alpha={0.12 + 0.3 * breath}
-				blendMode="add"
-			/>
-			<Container scale={1 + 0.04 * breath}>
-				<BarButton kind="buy" />
-			</Container>
+			{@render buyPlaque()}
 		</Container>
 	{/if}
 {:else}
 	<Container zIndex={60}>
-		<Container x={centerX} y={centerY} scale={chosen.scale}>
-			<!-- A riveted iron strap with a brass rim - the tank frame's own materials. Sized in
-			the bar's authoring units: a 9-slice draws its corners at texture scale, so it has
-			to live inside the scaled container or the corners swamp a small phone bar. -->
-			<NineSlice
-				key="panel.png"
-				width={chosen.width + PANEL_PAD * 2}
-				height={chosen.height + PANEL_PAD * 2}
-				border={PANEL_BORDER}
-			/>
-
-			{#each chosen.rows as row (row.y)}
-				{#each row.keys as key (key)}
-					<Container x={row.centers[key]} y={row.y}>
-						{#if LABEL_KEYS.includes(key)}
-							{@render amount(key)}
-						{:else if key === 'buy'}
-							{#if !stateUi.freeSpinCounterShow}
-								<BarButton kind="buy" />
-							{/if}
-						{:else if key === 'dec' || key === 'inc'}
-							{#if !counterInBar}
-								<BarButton kind={BUTTON_KEYS[key]} />
-							{/if}
-						{:else if BUTTON_KEYS[key]}
-							<BarButton kind={BUTTON_KEYS[key]} />
-						{:else if key === 'spin'}
-							{@render spin(SPIN)}
-						{/if}
+		<!-- the info strip along the bottom edge, as on desktop -->
+		<Rectangle
+			x={canvas.width * 0.5}
+			y={stripCy}
+			anchor={0.5}
+			width={canvas.width}
+			height={S.STRIP_H * sq}
+			backgroundColor={0x05090b}
+			backgroundAlpha={0.72}
+		/>
+		<Rectangle
+			x={canvas.width * 0.5}
+			y={canvas.height - S.STRIP_H * sq}
+			anchor={0.5}
+			width={canvas.width}
+			height={2}
+			backgroundColor={0xb89150}
+			backgroundAlpha={0.7}
+		/>
+		<Container x={canvas.width * 0.5} y={stripCy} scale={sq}>
+			<Container x={menuStripX} scale={S.ICON / B}>
+				<BarButton kind="menu" />
+			</Container>
+			{#each ['balance', 'bet', 'win'] as key, i (key)}
+				{#if shown(key)}
+					<Container x={stripX(i)} scale={STRIP_LABEL_K}>
+						{@render amountValue(key)}
 					</Container>
-				{/each}
+				{/if}
 			{/each}
+		</Container>
+
+		<!-- the control row: spin dead centre, a soft shadow pool keeping it legible -->
+		<Container x={canvas.width * 0.5} y={rowCy} scale={sq}>
+			<Sprite
+				key="fxGlow"
+				anchor={0.5}
+				width={STACKED_ROW_W * 1.25}
+				height={STACKED_ROW_H * 1.6}
+				tint={0x000000}
+				alpha={0.6}
+			/>
+			{#if buyVisible}
+				<Container x={ROW.buy} scale={S.BUY_K}>
+					{@render buyPlaque()}
+				</Container>
+			{/if}
+			{#if shown('dec') && !counterInBar}
+				<Container x={ROW.dec}>{@render step('dec')}</Container>
+			{/if}
+			{@render spin(S.SPIN)}
+			{#if shown('inc') && !counterInBar}
+				<Container x={ROW.inc}>{@render step('inc')}</Container>
+			{/if}
+			{#if shown('auto')}
+				<Container x={ROW.auto}>{@render step('auto')}</Container>
+			{/if}
+			<Container x={ROW.turbo}>{@render step('turbo')}</Container>
 		</Container>
 	</Container>
 {/if}
@@ -424,20 +387,14 @@
 			onpointerup={() => (stateUi.menuOpen = false)}
 		/>
 
-		<Container x={menuX} y={menuY} scale={chosen.scale}>
-			<Container y={-(B + GAP) * 4}>
-				<BarButton kind="pay" />
-			</Container>
-			<Container y={-(B + GAP) * 3}>
-				<BarButton kind="rules" />
-			</Container>
-			<Container y={-(B + GAP) * 2}>
-				<BarButton kind="settings" />
-			</Container>
-			<Container y={-(B + GAP)}>
-				<BarButton kind="sound" />
-			</Container>
-			<Container>
+		<!-- the menu fans up from its strip icon, each entry a full-size button -->
+		<Container x={menuX + (B * sq) / 2} y={menuY} scale={sq}>
+			{#each ['pay', 'rules', 'settings', 'sound'] as kind, i (kind)}
+				<Container y={-(B + GAP) * (4 - i) - B * 0.3}>
+					<BarButton kind={kind as BarButtonKind} />
+				</Container>
+			{/each}
+			<Container x={-B * 0.5 + S.ICON * 0.5} scale={S.ICON / B}>
 				<BarButton kind="close" />
 			</Container>
 		</Container>

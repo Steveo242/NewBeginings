@@ -12,10 +12,15 @@
 
 	const props: Props = $props();
 
+	const LABEL_SIZE = UI_BASE_FONT_SIZE * 0.66;
+	const VALUE_SIZE = UI_BASE_FONT_SIZE * 1.3;
+	/** caption, a small gap, value: their combined height, by font size */
+	const STACK = LABEL_SIZE + UI_BASE_FONT_SIZE * 0.14 + VALUE_SIZE;
+
 	const labelStyle = {
 		fontFamily: DISPLAY_FONT,
 		fontWeight: 'bold',
-		fontSize: UI_BASE_FONT_SIZE * 0.66,
+		fontSize: LABEL_SIZE,
 		fill: 0xd9b56c,
 		letterSpacing: UI_BASE_FONT_SIZE * 0.08,
 	} as const;
@@ -23,11 +28,13 @@
 	const valueStyle = {
 		fontFamily: DISPLAY_FONT,
 		fontWeight: 'bold',
-		fontSize: UI_BASE_FONT_SIZE * 1.3,
+		fontSize: VALUE_SIZE,
 		fill: 0xfff6e4,
 		dropShadow: { color: 0x000000, alpha: 0.75, blur: 3, distance: 2, angle: Math.PI / 2 },
 	} as const;
 </script>
 
-<Text anchor={{ x: 0.5, y: 0 }} text={props.label} style={labelStyle} />
-<Text anchor={{ x: 0.5, y: 0 }} text={props.value} style={valueStyle} y={UI_BASE_FONT_SIZE * 0.9} />
+<!-- the caption-and-value pair is centred on its origin, so whatever plate or button it
+     sits in, it sits in the middle of it -->
+<Text anchor={0.5} text={props.label} style={labelStyle} y={-STACK * 0.5 + LABEL_SIZE * 0.5} />
+<Text anchor={0.5} text={props.value} style={valueStyle} y={STACK * 0.5 - VALUE_SIZE * 0.5} />
