@@ -2,6 +2,7 @@
 	import { Sprite } from 'pixi-svelte';
 
 	import { getContext } from '../game/context';
+	import { glass } from '../game/glass.svelte';
 
 	const context = getContext();
 	const FRAME_RATIO = 1120 / 700;
@@ -16,5 +17,8 @@
 -->
 <!-- half strength: its two reflection streaks added up to 35/255 of light across the middle
      reels and washed out the symbols under them -->
-<Sprite key="tankGlass" anchor={0.5} x={layout.x} y={layout.y} width={size} height={size} blendMode="add" alpha={0.5} />
+<!-- gone for good once GlassBreak smashes it as the game opens -->
+{#if glass.intact}
+	<Sprite key="tankGlass" anchor={0.5} x={layout.x} y={layout.y} width={size} height={size} blendMode="add" alpha={0.5} />
+{/if}
 <Sprite key="tankFront" anchor={0.5} x={layout.x} y={layout.y} width={size} height={size} />

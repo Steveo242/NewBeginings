@@ -24,6 +24,7 @@
 	import BoardFrame from './BoardFrame.svelte';
 	import BoardFront from './BoardFront.svelte';
 	import BoardBanner from './BoardBanner.svelte';
+	import GlassBreak from './GlassBreak.svelte';
 	import Board from './Board.svelte';
 	import Anticipations from './Anticipations.svelte';
 	import ClusterWinAmounts from './ClusterWinAmounts.svelte';
@@ -101,6 +102,7 @@
 		<MainContainer>
 			<BoardFront />
 			<BoardBanner />
+			<GlassBreak />
 		</MainContainer>
 
 		<MainContainer>

@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { SpineProvider, SpineTrack } from 'pixi-svelte';
-
 	import SymbolSpine from './SymbolSpine.svelte';
 	import SymbolSprite from './SymbolSprite.svelte';
 	import SymbolAnimatedSprite from './SymbolAnimatedSprite.svelte';
@@ -23,6 +21,7 @@
 	const props: Props = $props();
 	const context = getContext();
 	const symbolInfo = $derived(getSymbolInfo({ rawSymbol: props.rawSymbol, state: props.state }));
+	const staticInfo = $derived(getSymbolInfo({ rawSymbol: props.rawSymbol, state: 'static' }));
 	const isSprite = $derived(symbolInfo.type === 'sprite');
 	const isSpriteSheet = $derived(symbolInfo.type === 'spriteSheet');
 	// Only the fish (the high symbols) swim gently at rest; the chum pails, crate,
@@ -49,10 +48,18 @@
 			? !['win', 'explosion'].includes(props.state)
 			: props.state === 'spin' || props.state === 'land',
 	);
-	const showWinFrame = $derived(
-		props.state === 'win' && !['S', 'M'].includes(props.rawSymbol.name),
-	);
 </script>
+
+<!-- under the symbol, so the silhouette copies only show as a rim round it -->
+{#if ['win', 'postWinStatic'].includes(props.state) && (props.rawSymbol.name as string) !== 'M'}
+	<WinFlash
+		x={props.x}
+		y={props.y}
+		premium={HIGH_SYMBOLS.includes(props.rawSymbol.name) || props.rawSymbol.name === 'W'}
+		assetKey={staticInfo.assetKey}
+		sizeRatios={staticInfo.sizeRatios}
+	/>
+{/if}
 
 {#if glowKind}
 	<SymbolGlow x={props.x} y={props.y} kind={glowKind} lit={glowLit} />
@@ -89,11 +96,6 @@
 			}
 		}}
 	/>
-	{#if showWinFrame}
-		<SpineProvider x={props.x} y={props.y} key="anticipation" width={SYMBOL_SIZE * 0.19}>
-			<SpineTrack trackIndex={0} animationName={'payframe'} loop />
-		</SpineProvider>
-	{/if}
 {:else}
 	{@const symbolBackgroundInfo = getSymbolBackgroundInfo({
 		rawSymbol: props.rawSymbol,
@@ -117,6 +119,3 @@
 	/>
 {/if}
 
-{#if props.state === 'win' && props.rawSymbol.name !== 'M'}
-	<WinFlash x={props.x} y={props.y} premium={HIGH_SYMBOLS.includes(props.rawSymbol.name) || props.rawSymbol.name === 'W'} />
-{/if}

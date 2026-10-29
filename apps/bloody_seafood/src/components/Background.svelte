@@ -18,6 +18,7 @@
 
 	const KEYS = [
 		'stormSky', 'stormSea', 'stormHeadland', 'stormTrawler', 'stormDock',
+		'daySky', 'daySea', 'dayHeadland', 'dayTrawler', 'dayDock',
 		'fxNoise', 'fxRain', 'fxFog', 'fxGlow', 'fxBeam',
 	] as const;
 </script>
@@ -27,7 +28,10 @@
 	import { onDestroy } from 'svelte';
 	import { getContextParent } from 'pixi-svelte';
 
+	import { stateBet } from 'state-shared';
+
 	import { getContext } from '../game/context';
+	import { isSuperBetMode } from '../game/constants';
 
 	const context = getContext();
 	const parent = getContextParent();
@@ -84,7 +88,12 @@
 		skyNoise.renderable = false;
 		skyNoise.scale.set(6);
 		const skyDisp = new PIXI.DisplacementFilter({ sprite: skyNoise, scale: 26 });
-		skyWrap.addChild(sky, skyNoise);
+		// The base game plays in clear daylight; the bonus rounds flash to the night storm
+		// (bs-render daymode/: the same plate re-lit by FLUX Kontext, registered to the
+		// night layers and cut with their alphas). Each day layer sits over its night twin
+		// and fades out as the storm comes in.
+		const daySky = new PIXI.Sprite(tex('daySky'));
+		skyWrap.addChild(sky, daySky, skyNoise);
 		skyWrap.filters = [skyDisp];
 		root.addChild(skyWrap);
 
@@ -99,7 +108,8 @@
 		seaNoise.renderable = false;
 		seaNoise.scale.set(2.2, 1.1);
 		const seaDisp = new PIXI.DisplacementFilter({ sprite: seaNoise, scale: { x: 10, y: 16 } });
-		seaWrap.addChild(sea, seaNoise);
+		const daySea = new PIXI.Sprite(tex('daySea'));
+		seaWrap.addChild(sea, daySea, seaNoise);
 		seaWrap.filters = [seaDisp];
 		root.addChild(seaWrap);
 
@@ -119,18 +129,29 @@
 		lampGlow.anchor.set(0.5);
 		lampGlow.blendMode = 'add';
 		lampGlow.tint = 0xffc870;
-		headWrap.addChild(headland, beam, lampGlow);
+		const dayHeadland = new PIXI.Sprite(tex('dayHeadland'));
+		headWrap.addChild(headland, dayHeadland, beam, lampGlow);
 		root.addChild(headWrap);
 
 		// trawler pitching and heaving on the swell
 		const trawlerWrap = new PIXI.Container();
 		const trawler = new PIXI.Sprite(tex('stormTrawler'));
 		trawler.pivot.set(TRAWLER_PIVOT.x, TRAWLER_PIVOT.y);
-		trawlerWrap.addChild(trawler);
+		const dayTrawler = new PIXI.Sprite(tex('dayTrawler'));
+		dayTrawler.pivot.set(TRAWLER_PIVOT.x, TRAWLER_PIVOT.y);
+		trawlerWrap.addChild(trawler, dayTrawler);
 		root.addChild(trawlerWrap);
 
 		const dock = new PIXI.Sprite(tex('stormDock'));
-		root.addChild(dock);
+		const dayDock = new PIXI.Sprite(tex('dayDock'));
+		root.addChild(dock, dayDock);
+		const twins: [PIXI.Sprite, PIXI.Sprite][] = [
+			[sky, daySky],
+			[sea, daySea],
+			[headland, dayHeadland],
+			[trawler, dayTrawler],
+			[dock, dayDock],
+		];
 
 		// two rain sheets at different depths, slanted by the wind
 		const rainWrap = new PIXI.Container();
@@ -152,7 +173,9 @@
 
 		let t = 0;
 		let nextStrike = 2500;
-		let strike: { age: number; g: PIXI.Graphics; pulses: number[] } | null = null;
+		let strike: { age: number; g: PIXI.Graphics; pulses: number[]; entry: boolean } | null = null;
+		let night = mood.night;
+		let blood = mood.blood;
 		let lastW = 0;
 		let lastH = 0;
 		let k = 1;
@@ -236,13 +259,13 @@
 					for (const [px, py] of p.slice(1)) g.lineTo(px, py);
 					g.stroke({ width: width * w, color, alpha, cap: 'round', join: 'round' });
 				};
-				draw(26 * k * 2, 0x5fb4ff, 0.12);
-				draw(9 * k * 2, 0x9fd6ff, 0.45);
+				draw(26 * k * 2, mood.blood ? 0xff3b3b : 0x5fb4ff, 0.12);
+				draw(9 * k * 2, mood.blood ? 0xff8a7a : 0x9fd6ff, 0.45);
 				draw(3 * k * 2, 0xffffff, 1);
 			}
 			boltLayer.addChild(g);
 			// flicker: a few bright pulses in the first ~400ms
-			strike = { age: 0, g, pulses: [0, rand(70, 110), rand(170, 260)] };
+			strike = { age: 0, g, pulses: [0, rand(70, 110), rand(170, 260)], entry: night < 0.6 };
 			// thunder follows the flash; the one-shot player won't restart a clip
 			// that's still rolling, so a double strike doesn't stack
 			const name = Math.random() < 0.7 ? 'sfx_thunder_close' : 'sfx_thunder_far';
@@ -286,19 +309,47 @@
 			rainFar.tilePosition.y = t * 0.55;
 			rainNear.tilePosition.y = t * 1.1;
 
-			// lightning
+			// day <-> storm: ease towards the mode, day twins follow their night layers
+			night += (mood.night - night) * Math.min(1, dt / 260);
+			blood += (mood.blood - blood) * Math.min(1, dt / 400);
+			for (const [n, d] of twins) {
+				d.position.copyFrom(n.position);
+				d.scale.copyFrom(n.scale);
+				d.rotation = n.rotation;
+				d.alpha = 1 - night;
+			}
+			// the super bonus storm runs red: a blood tint on the night sky and sea
+			const gb = Math.round(255 - 120 * blood);
+			sky.tint = sea.tint = 0xff0000 | (gb << 8) | gb;
+			rainWrap.alpha = night;
+			fog.alpha = 0.22 * night;
+			boltLayer.alpha = night;
+			beam.visible = lampGlow.visible = night > 0.05;
+			rainFar.tilePosition.y += t * 0.25 * blood;
+			rainNear.tilePosition.y += t * 0.5 * blood;
+
+			// lightning, only in the storm - and far more of it in the super bonus
 			nextStrike -= dt;
-			if (!strike && nextStrike <= 0) {
+			if (mood.strikeNow && night > 0.02) {
+				mood.strikeNow = false;
+				nextStrike = 0;
+				if (strike) {
+					strike.g.destroy();
+					strike = null;
+				}
+			}
+			if (!strike && nextStrike <= 0 && night > 0.5) {
 				startStrike(W, H);
-				nextStrike = rand(6000, 14000);
-				if (Math.random() < 0.25) nextStrike = rand(500, 900); // double strike
+				nextStrike = blood > 0.5 ? rand(2500, 6000) : rand(5000, 11000);
+				if (Math.random() < 0.25 + 0.2 * blood) nextStrike = rand(500, 900); // double strike
 			}
 			if (strike) {
 				strike.age += dt;
 				const pulse = strike.pulses.reduce((m, p) => Math.max(m, Math.exp(-Math.max(0, strike!.age - p) / 60) * (strike!.age >= p ? 1 : 0)), 0);
 				const tail = Math.exp(-strike.age / 260);
 				strike.g.alpha = Math.min(1, pulse + tail * 0.4);
-				flashWash.alpha = pulse * 0.16;
+				// the strike that brings the storm in whites out the whole screen
+				flashWash.alpha = pulse * (strike.entry ? 0.85 : 0.16);
 				flashMatrix.brightness(1 + pulse * 0.9, false);
 				skyWrap.filters = pulse > 0.02 ? [skyDisp, flashMatrix] : [skyDisp];
 				if (strike.age > 900) {
@@ -311,6 +362,41 @@
 		};
 		context.stateApp.pixiApplication?.ticker.add(tick);
 	}
+
+	// The harbour's mood. Base game: clear day. Bonus: night storm. Super bonus: the storm
+	// runs blood red. The storm comes in with a whiteout lightning strike as the bonus
+	// intro opens, and clears once the TOTAL HAUL panel closes.
+	const mood = { night: 0, blood: 0, strikeNow: false };
+	const AMB_DAY = 0.25;
+	const setStorm = (on: boolean) => {
+		const blood = on && isSuperBetMode(stateBet.activeBetModeKey) ? 1 : 0;
+		if (mood.night === (on ? 1 : 0) && mood.blood === blood) return;
+		const was = mood.night;
+		mood.night = on ? 1 : 0;
+		mood.blood = blood;
+		if (on && !was) mood.strikeNow = true;
+		context.eventEmitter.broadcast({
+			type: 'soundFade',
+			name: 'amb_storm',
+			from: on ? AMB_DAY : 1,
+			to: on ? 1 : AMB_DAY,
+			duration: on ? 400 : 2500,
+		});
+	};
+	// a round resumed mid-feature opens straight into the storm
+	if (context.stateGame.gameType === 'freeSpins') mood.night = 1;
+	context.eventEmitter.subscribeOnMount({
+		freeSpinIntroShow: () => setStorm(true),
+		freeSpinOutroHide: () => setStorm(false),
+	});
+	$effect(() => {
+		if (context.stateGame.gameType === 'freeSpins') setStorm(true);
+	});
+	// the storm bed starts at full on load; drop it to the day level once it's playing
+	setTimeout(() => {
+		if (!mood.night)
+			context.eventEmitter.broadcast({ type: 'soundFade', name: 'amb_storm', from: 1, to: AMB_DAY, duration: 1500 });
+	}, 1500);
 
 	$effect(() => {
 		const loaded = context.stateApp.loadedAssets;

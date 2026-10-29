@@ -43,6 +43,7 @@ export type SoundEffectName =
 	| 'sfx_thunder_far'
 	| 'sfx_symbols_landing'
 	| 'sfx_wild_explode'
+	| 'sfx_glass_shatter'
 	| 'sfx_win_bell'
 	| 'sfx_winlevel_end'
 	| 'sfx_winlevel_small'

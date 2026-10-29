@@ -1,4 +1,29 @@
 export default {
+	daySky: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/storm/day_sky.webp', import.meta.url).href,
+		preload: true,
+	},
+	daySea: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/storm/day_sea.webp', import.meta.url).href,
+		preload: true,
+	},
+	dayHeadland: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/storm/day_headland.webp', import.meta.url).href,
+		preload: true,
+	},
+	dayTrawler: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/storm/day_trawler.webp', import.meta.url).href,
+		preload: true,
+	},
+	dayDock: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/storm/day_dock.webp', import.meta.url).href,
+		preload: true,
+	},
 	stormSky: {
 		type: 'sprite',
 		src: new URL('../../assets/sprites/storm/bg_sky.webp', import.meta.url).href,
@@ -121,6 +146,11 @@ export default {
 	titlePlaque: {
 		type: 'sprite',
 		src: new URL('../../assets/sprites/bgLayers/logo3d.webp', import.meta.url).href,
+		preload: true,
+	},
+	logoBlood: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/bgLayers/logo3d_blood.webp', import.meta.url).href,
 		preload: true,
 	},
 	titlePlaqueBoard: {
