@@ -22,7 +22,7 @@
 	import { waitForTimeout } from 'utils-shared/wait';
 	import { bookEventAmountToCurrencyString } from 'utils-shared/amount';
 
-	import { SYMBOL_SIZE } from '../game/constants';
+	import { GAME_SPEED, SYMBOL_SIZE } from '../game/constants';
 	import { getContext } from '../game/context';
 
 	type Props = { win: Win };
@@ -37,14 +37,14 @@
 
 	// update showMultiplier
 	onMount(async () => {
-		await waitForTimeout(SECOND / stateBetDerived.timeScale());
+		await waitForTimeout(SECOND / GAME_SPEED / stateBetDerived.timeScale());
 		showMultiplier = false;
 	});
 
 	// update scale
 	onMount(async () => {
 		if (showMultiplier) {
-			await waitForTimeout(SECOND);
+			await waitForTimeout(SECOND / GAME_SPEED);
 			context.eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_multiplier_combine_a' });
 			await scale.set(0.1, { duration: 200 / stateBetDerived.timeScale() });
 			await scale.set(1, { duration: 200 / stateBetDerived.timeScale() });

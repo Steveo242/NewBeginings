@@ -19,7 +19,7 @@
 	import WinBanner from "./WinBanner.svelte";
  import WinAmountText from "./WinAmountText.svelte";
  	import PressToContinue from './PressToContinue.svelte';
-	import { SYMBOL_SIZE } from '../game/constants';
+	import { GAME_SPEED, SYMBOL_SIZE } from '../game/constants';
 	import { getContext } from '../game/context';
 
 	const context = getContext();
@@ -55,7 +55,7 @@
 				<OnMount
 					onmount={async () => {
 						await startCountUp();
-						await waitForTimeout(300);
+						await waitForTimeout(300 / GAME_SPEED);
 						oncomplete();
 					}}
 				/>

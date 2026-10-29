@@ -123,25 +123,27 @@ export const INITIAL_SYMBOL_STATE: SymbolState = 'static';
 const M_SIZE = 0.3;
 
 // Overall pace of the symbol animations (wins, bursts): 1 = as rendered. Players found
-// them rushed; 0.6 plays every win and burst ~65% longer. Turbo is unaffected.
-export const ANIM_PACE = 0.6;
+// them rushed at 1; 0.6 played them ~65% longer, which then read as slow - GAME_SPEED
+// takes 15% back off that, and off the reels and tumbles. Turbo is unaffected.
+export const GAME_SPEED = 1.15;
+export const ANIM_PACE = 0.6 * GAME_SPEED;
 
 const SPIN_OPTIONS_SHARED = {
-	reelFallInDelay: 80,
+	reelFallInDelay: Math.round(80 / GAME_SPEED),
 	reelPaddingMultiplierNormal: 1.25,
 	reelPaddingMultiplierAnticipated: 18,
-	reelFallOutDelay: 145,
+	reelFallOutDelay: Math.round(145 / GAME_SPEED),
 };
 
 // normal drops a fifth slower than they were (3.5 / 30 ms): the board settled too fast to follow
 export const SPIN_OPTIONS_DEFAULT = {
 	...SPIN_OPTIONS_SHARED,
-	symbolFallInSpeed: 2.8,
-	symbolFallInInterval: 38,
-	symbolFallInBounceSpeed: 0.12,
+	symbolFallInSpeed: 2.8 * GAME_SPEED,
+	symbolFallInInterval: Math.round(38 / GAME_SPEED),
+	symbolFallInBounceSpeed: 0.12 * GAME_SPEED,
 	symbolFallInBounceSizeMulti: 0.5,
-	symbolFallOutSpeed: 2.8,
-	symbolFallOutInterval: 25,
+	symbolFallOutSpeed: 2.8 * GAME_SPEED,
+	symbolFallOutInterval: Math.round(25 / GAME_SPEED),
 };
 
 // An anticipated reel (one scatter short of the feature) drops its symbols slowly, one

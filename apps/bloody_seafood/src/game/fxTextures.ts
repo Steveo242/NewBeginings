@@ -58,9 +58,9 @@ let vivid: PIXI.ColorMatrixFilter | undefined;
 export const vividFilter = () => {
 	if (vivid) return vivid;
 	vivid = new PIXI.ColorMatrixFilter();
-	vivid.saturate(0.32, false);
-	vivid.contrast(0.14, true);
-	vivid.brightness(1.07, true);
+	vivid.saturate(0.5, false);
+	vivid.contrast(0.2, true);
+	vivid.brightness(1.1, true);
 	return vivid;
 };
 

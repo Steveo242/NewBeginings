@@ -32,6 +32,7 @@
 
 	import { getContext } from '../game/context';
 	import { isSuperBetMode } from '../game/constants';
+	import { storm } from '../game/lightning';
 
 	const context = getContext();
 	const parent = getContextParent();
@@ -80,6 +81,13 @@
 
 		const black = new PIXI.Graphics();
 		root.addChild(black);
+
+		// the harbour gets the same push of colour as the board, a step gentler so the
+		// reels still pop in front of it
+		const grade = new PIXI.ColorMatrixFilter();
+		grade.saturate(0.28, false);
+		grade.contrast(0.08, true);
+		root.filters = [grade];
 
 		// sky: slow billowing through a large, drifting displacement map
 		const skyWrap = new PIXI.Container();
@@ -350,6 +358,8 @@
 				strike.g.alpha = Math.min(1, pulse + tail * 0.4);
 				// the strike that brings the storm in whites out the whole screen
 				flashWash.alpha = pulse * (strike.entry ? 0.85 : 0.16);
+				// the win lightning on the board surges with the storm's
+				storm.pulse = Math.min(1, pulse + tail * 0.3) * night;
 				flashMatrix.brightness(1 + pulse * 0.9, false);
 				skyWrap.filters = pulse > 0.02 ? [skyDisp, flashMatrix] : [skyDisp];
 				if (strike.age > 900) {
@@ -357,6 +367,7 @@
 					strike = null;
 					flashWash.alpha = 0;
 					skyWrap.filters = [skyDisp];
+					storm.pulse = 0;
 				}
 			}
 		};

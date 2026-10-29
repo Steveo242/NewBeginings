@@ -27,6 +27,7 @@
 	import BoardMask from './BoardMask.svelte';
 	import { getSymbolY } from '../game/utils';
 	import { getContext } from '../game/context';
+	import { GAME_SPEED } from '../game/constants';
 
 	const context = getContext();
 
@@ -106,7 +107,7 @@
 						return tumbleReel.map(async (tumbleSymbol, symbolIndex) => {
 							const targetY = getSymbolY(symbolIndex - 1); // Refer to initTumbleBoardBase
 							if (targetY !== tumbleSymbol.symbolY.current) {
-								const bounceDuration = 200;
+								const bounceDuration = Math.round(200 / GAME_SPEED);
 
 								await tumbleSymbol.symbolY.set(targetY, {
 									duration: bounceDuration,

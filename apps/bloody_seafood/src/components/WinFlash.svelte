@@ -1,32 +1,32 @@
 <script lang="ts">
-	import { Container, Rectangle, Sprite } from 'pixi-svelte';
+	import { Container, Sprite } from 'pixi-svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicOut } from 'svelte/easing';
 
 	import { SYMBOL_SIZE } from '../game/constants';
 	import { solidFilter } from '../game/fxTextures';
-	import { pulse } from '../game/tempo';
+	import { SYMBOL_BOLT, isHighValue, storm } from '../game/lightning';
 	import { getContext } from '../game/context';
 
-	// The light on a winning symbol, in two colours so the eye reads both at once: the
-	// symbol's own silhouette traced in a glowing outline (crimson on the fish and the
-	// wild, electric cyan on the lows) and its reel square boxed in hot gold. Both punch
-	// in white-hot the instant the symbol wins, then hold, breathing with the music,
-	// until the winning cluster explodes.
+	// A winning symbol's own lightning: its silhouette traced in crackling electricity in
+	// that symbol's colour (game/lightning.ts) - a wide coloured glow round a white-hot core,
+	// flickering and jittering like an arc. It strikes at full blast the instant the symbol
+	// wins, crackles on until the symbol explodes, and in the bonus storm surges with every
+	// bolt of lightning. Premiums burn hotter and thicker. The cell's box is WinCells'.
 	type Props = {
 		x?: number;
 		y?: number;
-		premium: boolean;
-		/** the symbol's resting art, whose silhouette gets the outline */
+		name: string;
+		/** the symbol's resting art, whose silhouette is traced */
 		assetKey: string;
 		sizeRatios: { width: number; height: number };
 	};
 	const props: Props = $props();
 	const context = getContext();
 
-	const flash = new Tween(0, { easing: cubicOut });
+	const hit = new Tween(0, { easing: cubicOut });
 	$effect(() => {
-		flash.set(1, { duration: 70 }).then(() => flash.set(0, { duration: 560 }));
+		hit.set(1, { duration: 60 }).then(() => hit.set(0, { duration: 650 }));
 	});
 
 	let now = $state(performance.now());
@@ -37,63 +37,50 @@
 		ticker.add(tick);
 		return () => ticker.remove(tick);
 	});
-	const beat = $derived(pulse(now, 1));
-	const hold = $derived(Math.max(flash.current, 0.55 + 0.45 * beat));
 
-	const OUTLINE = $derived(props.premium ? 0xff2d55 : 0x3ff0ff);
-	const SQUARE = 0xffc93a;
-	/** outline thickness, in board units: the silhouette drawn this far out all round */
-	const R = 6;
+	const high = $derived(isHighValue(props.name));
+	const bolt = $derived(SYMBOL_BOLT[props.name] ?? SYMBOL_BOLT.L1);
+	/** a new random arc state ~20 times a second: the flicker and the jitter */
+	const frame = $derived(Math.floor(now / 50));
+	const rnd = (k: number) => {
+		const v = Math.sin(frame * 12.9898 + k * 78.233) * 43758.5453;
+		return v - Math.floor(v);
+	};
+	const flicker = $derived(0.7 + 0.3 * rnd(1));
+	// storm.pulse is a plain object written by Background: re-read it every tick
+	const surge = $derived.by(() => {
+		void now;
+		return storm.pulse;
+	});
+	const level = $derived(Math.min(1.6, (high ? 1 : 0.8) * flicker + hit.current + surge * 1.2));
+	/** glow and core radii, in board units */
+	const GLOW_R = $derived((high ? 9 : 7) * (1 + 0.35 * surge) + 2 * rnd(2));
+	const CORE_R = $derived((high ? 3.2 : 2.6) + rnd(3));
 	const DIRS = Array.from({ length: 12 }, (_, i) => [Math.cos((i / 12) * Math.PI * 2), Math.sin((i / 12) * Math.PI * 2)]);
 	const w = $derived(SYMBOL_SIZE * props.sizeRatios.width);
 	const h = $derived(SYMBOL_SIZE * props.sizeRatios.height);
-	const grow = $derived(1 + 0.3 * (1 - flash.current) * (flash.current > 0.01 ? 1 : 0));
-	const CELL = SYMBOL_SIZE * 0.96;
 </script>
 
-<!-- the square: a hot gold box round the reel cell, with a soft bloom -->
+<!-- the strike: a bloom of the symbol's lightning round it -->
 <Sprite
 	key="fxGlow"
 	anchor={0.5}
 	x={props.x}
 	y={props.y}
-	width={SYMBOL_SIZE * (props.premium ? 2.4 : 1.9) * grow}
-	height={SYMBOL_SIZE * (props.premium ? 2.4 : 1.9) * grow}
-	tint={SQUARE}
-	alpha={0.35 * hold + 0.6 * flash.current}
+	width={SYMBOL_SIZE * (high ? 2.3 : 1.8) * (1 + 0.3 * surge)}
+	height={SYMBOL_SIZE * (high ? 2.3 : 1.8) * (1 + 0.3 * surge)}
+	tint={bolt.glow}
+	alpha={Math.min(1, 0.3 * level + 0.7 * hit.current)}
 	blendMode="add"
 />
-<Rectangle
-	anchor={0.5}
-	x={props.x}
-	y={props.y}
-	width={CELL}
-	height={CELL}
-	borderRadius={CELL * 0.12}
-	backgroundAlpha={0}
-	borderColor={flash.current > 0.5 ? 0xffffff : SQUARE}
-	borderWidth={4 + 3 * flash.current}
-	alpha={hold}
-/>
-
-<!-- the outline: the symbol's silhouette, painted flat and drawn offset all round it -->
-<Container x={props.x} y={props.y} filters={[solidFilter(OUTLINE)]} alpha={hold} blendMode="add">
-	{#each DIRS as [dx, dy]}
-		<Sprite key={props.assetKey} anchor={0.5} x={dx * R} y={dy * R} width={w} height={h} />
+<!-- the arc: a wide coloured glow, then a white-hot core hugging the silhouette -->
+<Container x={props.x} y={props.y} filters={[solidFilter(bolt.glow)]} alpha={Math.min(1, 0.75 * level)} blendMode="add">
+	{#each DIRS as [dx, dy], i}
+		<Sprite key={props.assetKey} anchor={0.5} x={dx * GLOW_R * (0.8 + 0.4 * rnd(10 + i))} y={dy * GLOW_R * (0.8 + 0.4 * rnd(30 + i))} width={w} height={h} />
 	{/each}
 </Container>
-
-<!-- the white-hot hit -->
-{#if flash.current > 0.01}
-	<Sprite
-		key="fxGlow"
-		anchor={0.5}
-		x={props.x}
-		y={props.y}
-		width={SYMBOL_SIZE * 1.1 * grow}
-		height={SYMBOL_SIZE * 1.1 * grow}
-		tint={0xffffff}
-		alpha={flash.current * 0.75}
-		blendMode="add"
-	/>
-{/if}
+<Container x={props.x} y={props.y} filters={[solidFilter(bolt.mid)]} alpha={Math.min(1, level)} blendMode="add">
+	{#each DIRS as [dx, dy]}
+		<Sprite key={props.assetKey} anchor={0.5} x={dx * CORE_R} y={dy * CORE_R} width={w} height={h} />
+	{/each}
+</Container>

@@ -55,7 +55,7 @@
 	<WinFlash
 		x={props.x}
 		y={props.y}
-		premium={HIGH_SYMBOLS.includes(props.rawSymbol.name) || props.rawSymbol.name === 'W'}
+		name={props.rawSymbol.name}
 		assetKey={staticInfo.assetKey}
 		sizeRatios={staticInfo.sizeRatios}
 	/>

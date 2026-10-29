@@ -25,6 +25,8 @@
 	import BoardFront from './BoardFront.svelte';
 	import BoardBanner from './BoardBanner.svelte';
 	import GlassBreak from './GlassBreak.svelte';
+	import WinCells from './WinCells.svelte';
+	import BoardContainer from './BoardContainer.svelte';
 	import Board from './Board.svelte';
 	import Anticipations from './Anticipations.svelte';
 	import ClusterWinAmounts from './ClusterWinAmounts.svelte';
@@ -91,6 +93,10 @@
 		<MainContainer>
 			<TumbleBoard />
 			<!-- <TumbleAnticipations /> -->
+			<!-- lightning boxes round winning cells: over the symbols, under the amounts -->
+			<BoardContainer>
+				<WinCells />
+			</BoardContainer>
 			<ClusterWinAmounts />
 		</MainContainer>
 
