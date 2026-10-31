@@ -17,6 +17,8 @@
 	const context = getContext();
 
 	let show = $state(false);
+	// the base game's last tumble total stayed up behind the free-spins intro screen
+	let introShowing = $state(false);
 	let amount = $state(0);
 	let animate = $state(false);
 	let oncomplete = $state(() => {});
@@ -24,6 +26,8 @@
 	context.eventEmitter.subscribeOnMount({
 		tumbleWinAmountShow: () => (show = true),
 		tumbleWinAmountHide: () => (show = false),
+		freeSpinIntroShow: () => (introShowing = true),
+		freeSpinIntroHide: () => (introShowing = false),
 		tumbleWinAmountReset: () => {
 			amount = 0;
 			animate = false;
@@ -40,7 +44,7 @@
 </script>
 
 <!-- never an empty plaque: a reset total ($0.00) hides it -->
-<TumbleWinAmountWrap show={show && amount > 0}>
+<TumbleWinAmountWrap show={show && amount > 0 && !introShowing}>
 	<TumbleWinAmountFrame>
 		{#snippet children({ frameSizes })}
 			<TumbleWinAmountText {amount} {animate} {oncomplete} width={frameSizes.width} />
