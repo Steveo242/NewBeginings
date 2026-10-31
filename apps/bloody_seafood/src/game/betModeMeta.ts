@@ -25,7 +25,7 @@ export const applyBetModeMeta = () => {
     ante_super: M('ante_super', 2.0, 'activate',
       'BLOOD TIDE',
       'Improved chance of landing the super bonus.',
-      'Raises the chance of triggering the super bonus round. Costs 2x the base play amount and stays active until turned off.',
+      'Raises the chance of triggering the super bonus round, where landed wilds carry into the next spin (up to 6). Costs 2x the base play amount and stays active until turned off.',
       'ACTIVATE'),
     buy_bonus: M('buy_bonus', 100.0, 'buy',
       'THE HAUL',
@@ -35,7 +35,7 @@ export const applyBetModeMeta = () => {
     buy_super: M('buy_super', 500.0, 'buy',
       'THE MOTHERLODE',
       'Start the super bonus round immediately.',
-      'Begins the super bonus round on the next spin for 500x the base play amount.',
+      'Begins the super bonus round on the next spin for 500x the base play amount. Landed wilds carry into the next spin (up to 6).',
       'PLAY'),
   };
 };

@@ -31,7 +31,8 @@
 	<h2 class="bs-h2">Wild</h2>
 	<p>
 		The <strong>WILD</strong> substitutes for any paying symbol to help complete
-		a cluster. It appears only during free spins.
+		a cluster. It appears only during free spins. In the super bonus, landed wilds
+		are carried into the next spin (see Carried wilds).
 	</p>
 
 	<h2 class="bs-h2">Scatter &amp; free spins</h2>
@@ -74,8 +75,9 @@
 
 	<h2 class="bs-h2">Global multiplier</h2>
 	<p>
-		Both bonus modes carry a global multiplier that applies to every cluster
-		win. It starts at <span class="bs-num">1&times;</span> when the feature
+		Both the bonus (<strong>Deep Waters</strong>, <strong>The Haul</strong>) and the
+		super bonus (<strong>Blood Tide</strong>, <strong>The Motherlode</strong>) carry a
+		global multiplier that applies to every cluster win. It starts at <span class="bs-num">1&times;</span> when the feature
 		begins and rises by <span class="bs-num">1</span> for each winning cluster
 		that contains a <strong>WILD</strong>. It does not reset between free
 		spins &mdash; it holds whatever it has reached until the feature ends
@@ -86,10 +88,11 @@
 	<h2 class="bs-h2">Carried wilds</h2>
 	<p>
 		In the super bonus only &mdash; free spins played in <strong>Blood Tide</strong> or
-		<strong>The Motherlode</strong> &mdash; wilds carry from one free spin to the
-		next. The number carried grows as more wilds land, up to a maximum of
-		<span class="bs-num">6</span>. Their positions are drawn again each spin,
-		so carried wilds do not stay in the same squares.
+		<strong>The Motherlode</strong> &mdash; wilds that land are carried into the next
+		free spin. The number carried grows as more wilds land, up to a maximum of
+		<span class="bs-num">6</span>. Carried wilds are placed again at random, in
+		different squares, each spin. In the regular bonus (<strong>Deep Waters</strong>,
+		<strong>The Haul</strong>) wilds are not carried: every free spin is drawn fresh.
 	</p>
 
 	<h2 class="bs-h2">Play modes</h2>
