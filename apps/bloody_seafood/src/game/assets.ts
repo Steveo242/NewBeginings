@@ -74,6 +74,13 @@ export default {
 		src: new URL('../../assets/sprites/storm/fx_beam.webp', import.meta.url).href,
 		preload: true,
 	},
+	// a seamless 3D-rendered hawser (bs-render build_rope3d.py), bent along a MeshRope by
+	// Anticipation.svelte
+	fxRope: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/storm/fx_rope.webp', import.meta.url).href,
+		preload: true,
+	},
 	fxCaustics: {
 		type: 'sprite',
 		src: new URL('../../assets/sprites/storm/fx_caustics.png', import.meta.url).href,

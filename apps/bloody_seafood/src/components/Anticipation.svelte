@@ -2,7 +2,8 @@
 	// One anticipating reel (a scatter short of the feature): two hawsers drop down the
 	// column's edges and strain - thrumming, the column between them flushed blood-red -
 	// while the reel drops, matching the rope audio (sfx_rope_taut / _strain / _snap).
-	// Drawn in code; this used to be the sample game's anticipation spine. The phases keep
+	// The hawsers are a seamless 3D render (bs-render build_rope3d.py, the symbol studio's
+	// lights) bent along a PIXI.MeshRope; this used to be the sample game's anticipation spine. The phases keep
 	// its names: intro (the ropes run down the column), loop (strain), out (they go slack
 	// and fade once the reel stops), then oncomplete.
 	import * as PIXI from 'pixi.js';
@@ -51,10 +52,29 @@
 	const root = new PIXI.Container();
 	const mask = new PIXI.Graphics();
 	const wash = new PIXI.Graphics();
-	const ropes = new PIXI.Graphics();
 	const motes = new PIXI.Graphics();
 	motes.blendMode = 'add';
-	root.addChild(mask, wash, motes, ropes);
+	root.addChild(mask, wash, motes);
+
+	// The rope texture is 256 px thick; each MeshRope sits in a container scaled down to
+	// ROPE_SCALE so it draws ROPE_W * 1.5 thick, its points laid out in that container's
+	// units. textureScale 1 repeats the texture along the length at its own aspect.
+	const ROPE_SCALE = (ROPE_W * 1.5) / 256;
+	const ROPE_N = 24;
+	type Rope = { holder: PIXI.Container; mesh: PIXI.MeshRope; points: PIXI.Point[] };
+	const ropeTex = context.stateApp.loadedAssets?.fxRope as PIXI.Texture | undefined;
+	if (ropeTex) ropeTex.source.addressMode = 'repeat';
+	const makeRope = (): Rope | undefined => {
+		if (!ropeTex) return undefined;
+		const points = Array.from({ length: ROPE_N }, (_, i) => new PIXI.Point(0, i));
+		const mesh = new PIXI.MeshRope({ texture: ropeTex, points, textureScale: 1 });
+		const holder = new PIXI.Container();
+		holder.scale.set(ROPE_SCALE);
+		holder.addChild(mesh);
+		root.addChild(holder);
+		return { holder, mesh, points };
+	};
+	const ropePair = [makeRope(), makeRope()];
 	root.mask = mask;
 	parent.addToParent(root);
 
@@ -77,29 +97,16 @@
 		],
 	});
 
-	/** a twisted hawser down x, from y0 for len px, thrumming by amp */
-	const rope = (x: number, y0: number, len: number, amp: number, phase: number, alpha: number) => {
-		const pts: [number, number][] = [];
-		for (let y = 0; y <= len; y += 6) {
-			const u = y / Math.max(len, 1);
+	/** a hawser down x from y0 for len px, thrumming by amp (canvas units) */
+	const layRope = (r: Rope | undefined, x: number, y0: number, len: number, amp: number, phase: number, alpha: number) => {
+		if (!r) return;
+		const L = Math.max(len, 2);
+		r.points.forEach((p, i) => {
+			const u = i / (ROPE_N - 1);
 			const sway = Math.sin(u * Math.PI) * amp * Math.sin(time / 38 + phase);
-			pts.push([x + sway, y0 + y]);
-		}
-		const path = (w: number, color: number, a: number) => {
-			ropes.moveTo(pts[0][0], pts[0][1]);
-			for (const [px, py] of pts.slice(1)) ropes.lineTo(px, py);
-			ropes.stroke({ width: w, color, alpha: a * alpha, cap: 'round', join: 'round' });
-		};
-		path(ROPE_W * 1.6, 0x1a0c06, 0.55); // shadow / tarred core
-		path(ROPE_W, 0xb48a52, 1); // hemp
-		path(ROPE_W * 0.35, 0xf0d6a0, 0.55); // lit strand
-		// the lay of the twist: short dark diagonals down the rope
-		for (let i = 0; i < pts.length - 1; i += 2) {
-			const [px, py] = pts[i];
-			ropes.moveTo(px - ROPE_W * 0.5, py - ROPE_W * 0.3);
-			ropes.lineTo(px + ROPE_W * 0.5, py + ROPE_W * 0.45);
-		}
-		ropes.stroke({ width: 1.6, color: 0x4a2c12, alpha: 0.8 * alpha });
+			p.set((x + sway) / ROPE_SCALE, (y0 + u * L) / ROPE_SCALE);
+		});
+		r.holder.alpha = alpha;
 	};
 
 	const tick = () => {
@@ -136,10 +143,9 @@
 		wash.clear().rect(left, boardTop, SYMBOL_SIZE, H).fill(washFill);
 		wash.alpha = level * (0.7 + 0.3 * strain);
 
-		ropes.clear();
 		const len = H * (1 - (1 - reach) ** 2);
-		rope(left + ROPE_W, boardTop, len, amp, 0, level);
-		rope(right - ROPE_W, boardTop, len, amp, 1.7, level);
+		layRope(ropePair[0], left + ROPE_W, boardTop, len, amp, 0, level);
+		layRope(ropePair[1], right - ROPE_W, boardTop, len, amp, 1.7, level);
 
 		// fibres and blood motes drifting up the column
 		if (animationName !== 'anticipation_out' && Math.random() < dt / 70) {
