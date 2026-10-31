@@ -112,7 +112,10 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 			recordBookEvent({ bookEvent });
 		}
 
-		stateGame.gameType = bookEvent.gameType;
+		// the math names the bonus reveals 'freegame', the front end 'freeSpins': taken raw,
+		// every gameType === 'freeSpins' check failed in the bonus (big wins brought back the
+		// base music and the base win set)
+		stateGame.gameType = bookEvent.gameType === 'basegame' ? 'basegame' : 'freeSpins';
 		await stateGameDerived.enhancedBoard.spin({ revealEvent: bookEvent });
 		eventEmitter.broadcast({ type: 'soundScatterCounterClear' });
 	},
