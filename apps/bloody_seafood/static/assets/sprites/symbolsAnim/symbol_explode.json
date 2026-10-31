@@ -4,320 +4,400 @@
    "frame": {
     "x": 0,
     "y": 0,
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    },
    "rotated": false,
    "trimmed": false,
    "spriteSourceSize": {
     "x": 0,
     "y": 0,
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    },
    "sourceSize": {
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    }
   },
   "symbol_explode_0002.png": {
    "frame": {
-    "x": 256,
+    "x": 384,
     "y": 0,
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    },
    "rotated": false,
    "trimmed": false,
    "spriteSourceSize": {
     "x": 0,
     "y": 0,
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    },
    "sourceSize": {
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    }
   },
   "symbol_explode_0003.png": {
    "frame": {
-    "x": 512,
+    "x": 768,
     "y": 0,
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    },
    "rotated": false,
    "trimmed": false,
    "spriteSourceSize": {
     "x": 0,
     "y": 0,
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    },
    "sourceSize": {
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    }
   },
   "symbol_explode_0004.png": {
    "frame": {
-    "x": 768,
+    "x": 1152,
     "y": 0,
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    },
    "rotated": false,
    "trimmed": false,
    "spriteSourceSize": {
     "x": 0,
     "y": 0,
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    },
    "sourceSize": {
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    }
   },
   "symbol_explode_0005.png": {
    "frame": {
-    "x": 1024,
+    "x": 1536,
     "y": 0,
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    },
    "rotated": false,
    "trimmed": false,
    "spriteSourceSize": {
     "x": 0,
     "y": 0,
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    },
    "sourceSize": {
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    }
   },
   "symbol_explode_0006.png": {
    "frame": {
-    "x": 1280,
+    "x": 1920,
     "y": 0,
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    },
    "rotated": false,
    "trimmed": false,
    "spriteSourceSize": {
     "x": 0,
     "y": 0,
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    },
    "sourceSize": {
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    }
   },
   "symbol_explode_0007.png": {
    "frame": {
-    "x": 1536,
+    "x": 2304,
     "y": 0,
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    },
    "rotated": false,
    "trimmed": false,
    "spriteSourceSize": {
     "x": 0,
     "y": 0,
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    },
    "sourceSize": {
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    }
   },
   "symbol_explode_0008.png": {
    "frame": {
-    "x": 1792,
+    "x": 2688,
     "y": 0,
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    },
    "rotated": false,
    "trimmed": false,
    "spriteSourceSize": {
     "x": 0,
     "y": 0,
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    },
    "sourceSize": {
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    }
   },
   "symbol_explode_0009.png": {
    "frame": {
-    "x": 2048,
+    "x": 3072,
     "y": 0,
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    },
    "rotated": false,
    "trimmed": false,
    "spriteSourceSize": {
     "x": 0,
     "y": 0,
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    },
    "sourceSize": {
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    }
   },
   "symbol_explode_0010.png": {
    "frame": {
-    "x": 2304,
+    "x": 3456,
     "y": 0,
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    },
    "rotated": false,
    "trimmed": false,
    "spriteSourceSize": {
     "x": 0,
     "y": 0,
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    },
    "sourceSize": {
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    }
   },
   "symbol_explode_0011.png": {
    "frame": {
-    "x": 2560,
-    "y": 0,
-    "w": 256,
-    "h": 256
+    "x": 0,
+    "y": 384,
+    "w": 384,
+    "h": 384
    },
    "rotated": false,
    "trimmed": false,
    "spriteSourceSize": {
     "x": 0,
     "y": 0,
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    },
    "sourceSize": {
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    }
   },
   "symbol_explode_0012.png": {
    "frame": {
-    "x": 2816,
-    "y": 0,
-    "w": 256,
-    "h": 256
+    "x": 384,
+    "y": 384,
+    "w": 384,
+    "h": 384
    },
    "rotated": false,
    "trimmed": false,
    "spriteSourceSize": {
     "x": 0,
     "y": 0,
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    },
    "sourceSize": {
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    }
   },
   "symbol_explode_0013.png": {
    "frame": {
-    "x": 3072,
-    "y": 0,
-    "w": 256,
-    "h": 256
+    "x": 768,
+    "y": 384,
+    "w": 384,
+    "h": 384
    },
    "rotated": false,
    "trimmed": false,
    "spriteSourceSize": {
     "x": 0,
     "y": 0,
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    },
    "sourceSize": {
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    }
   },
   "symbol_explode_0014.png": {
    "frame": {
-    "x": 3328,
-    "y": 0,
-    "w": 256,
-    "h": 256
+    "x": 1152,
+    "y": 384,
+    "w": 384,
+    "h": 384
    },
    "rotated": false,
    "trimmed": false,
    "spriteSourceSize": {
     "x": 0,
     "y": 0,
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    },
    "sourceSize": {
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    }
   },
   "symbol_explode_0015.png": {
    "frame": {
-    "x": 3584,
-    "y": 0,
-    "w": 256,
-    "h": 256
+    "x": 1536,
+    "y": 384,
+    "w": 384,
+    "h": 384
    },
    "rotated": false,
    "trimmed": false,
    "spriteSourceSize": {
     "x": 0,
     "y": 0,
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    },
    "sourceSize": {
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    }
   },
   "symbol_explode_0016.png": {
    "frame": {
-    "x": 3840,
-    "y": 0,
-    "w": 256,
-    "h": 256
+    "x": 1920,
+    "y": 384,
+    "w": 384,
+    "h": 384
    },
    "rotated": false,
    "trimmed": false,
    "spriteSourceSize": {
     "x": 0,
     "y": 0,
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
    },
    "sourceSize": {
-    "w": 256,
-    "h": 256
+    "w": 384,
+    "h": 384
+   }
+  },
+  "symbol_explode_0017.png": {
+   "frame": {
+    "x": 2304,
+    "y": 384,
+    "w": 384,
+    "h": 384
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 384,
+    "h": 384
+   },
+   "sourceSize": {
+    "w": 384,
+    "h": 384
+   }
+  },
+  "symbol_explode_0018.png": {
+   "frame": {
+    "x": 2688,
+    "y": 384,
+    "w": 384,
+    "h": 384
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 384,
+    "h": 384
+   },
+   "sourceSize": {
+    "w": 384,
+    "h": 384
+   }
+  },
+  "symbol_explode_0019.png": {
+   "frame": {
+    "x": 3072,
+    "y": 384,
+    "w": 384,
+    "h": 384
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 384,
+    "h": 384
+   },
+   "sourceSize": {
+    "w": 384,
+    "h": 384
+   }
+  },
+  "symbol_explode_0020.png": {
+   "frame": {
+    "x": 3456,
+    "y": 384,
+    "w": 384,
+    "h": 384
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 384,
+    "h": 384
+   },
+   "sourceSize": {
+    "w": 384,
+    "h": 384
    }
   }
  },
@@ -338,17 +418,21 @@
    "symbol_explode_0013.png",
    "symbol_explode_0014.png",
    "symbol_explode_0015.png",
-   "symbol_explode_0016.png"
+   "symbol_explode_0016.png",
+   "symbol_explode_0017.png",
+   "symbol_explode_0018.png",
+   "symbol_explode_0019.png",
+   "symbol_explode_0020.png"
   ]
  },
  "meta": {
-  "app": "bloody-seafood build_explode",
-  "version": "1.0",
-  "image": "symbol_explode.png",
+  "app": "bloody-seafood build_explode_v2",
+  "version": "2.0",
+  "image": "symbol_explode.webp",
   "format": "RGBA8888",
   "size": {
-   "w": 4096,
-   "h": 256
+   "w": 3840,
+   "h": 768
   },
   "scale": "1"
  }

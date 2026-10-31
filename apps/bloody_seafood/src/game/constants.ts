@@ -179,17 +179,18 @@ export const zIndexes = {
 	},
 };
 
-// Shared by every symbol - TumbleBoard sets 'explosion' on all winning
-// symbols in a cascade, so this is a generic burst rather than the wild's
-// own art, despite the spec calling it the wild explode. Was Mining
-// Mayhem's dynamite spine; now a blood-and-brine splash spritesheet.
-// SymbolAnimatedSprite fires onComplete for it, which TumbleBoard awaits
-// per symbol - a burst that never completed would hang the cascade.
+// Shared by every symbol - TumbleBoard sets 'explosion' on all winning symbols in a
+// cascade, so this is a generic burst: a painted blood cloud, shaded droplets, gore
+// chunks and brine spray (build_explode_v2.py). Symbol.svelte pops the symbol itself
+// (swell + flash + fade) underneath it so the symbol bursts rather than vanishes.
+// SymbolAnimatedSprite fires onComplete for it, which TumbleBoard awaits per symbol -
+// a burst that never completed would hang the cascade. 20 frames at 1.25x pace keeps
+// the ~0.4 s the 16-frame v1 took.
 const explosion = {
 	type: 'spriteSheet',
 	assetKey: 'symbolExplode',
-	sizeRatios: { width: 1.25, height: 1.25 },
-	animationSpeed: ANIM_PACE,
+	sizeRatios: { width: 1.6, height: 1.6 },
+	animationSpeed: ANIM_PACE * 1.25,
 };
 
 // Symbol art fills ~88% of its atlas cell. Drawn 1.2x, the fish reach just past their

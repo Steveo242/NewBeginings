@@ -3,6 +3,7 @@
 	import SymbolSprite from './SymbolSprite.svelte';
 	import SymbolAnimatedSprite from './SymbolAnimatedSprite.svelte';
 	import SymbolGlow from './SymbolGlow.svelte';
+	import SymbolPop from './SymbolPop.svelte';
 	import WinFlash from './WinFlash.svelte';
 	import { getSymbolBackgroundInfo, getSymbolInfo } from '../game/utils';
 	import type { SymbolState, RawSymbol } from '../game/types';
@@ -78,6 +79,9 @@
 		shine={glowKind === 'wild' && glowLit}
 	/>
 {:else if isSpriteSheet}
+	{#if props.state === 'explosion' && staticInfo.type === 'sprite'}
+		<SymbolPop symbolInfo={staticInfo} x={props.x} y={props.y} />
+	{/if}
 	<SymbolAnimatedSprite
 		{symbolInfo}
 		x={props.x}
