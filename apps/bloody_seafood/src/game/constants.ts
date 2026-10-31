@@ -362,7 +362,8 @@ export const SYMBOL_INFO_MAP = {
 		postWinStatic: wStatic,
 		static: wStatic,
 		spin: wStatic,
-		win: win3d('W_win', 1.8, 0.5),
+		// the blood-drenched BS letters (build_wild_bs.py): hop, pop and twist like the lows
+		win: win3d('W_win', 2.0, 0.5),
 		land: wStatic,
 	},
 	S: {
@@ -370,10 +371,8 @@ export const SYMBOL_INFO_MAP = {
 		postWinStatic: sStatic,
 		static: sStatic,
 		spin: sStatic,
-		// 2.5x: the chest hops and its coins fountain well above the cell
-		// 71 frames: the 30 fps render doubled with optical-flow in-betweens (pack_symbol3d.py
-		// INTERP=1), so it plays ~1.6x slower than the other wins without stepping
-		win: win3d('S_win', 2.5, 0.625),
+		// the gold anchor, lettered SCATTER: swings from its ring with a glint across the gold
+		win: win3d('S_win', 1.8, 0.5),
 		land: sStatic,
 	},
 	M_2: {

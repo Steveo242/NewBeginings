@@ -55,14 +55,14 @@
 	<h2 class="bs-h2">Special symbols</h2>
 	<ul class="bs-specials">
 		<li>
-			<img class="bs-symbol bs-symbol--special" src={wIcon} alt="Wild anchor" />
+			<img class="bs-symbol bs-symbol--special" src={wIcon} alt="Wild: blood-drenched BS letters" />
 			<span>
 				<strong>WILD</strong> &mdash; substitutes for any paying symbol. Appears
 				during free spins only. Has no win of its own.
 			</span>
 		</li>
 		<li>
-			<img class="bs-symbol bs-symbol--special" src={sIcon} alt="Scatter chest" />
+			<img class="bs-symbol bs-symbol--special" src={sIcon} alt="Scatter: gold anchor" />
 			<span>
 				<strong>SCATTER</strong> &mdash; <span class="bs-num">3</span> or more
 				anywhere on the board award free spins. Has no cluster win of its own.

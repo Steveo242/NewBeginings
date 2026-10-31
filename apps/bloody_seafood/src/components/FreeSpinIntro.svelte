@@ -40,7 +40,7 @@
 	const lines = $derived([
 		'EACH WINNING CLUSTER WITH A WILD: MULTIPLIER +1',
 		'THE MULTIPLIER NEVER RESETS DURING THE FEATURE',
-		isSuper ? 'LANDED WILDS CARRY INTO EVERY NEXT SPIN (MAX 6)' : '3+ CHESTS AWARD EXTRA SPINS',
+		isSuper ? 'LANDED WILDS CARRY INTO EVERY NEXT SPIN (MAX 6)' : '3+ ANCHORS AWARD EXTRA SPINS',
 	]);
 	/** WinBanner's plaque height (W 0.86 x board, H = 0.34 W) */
 	const BANNER_H = $derived(context.stateGameDerived.boardLayout().width * 0.86 * 0.34);

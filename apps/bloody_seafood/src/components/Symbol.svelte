@@ -25,7 +25,7 @@
 	const isSprite = $derived(symbolInfo.type === 'sprite');
 	const isSpriteSheet = $derived(symbolInfo.type === 'spriteSheet');
 	// Only the fish (the high symbols) swim gently at rest; the chum pails, crate,
-	// chest, anchor and multipliers sit still until their own land/win animations.
+	// anchor, BS wild and multipliers sit still until their own land/win animations.
 	const idle = $derived(
 		(props.state === 'static' || props.state === 'postWinStatic') &&
 			HIGH_SYMBOLS.includes(props.rawSymbol.name),
