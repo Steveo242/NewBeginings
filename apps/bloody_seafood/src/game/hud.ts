@@ -23,8 +23,8 @@ export const hudColumn = (context: HudContext, slot: 'counter' | 'multiplier') =
 			: { x, y: -SYMBOL_SIZE * 3.55 };
 	}
 	const x = -FRAME_OVERHANG - GAP - HUD_PANEL_W * 0.5;
-	// landscape phones: the left column holds balance, win and the menu, and the counter
-	// rides in the play plate - the meter takes the bonus buy's spot at the column's top
-	if (context.stateLayoutDerived.layoutType() === 'landscape') return { x, y: SYMBOL_SIZE * 0.15 };
+	// desktop / landscape phones: the left column holds balance, win and the menu, and the
+	// counter rides in the play plate - the meter takes the bonus buy's spot at the top
+	if (['landscape', 'desktop'].includes(context.stateLayoutDerived.layoutType())) return { x, y: SYMBOL_SIZE * 0.15 };
 	return slot === 'counter' ? { x, y: SYMBOL_SIZE * 1.0 } : { x, y: SYMBOL_SIZE * 3.05 };
 };

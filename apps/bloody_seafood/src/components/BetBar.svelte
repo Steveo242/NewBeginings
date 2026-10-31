@@ -73,6 +73,8 @@
 	/** the spin never needs to be bigger than this on screen (px): top-studio desktop size */
 	const MAX_SIDE_SCALE = 0.46;
 	const MIN_SIDE_SCALE = 0.2;
+	/** the flanking columns (desktop / landscape phones) - a step bigger than the old cluster */
+	const MAX_COLUMN_SCALE = 0.6;
 	/** the buy plaque, relative to BarButton's own buy size (1.9 B wide) */
 	const BUY_K = 1.5;
 
@@ -87,7 +89,8 @@
 	// small and bunched the menu icons in one corner. There balance, win and the menu
 	// icons form a column left of the tank under the bonus buy, mirroring the play
 	// cluster on the right, and the board stands on the bottom edge (stateGame).
-	const phone = $derived(context.stateLayoutDerived.layoutType() === 'landscape');
+	// (named for where it started; desktop uses the same columns, so the board can fill the height)
+	const phone = $derived(['landscape', 'desktop'].includes(context.stateLayoutDerived.layoutType()));
 	const BUY_H = B * 0.95 * BUY_K;
 	const LEFT_GAP = 34;
 	const LEFT_H = BUY_H + LEFT_GAP * 2 + PLATE_H * 2 + 18 + ICON;
@@ -96,10 +99,13 @@
 	const side = $derived.by(() => {
 		const roomW = canvas.width - tankRight - SIDE_MARGIN * 2;
 		if (phone) {
-			const q = Math.min(roomW / CLUSTER_W, (canvas.height * 0.36) / SPIN_BIG, MAX_SIDE_SCALE,
+			// the bigger board leaves less room, so the controls may grow into what there is -
+			// capped in px at 1080 high, growing with taller screens (2560x1440 left them tiny)
+			const cap = MAX_COLUMN_SCALE * Math.max(1, canvas.height / 1080);
+			const q = Math.min(roomW / CLUSTER_W, (canvas.height * 0.36) / SPIN_BIG, cap,
 				(canvas.height - SIDE_MARGIN * 2) / CLUSTER_H);
 			const cx = tankRight + SIDE_MARGIN + roomW * 0.5;
-			const ql = Math.min(roomW / LEFT_W, (canvas.height - SIDE_MARGIN * 2) / LEFT_H, MAX_SIDE_SCALE);
+			const ql = Math.min(roomW / LEFT_W, (canvas.height - SIDE_MARGIN * 2) / LEFT_H, cap);
 			return {
 				ok: q >= MIN_SIDE_SCALE * 0.6,
 				q,
@@ -167,10 +173,10 @@
 	const REPLAY_HIDDEN = ['balance', 'buy', 'dec', 'inc', 'auto'];
 	const shown = (key: string) => !(isReplay() && REPLAY_HIDDEN.includes(key));
 
-	// FreeSpinCounter only draws its side panel on desktop, so everywhere else
-	// (landscape phones too) the bet slot carries the count itself.
+	// The bet slot carries the free-spin count on every layout (the left column holds
+	// balance and win on wide layouts, so FreeSpinCounter's side plaque is retired).
 	const counterInBar = $derived(
-		stateUi.freeSpinCounterShow && context.stateLayoutDerived.layoutType() !== 'desktop',
+		stateUi.freeSpinCounterShow,
 	);
 
 	const menuX = $derived(canvas.width * 0.5 + menuStripX * sq);

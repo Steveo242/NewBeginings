@@ -10,11 +10,12 @@ export const { stateLayout, stateLayoutDerived } = createLayout({
 	// bet bar nowhere to go but on top of the reels. The extra height is
 	// headroom for the bar, not a bigger board.
 	mainSizesMap: {
-		desktop: { width: 1422, height: 1180 },
+		// desktop and landscape phones: the tank's own height (a slimmer logo band over it,
+		// the base under it) and no bottom strip - balance, win and the menu stand in a
+		// column left of the tank (BetBar), so the board fills the screen height
+		desktop: { width: 1422, height: 1020 },
 		tablet: { width: 1000, height: 1360 },
-		// landscape phones: the tank's own height (logo band over it, base under it) and no
-		// bar strip - the board fills the screen height, the controls flank it (BetBar)
-		landscape: { width: 1600, height: 1080 },
+		landscape: { width: 1600, height: 1020 },
 		portrait: { width: 800, height: 1422 },
 	},
 });

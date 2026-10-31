@@ -141,9 +141,9 @@ const TANK_BELOW = SYMBOL_SIZE * 3.5 + SYMBOL_SIZE * 1.5;
  */
 const boardCenterY = () => {
 	const main = stateLayoutDerived.mainLayout();
-	// landscape phones: the tank stands on the bottom edge (balance and win moved off the
-	// bottom strip into the side columns, BetBar), so the board takes the whole height
-	if (stateLayoutDerived.layoutType() === 'landscape') return main.height - TANK_BELOW - 10;
+	// desktop and landscape phones: the tank stands on the bottom edge (balance and win moved
+	// off the bottom strip into the side columns, BetBar), so the board takes the whole height
+	if (['landscape', 'desktop'].includes(stateLayoutDerived.layoutType())) return main.height - TANK_BELOW - 10;
 	if (!stateLayoutDerived.isStacked()) return main.height * BOARD_CENTER_Y_RATIO;
 	const canvas = stateLayoutDerived.canvasSizes();
 	return main.height * 0.5 + (stackedBoardCenterY(canvas, main.scale) - canvas.height * 0.5) / main.scale;
