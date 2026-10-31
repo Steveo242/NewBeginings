@@ -12,7 +12,9 @@ export const { stateLayout, stateLayoutDerived } = createLayout({
 	mainSizesMap: {
 		desktop: { width: 1422, height: 1180 },
 		tablet: { width: 1000, height: 1360 },
-		landscape: { width: 1600, height: 1300 },
+		// landscape phones: the tank's own height (logo band over it, base under it) and no
+		// bar strip - the board fills the screen height, the controls flank it (BetBar)
+		landscape: { width: 1600, height: 1080 },
 		portrait: { width: 800, height: 1422 },
 	},
 });

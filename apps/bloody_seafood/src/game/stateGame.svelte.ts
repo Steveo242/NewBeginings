@@ -132,6 +132,8 @@ export const stateGame = $state({
  * share. Dead centre split them evenly and left the bar squeezed.
  */
 const BOARD_CENTER_Y_RATIO = 0.47;
+/** the tank's iron base (beam + plinth) under the grid's centre, in board units */
+const TANK_BELOW = SYMBOL_SIZE * 3.5 + SYMBOL_SIZE * 1.5;
 
 /**
  * Stacked layouts size the bet bar first, to a fixed share of the screen, and stand the
@@ -139,6 +141,9 @@ const BOARD_CENTER_Y_RATIO = 0.47;
  */
 const boardCenterY = () => {
 	const main = stateLayoutDerived.mainLayout();
+	// landscape phones: the tank stands on the bottom edge (balance and win moved off the
+	// bottom strip into the side columns, BetBar), so the board takes the whole height
+	if (stateLayoutDerived.layoutType() === 'landscape') return main.height - TANK_BELOW - 10;
 	if (!stateLayoutDerived.isStacked()) return main.height * BOARD_CENTER_Y_RATIO;
 	const canvas = stateLayoutDerived.canvasSizes();
 	return main.height * 0.5 + (stackedBoardCenterY(canvas, main.scale) - canvas.height * 0.5) / main.scale;

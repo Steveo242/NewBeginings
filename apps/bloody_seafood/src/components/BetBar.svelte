@@ -83,8 +83,33 @@
 	const ICONS_W = ICONS.length * ICON + (ICONS.length - 1) * ICON_GAP;
 	const STRIP_LABEL_SPACING = LABEL_W + 60;
 
+	// Landscape phones have no height to spare for the bottom strip - it kept the tank
+	// small and bunched the menu icons in one corner. There balance, win and the menu
+	// icons form a column left of the tank under the bonus buy, mirroring the play
+	// cluster on the right, and the board stands on the bottom edge (stateGame).
+	const phone = $derived(context.stateLayoutDerived.layoutType() === 'landscape');
+	const BUY_H = B * 0.95 * BUY_K;
+	const LEFT_GAP = 34;
+	const LEFT_H = BUY_H + LEFT_GAP * 2 + PLATE_H * 2 + 18 + ICON;
+	const LEFT_W = Math.max(ICONS_W, LABEL_W * 1.06, B * 1.9 * BUY_K);
+
 	const side = $derived.by(() => {
 		const roomW = canvas.width - tankRight - SIDE_MARGIN * 2;
+		if (phone) {
+			const q = Math.min(roomW / CLUSTER_W, (canvas.height * 0.36) / SPIN_BIG, MAX_SIDE_SCALE,
+				(canvas.height - SIDE_MARGIN * 2) / CLUSTER_H);
+			const cx = tankRight + SIDE_MARGIN + roomW * 0.5;
+			const ql = Math.min(roomW / LEFT_W, (canvas.height - SIDE_MARGIN * 2) / LEFT_H, MAX_SIDE_SCALE);
+			return {
+				ok: q >= MIN_SIDE_SCALE * 0.6,
+				q,
+				cx,
+				cy: canvas.height * 0.5,
+				lx: 2 * boardCx - cx,
+				stripScale: ql,
+				stripH: 0,
+			};
+		}
 		// the strip: as tall as the controls want, but never over the tank's base
 		const q0 = Math.min(roomW / CLUSTER_W, (canvas.height * 0.27) / SPIN_BIG, MAX_SIDE_SCALE);
 		const stripScale = Math.min(
@@ -131,7 +156,10 @@
 	const stripLeft = -STACKED_ROW_W / 2;
 	const menuStripX = stripLeft + S.ICON / 2;
 	const stripAmountsLeft = stripLeft + S.ICON + S.GAP;
-	const stripSlot = (STACKED_ROW_W / 2 - stripAmountsLeft) / 3;
+	// menu icon at the left end, sound at the right end, the three amounts centred between
+	// them - with only the menu, the amounts sat right of centre and the strip looked lopsided
+	const soundStripX = -menuStripX;
+	const stripSlot = (-stripAmountsLeft - stripAmountsLeft) / 3;
 	const stripX = (i: number) => stripAmountsLeft + stripSlot * (i + 0.5);
 
 	// A replay only watches one finished round: no balance, no changing the play amount,
@@ -139,11 +167,10 @@
 	const REPLAY_HIDDEN = ['balance', 'buy', 'dec', 'inc', 'auto'];
 	const shown = (key: string) => !(isReplay() && REPLAY_HIDDEN.includes(key));
 
-	// Game.svelte only renders the side counter panel on wide layouts, so
-	// everywhere else the bet slot has to carry the count itself.
+	// FreeSpinCounter only draws its side panel on desktop, so everywhere else
+	// (landscape phones too) the bet slot carries the count itself.
 	const counterInBar = $derived(
-		stateUi.freeSpinCounterShow &&
-			!['desktop', 'landscape'].includes(context.stateLayoutDerived.layoutType()),
+		stateUi.freeSpinCounterShow && context.stateLayoutDerived.layoutType() !== 'desktop',
 	);
 
 	const menuX = $derived(canvas.width * 0.5 + menuStripX * sq);
@@ -224,7 +251,34 @@
 	</Container>
 {/snippet}
 
-{#if side.ok}
+{#if side.ok && phone}
+	<!-- landscape phone: the left column - bonus buy, balance, win, menu icons -->
+	<Container zIndex={60} x={side.lx} y={side.cy} scale={side.stripScale}>
+		<Sprite key="fxGlow" anchor={0.5} width={LEFT_W * 1.4} height={LEFT_H * 1.25} tint={0x000000} alpha={0.6} />
+		{#if buyVisible}
+			<Container y={-LEFT_H * 0.5 + BUY_H * 0.5} scale={BUY_K}>
+				{@render buyPlaque()}
+			</Container>
+		{/if}
+		{#if shown('balance')}
+			<Container y={-LEFT_H * 0.5 + BUY_H + LEFT_GAP + PLATE_H * 0.5}>
+				{@render amount('balance')}
+			</Container>
+		{/if}
+		<Container y={-LEFT_H * 0.5 + BUY_H + LEFT_GAP + PLATE_H * 1.5 + 18}>
+			{@render amount('win')}
+		</Container>
+		<Container x={-ICONS_W * 0.5} y={LEFT_H * 0.5 - ICON * 0.5}>
+			{#each ICONS as key, i (key)}
+				<Container x={ICON * 0.5 + i * (ICON + ICON_GAP)} scale={ICON_K}>
+					<BarButton kind={key} />
+				</Container>
+			{/each}
+		</Container>
+	</Container>
+{/if}
+
+{#if side.ok && !phone}
 	<!-- the strip: balance, win and the menu icons, flat along the bottom edge -->
 	<Container zIndex={60}>
 		<Rectangle
@@ -264,6 +318,9 @@
 		</Container>
 	</Container>
 
+{/if}
+
+{#if side.ok}
 	<!-- the play cluster, right of the tank: bet -/+ over a big spin, autoplay and turbo.
 	     A soft shadow pool under it keeps it legible over the trawler and the surf. -->
 	<Container zIndex={60} x={side.cx} y={side.cy} scale={side.q}>
@@ -276,13 +333,13 @@
 			alpha={0.7}
 		/>
 		<Container y={-CLUSTER_H * 0.5 + LABEL_H * 0.5}>
-			{#if shown('dec')}
+			{#if shown('dec') && !counterInBar}
 				<Container x={-(LABEL_W + STEP) * 0.5 - SIDE_GAP}>
 					{@render step('dec')}
 				</Container>
 			{/if}
 			{@render amount('bet')}
-			{#if shown('inc')}
+			{#if shown('inc') && !counterInBar}
 				<Container x={(LABEL_W + STEP) * 0.5 + SIDE_GAP}>
 					{@render step('inc')}
 				</Container>
@@ -303,7 +360,7 @@
 
 	<!-- the bonus buy, big, in the sky left of the tank (the free-spins HUD takes this
 	     spot while it is hidden during free spins) -->
-	{#if buyVisible}
+	{#if buyVisible && !phone}
 		<Container zIndex={60} x={side.lx} y={side.cy} scale={side.q * BUY_K}>
 			{@render buyPlaque()}
 		</Container>
@@ -332,6 +389,9 @@
 		<Container x={canvas.width * 0.5} y={stripCy} scale={sq}>
 			<Container x={menuStripX} scale={S.ICON / B}>
 				<BarButton kind="menu" />
+			</Container>
+			<Container x={soundStripX} scale={S.ICON / B}>
+				<BarButton kind="sound" />
 			</Container>
 			{#each ['balance', 'bet', 'win'] as key, i (key)}
 				{#if shown(key)}
@@ -389,8 +449,8 @@
 
 		<!-- the menu fans up from its strip icon, each entry a full-size button -->
 		<Container x={menuX + (B * sq) / 2} y={menuY} scale={sq}>
-			{#each ['pay', 'rules', 'settings', 'sound'] as kind, i (kind)}
-				<Container y={-(B + GAP) * (4 - i) - B * 0.3}>
+			{#each ['pay', 'rules', 'settings'] as kind, i (kind)}
+				<Container y={-(B + GAP) * (3 - i) - B * 0.3}>
 					<BarButton kind={kind as BarButtonKind} />
 				</Container>
 			{/each}

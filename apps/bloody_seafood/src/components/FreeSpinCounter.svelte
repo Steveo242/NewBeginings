@@ -52,7 +52,9 @@
 	// swap its play-amount label for the spin count on stacked (phone) layouts. The plaque
 	// itself only has room beside the tank on wide layouts. (Mounting the whole component
 	// only on wide layouts left phones with no spin count at all.)
-	const wide = $derived(['desktop', 'landscape'].includes(context.stateLayoutDerived.layoutType()));
+	// desktop only: landscape phones show the count in the play plate (BetBar), their left
+	// column is full with the balance and win
+	const wide = $derived(context.stateLayoutDerived.layoutType() === 'desktop');
 </script>
 
 <FadeContainer show={show && wide}>

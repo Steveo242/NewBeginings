@@ -25,7 +25,10 @@
 			x={context.stateLayoutDerived.mainLayout().width * 0.5}
 			y={context.stateLayoutDerived.mainLayout().height * 0.5}
 		>
-			<Sprite key="titlePlaque" anchor={0.5} width={1100} height={1100 / LOGO_ASPECT} y={-60} />
+			<!-- 1100 wide on desktop/landscape; a portrait phone's main area is only 800 wide,
+			     so the title is fitted to it (it overflowed and lost both ends) -->
+			{@const logoW = Math.min(1100, context.stateLayoutDerived.mainLayout().width * 0.94)}
+			<Sprite key="titlePlaque" anchor={0.5} width={logoW} height={logoW / LOGO_ASPECT} y={-60} />
 			{#if !context.stateApp.loaded}
 				<LoadingProgress y={250} width={1967 * 0.2} height={346 * 0.2}>
 					{#snippet background(sizes)}
