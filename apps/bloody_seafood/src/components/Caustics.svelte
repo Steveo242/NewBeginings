@@ -4,6 +4,7 @@
 	import { getContextParent } from 'pixi-svelte';
 
 	import { getContext } from '../game/context';
+	import { idleLife } from '../game/idleLife.svelte';
 
 	type Props = { x: number; y: number; width: number; height: number };
 	const props: Props = $props();
@@ -23,6 +24,10 @@
 		if (layers.length < 2 || !noise) return;
 		layers[0].tilePosition.set(t * 0.012, t * 0.02);
 		layers[1].tilePosition.set(-t * 0.009, t * 0.014);
+		// IdleLife's slow light ripple between spins: up to ~1.8x, still faint
+		const lift = 1 + idleLife.ripple * 0.8;
+		layers[0].alpha = 0.075 * lift;
+		layers[1].alpha = 0.055 * lift;
 		noise.position.set(-(t * 0.02) % 512, -(t * 0.015) % 512);
 	};
 

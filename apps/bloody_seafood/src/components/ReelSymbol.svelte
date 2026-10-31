@@ -2,6 +2,7 @@
 	import Symbol from './Symbol.svelte';
 	import SymbolWrap from './SymbolWrap.svelte';
 	import { getSymbolInfo, getSymbolX } from '../game/utils';
+	import { SYMBOL_SIZE } from '../game/constants';
 	import type { ReelSymbol } from '../game/stateGame.svelte';
 
 	type Props = {
@@ -33,6 +34,7 @@
 	<Symbol
 		state={props.reelSymbol.symbolState}
 		rawSymbol={props.reelSymbol.rawSymbol}
+		cell={`${props.reelIndex}:${Math.floor(props.reelSymbol.symbolY.current / SYMBOL_SIZE)}`}
 		oncomplete={() => {
 			if (props.reelSymbol.symbolState === 'win') props.reelSymbol.oncomplete();
 			if (props.reelSymbol.symbolState === 'land') props.reelSymbol.symbolState = 'static';

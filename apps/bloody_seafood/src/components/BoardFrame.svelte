@@ -6,6 +6,7 @@
 	import { BOARD_DIMENSIONS, BOARD_SIZES, SYMBOL_SIZE } from '../game/constants';
 	import Bubbles from './Bubbles.svelte';
 	import Caustics from './Caustics.svelte';
+	import IdleLife from './IdleLife.svelte';
 
 	const context = getContext();
 	// Faint solid separators, drawn into one Graphics rather than a Rectangle
@@ -47,6 +48,7 @@
 		<Rectangle isMask x={left} y={top} width={open} height={open} />
 		<Caustics x={left} y={top} width={open} height={open} />
 		<Bubbles x={left} y={top} width={open} height={open} count={22} opacity={0.5} sizeRange={[0.018, 0.055]} />
+		<IdleLife x={left} y={top} width={open} height={open} />
 		<GraphicsNode x={layout.x - BOARD_SIZES.width * 0.5} y={layout.y - BOARD_SIZES.height * 0.5} draw={drawGrid} />
 	</Container>
 {/if}

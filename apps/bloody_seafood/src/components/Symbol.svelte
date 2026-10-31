@@ -15,6 +15,8 @@
 		rawSymbol: RawSymbol;
 		oncomplete?: () => void;
 		loop?: boolean;
+		/** `${reel}:${row}` on the board (idle phase, the occasional breath) */
+		cell?: string;
 	};
 
 	const props: Props = $props();
@@ -52,6 +54,8 @@
 		oncomplete={props.oncomplete}
 		bounce={props.state === 'land'}
 		{idle}
+		resting={props.state === 'static' || props.state === 'postWinStatic'}
+		cell={props.cell}
 		spinning={props.state === 'spin'}
 	/>
 {:else if isSpriteSheet}

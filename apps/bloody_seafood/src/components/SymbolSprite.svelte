@@ -8,6 +8,7 @@
 	import { SYMBOL_SIZE } from '../game/constants';
 	import { getContext } from '../game/context';
 	import { BEAT_MS } from '../game/tempo';
+	import { idleLife } from '../game/idleLife.svelte';
 
 	type Props = {
 		x?: number;
@@ -19,6 +20,10 @@
 		idle?: boolean;
 		/** Symbol is mid-tumble - eligible for the fall motion blur. */
 		spinning?: boolean;
+		/** Any symbol at rest - eligible for IdleLife's occasional breath. */
+		resting?: boolean;
+		/** `${reel}:${row}` on the board. */
+		cell?: string;
 	};
 
 	const props: Props = $props();
@@ -41,12 +46,22 @@
 	}
 	$effect(() => () => context.stateApp.pixiApplication?.ticker.remove(tick));
 
-	const phase = $derived(((props.x ?? 0) * 0.37 + (props.y ?? 0) * 0.53) % (Math.PI * 2));
+	// (from the cell: x/y are always 0 here - the wrap positions the symbol - so every
+	// fish used to bob in lockstep)
+	const cellIndex = $derived.by(() => {
+		const [r, c] = (props.cell ?? '0:0').split(':').map(Number);
+		return r * 7 + c;
+	});
+	const phase = $derived((cellIndex * 2.399) % (Math.PI * 2));
+	// IdleLife's occasional breath: one resting symbol swells ~3% and settles
+	const breathScale = $derived(
+		props.resting && props.cell === idleLife.breathCell ? 1 + Math.sin(Math.PI * idleLife.breath) * 0.032 : 1,
+	);
 	const idleY = $derived(props.idle ? Math.sin(t / 1400 + phase) * SYMBOL_SIZE * 0.012 : 0);
 	const idleRotation = $derived(
 		props.idle ? Math.sin(t / 2100 + phase * 1.3) * 0.018 : 0,
 	);
-	const idleScale = $derived(props.idle ? 1 + Math.sin(t / 1700 + phase * 0.7) * 0.01 : 1);
+	const idleScale = $derived((props.idle ? 1 + Math.sin(t / 1700 + phase * 0.7) * 0.01 : 1) * breathScale);
 	const drawnW = $derived(
 		SYMBOL_SIZE * props.symbolInfo.sizeRatios.width * scaleX.current * idleScale,
 	);
