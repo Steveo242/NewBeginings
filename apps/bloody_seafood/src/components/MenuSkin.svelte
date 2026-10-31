@@ -69,6 +69,35 @@
 		if (!tier) tier = TIER_MODES.findIndex((mode) => meta[mode]?.text.title?.toUpperCase() === title) + 1;
 		if (tier && wrap.dataset.bsTier !== String(tier)) wrap.dataset.bsTier = String(tier);
 	};
+	// Landscape phones: the shared buy-bonus layout stacks the four cards 2 x 2, shoved left
+	// to make room for the play-amount stepper on the right - on a 390 px-high screen the
+	// grid ran off the top and bottom and sat in one corner. There the cards go in ONE row,
+	// centred and scaled to fit the screen, with the stepper centred under them.
+	const fitLandscapeBonuses = () => {
+		const wrap = document.querySelector<HTMLElement>('.pop-up-wrap .bonuses-wrap');
+		if (!wrap) return;
+		const phoneLandscape = innerHeight <= 500 && innerWidth > innerHeight;
+		wrap.classList.toggle('bs-row', phoneLandscape);
+		document.querySelector('.pop-up-wrap .badge-amount-wrap')?.classList.toggle('bs-row', phoneLandscape);
+		if (!phoneLandscape) return;
+		const bonuses = wrap.querySelector<HTMLElement>('.bonuses');
+		if (!bonuses) return;
+		wrap.style.setProperty('--bs-scale', '1');
+		const w = bonuses.scrollWidth;
+		const h = bonuses.scrollHeight;
+		const k = Math.min(1, (innerWidth - 24) / w, (innerHeight - 120) / h);
+		wrap.style.setProperty('--bs-scale', String(k));
+	};
+	$effect(() => {
+		const observer = new MutationObserver(fitLandscapeBonuses);
+		observer.observe(document.body, { childList: true, subtree: true });
+		addEventListener('resize', fitLandscapeBonuses);
+		return () => {
+			observer.disconnect();
+			removeEventListener('resize', fitLandscapeBonuses);
+		};
+	});
+
 	$effect(() => {
 		const observer = new MutationObserver(tagConfirmTier);
 		observer.observe(document.body, { childList: true, subtree: true });
@@ -122,6 +151,36 @@
 		border-style: solid;
 		border-width: 31px 38px 35px 34px;
 		border-image: var(--m3-frame) 155 190 175 170 fill / 31px 38px 35px 34px / 6px 13px 10px 9px stretch;
+	}
+	/* landscape phones: the rules / paytable / settings pages had a thin band of text in a
+	   thick frame - tighter frame and title so the page uses the screen */
+	@media (max-height: 500px) and (orientation: landscape) {
+		:global(.pop-up-wrap .ui-popup-standard-content-wrap) {
+			max-height: calc(100% - 1rem) !important;
+			max-width: min(var(--maxWidth), calc(100vw - 6rem)) !important;
+			padding: 0.5rem 1rem 0.7rem;
+			border-width: 20px 24px 22px 22px;
+			border-image-width: 20px 24px 22px 22px;
+		}
+		:global(.pop-up-wrap .ui-modal-title-wrap) {
+			font-size: 1.15rem;
+		}
+	}
+	/* landscape phones (fitLandscapeBonuses): one centred row of cards, stepper under it */
+	:global(.pop-up-wrap .bonuses-wrap.bs-row) {
+		transform: translate(-50%, calc(-50% - 1.8rem)) !important;
+	}
+	:global(.pop-up-wrap .bonuses-wrap.bs-row .bonuses) {
+		flex-direction: row !important;
+		transform: scale(var(--bs-scale, 1)) !important;
+		padding: 0.6rem 0.8rem;
+	}
+	:global(.pop-up-wrap .badge-amount-wrap.bs-row) {
+		top: auto !important;
+		right: auto !important;
+		left: 50% !important;
+		bottom: 0.4rem !important;
+		transform: translateX(-50%) !important;
 	}
 	/* phones: the card rows already fill the width, so the cards' own plates carry it */
 	@media (max-width: 600px) {
