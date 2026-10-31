@@ -19,7 +19,7 @@
 	import { getContext } from '../game/context';
 	import { SYMBOL_SIZE } from '../game/constants';
 	import { DISPLAY_FONT, displayTextStyle } from '../game/fonts';
-	import { HUD_PANEL_W, hudColumn } from '../game/hud';
+	import { HUD_PANEL_H, HUD_PANEL_W, hudColumn } from '../game/hud';
 	import type { SoundEffectName } from '../game/sound';
 
 	// The free-spin multiplier is the bonus's whole story (+1 for every winning cluster
@@ -28,7 +28,7 @@
 	// tiny badge tucked beside the logo on the tank's top-right corner.
 	const context = getContext();
 
-	const H = SYMBOL_SIZE * 1.8;
+	const H = HUD_PANEL_H;
 	const PANEL_SCALE = 0.45;
 	const PANEL_BORDER = 80;
 	const position = $derived(hudColumn(context, 'multiplier'));
@@ -89,7 +89,7 @@
 
 <FadeContainer {show}>
 	<BoardContainer>
-		<Container x={position.x} y={position.y}>
+		<Container x={position.x} y={position.y} scale={position.scale ?? 1}>
 			<Container scale={PANEL_SCALE}>
 				<NineSlice
 					key="panel.png"
