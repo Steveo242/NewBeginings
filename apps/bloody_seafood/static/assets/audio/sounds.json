@@ -210,80 +210,80 @@
 			6000.0,
 			false
 		],
-		"amb_storm": [
-			75172.81,
-			14000.0,
-			true
-		],
 		"sfx_premium_land": [
-			89422.81,
+			75172.81,
 			699.98,
 			false
 		],
 		"sfx_rope_strain": [
-			90372.79,
+			76122.79,
 			2666.67,
 			true
 		],
 		"sfx_rope_taut": [
-			93289.46,
+			79039.46,
 			750.0,
 			false
 		],
 		"sfx_rope_snap": [
-			94289.46,
+			80039.46,
 			1600.0,
 			false
 		],
 		"bgm_main": [
-			96139.46,
+			81889.46,
 			59081.95,
 			true
 		],
 		"sfx_glass_shatter": [
-			155471.41,
+			141221.41,
 			1900.0,
 			false
 		],
 		"bgm_freespin": [
-			157621.41,
+			143371.41,
 			37894.74,
 			true
 		],
 		"sfx_btn_spin": [
-			195766.15,
+			181516.15,
 			450.0,
 			false
 		],
 		"sfx_cluster_hit_1": [
-			196466.15,
+			182216.15,
 			600.0,
 			false
 		],
 		"sfx_cluster_burst_1": [
-			197316.15,
+			183066.15,
 			480.0,
 			false
 		],
 		"sfx_cluster_hit_2": [
-			198046.15,
+			183796.15,
 			600.0,
 			false
 		],
 		"sfx_cluster_burst_2": [
-			198896.15,
+			184646.15,
 			480.0,
 			false
 		],
 		"sfx_cluster_hit_3": [
-			199626.15,
+			185376.15,
 			600.0,
 			false
 		],
 		"sfx_cluster_burst_3": [
-			200476.15,
+			186226.15,
 			480.0,
 			false
+		],
+		"amb_storm": [
+			186956.15,
+			14000.0,
+			true
 		]
 	},
 	"src": [

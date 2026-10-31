@@ -378,7 +378,11 @@
 	// runs blood red. The storm comes in with a whiteout lightning strike as the bonus
 	// intro opens, and clears once the TOTAL HAUL panel closes.
 	const mood = { night: 0, blood: 0, strikeNow: false };
-	const AMB_DAY = 0.25;
+	// The storm bed sits well under the music in every mode (low-passed, so no hiss). In the
+	// bonus it used to rise to full and drowned the free-spins music in rain noise: it now
+	// tops out ~15 dB under it.
+	const AMB_DAY = 0.15;
+	const AMB_STORM = 0.2;
 	const setStorm = (on: boolean) => {
 		const blood = on && isSuperBetMode(stateBet.activeBetModeKey) ? 1 : 0;
 		if (mood.night === (on ? 1 : 0) && mood.blood === blood) return;
@@ -389,8 +393,8 @@
 		context.eventEmitter.broadcast({
 			type: 'soundFade',
 			name: 'amb_storm',
-			from: on ? AMB_DAY : 1,
-			to: on ? 1 : AMB_DAY,
+			from: on ? AMB_DAY : AMB_STORM,
+			to: on ? AMB_STORM : AMB_DAY,
 			duration: on ? 400 : 2500,
 		});
 	};
@@ -406,7 +410,7 @@
 	// the storm bed starts at full on load; drop it to the day level once it's playing
 	setTimeout(() => {
 		if (!mood.night)
-			context.eventEmitter.broadcast({ type: 'soundFade', name: 'amb_storm', from: 1, to: AMB_DAY, duration: 1500 });
+			context.eventEmitter.broadcast({ type: 'soundFade', name: 'amb_storm', from: AMB_STORM, to: AMB_DAY, duration: 1500 });
 	}, 1500);
 
 	$effect(() => {
