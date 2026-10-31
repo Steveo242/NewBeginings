@@ -24,7 +24,6 @@
 	import { winLevelApplauseSfx } from '../game/bookEventHandlerMap';
 	import FreeSpinAnimation from './FreeSpinAnimation.svelte';
 	import PressToContinue from './PressToContinue.svelte';
-	import WinCoins from './WinCoins.svelte';
 
 	type AnimationName = 'intro' | 'idle';
 
@@ -78,7 +77,6 @@
   </Container>
 </MainContainer>
 
-				{#if false}<WinCoins emit={!countUpCompleted} levelAlias={winLevelData?.alias} />{/if}
 
 				<PressToContinue onpress={() => (countUpCompleted ? oncomplete() : finishCountUp())} />
 			{/snippet}

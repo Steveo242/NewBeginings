@@ -15,7 +15,6 @@
 	import { CanvasSizeRectangle, MainContainer } from 'components-layout';
 	import { OnMount } from 'components-shared';
 
-	import WinCoins from './WinCoins.svelte';
 	import WinBanner from "./WinBanner.svelte";
  import WinAmountText from "./WinAmountText.svelte";
  	import PressToContinue from './PressToContinue.svelte';
@@ -103,7 +102,6 @@
 					</Container>
 				</MainContainer>
 
-				{#if false}<WinCoins emit={!countUpCompleted} levelAlias={winLevelData?.alias} />{/if}
 
 				<!-- Only the celebration tiers wait on the player. Smaller wins count up
 				     and move on by themselves, so a prompt there only flashed. -->

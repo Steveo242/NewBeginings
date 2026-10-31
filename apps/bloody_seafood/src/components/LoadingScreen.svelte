@@ -32,7 +32,7 @@
 						<Sprite key="progressBarBackground.png" {...sizes} />
 					{/snippet}
 					{#snippet progress(sizes)}
-						<Sprite key="progressBar.png" {...sizes} tint={0xDC143C} />
+						<Sprite key="progressBar.png" {...sizes} />
 					{/snippet}
 					{#snippet frame(sizes)}
 						<Sprite key="progressBarFrame.png" {...sizes} />

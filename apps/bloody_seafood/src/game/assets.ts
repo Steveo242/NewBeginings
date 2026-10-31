@@ -211,10 +211,6 @@ export default {
 		src: new URL('../../assets/sprites/progressBar/progressBar.json', import.meta.url).href,
 		preload: true,
 	},
-	freeSpins: {
-		type: 'sprites',
-		src: new URL('../../assets/sprites/freeSpins/freeSpins.json', import.meta.url).href,
-	},
 	symbolsStatic: {
 		type: 'sprites',
 		src: new URL('../../assets/sprites/symbolsStatic/symbolsStatic.json', import.meta.url).href,
@@ -270,10 +266,6 @@ export default {
 	W_win: {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/symbolsAnim/W_win.json', import.meta.url).href,
-	},
-	coins: {
-		type: 'spriteSheet',
-		src: new URL('../../assets/sprites/coin/SD2_Coin.json', import.meta.url).href,
 	},
 	sound: {
 		type: 'audio',
