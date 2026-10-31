@@ -38,6 +38,7 @@
 	import FreeSpinCounter from './FreeSpinCounter.svelte';
 	import FreeSpinOutro from './FreeSpinOutro.svelte';
 	import Transition from './Transition.svelte';
+	import StormCinematic from './StormCinematic.svelte';
 	import MenuSkin from './MenuSkin.svelte';
 	
 	const context = getContext();
@@ -129,6 +130,7 @@
 		<Win />
 		<FreeSpinIntro />
 		<FreeSpinOutro />
+		<StormCinematic />
 		<Transition />
 
 			{/if}

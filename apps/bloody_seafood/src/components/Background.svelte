@@ -29,7 +29,7 @@
 	import { onDestroy } from 'svelte';
 	import { getContextParent } from 'pixi-svelte';
 
-	import { stateBet } from 'state-shared';
+	import { stateBet, stateBetDerived } from 'state-shared';
 
 	import { getContext } from '../game/context';
 	import { isSuperBetMode } from '../game/constants';
@@ -397,13 +397,18 @@
 	// the music in every mode, a little louder in the storm bonus but still ~15 dB under it.
 	const AMB_DAY = 0.15;
 	const AMB_STORM = 0.2;
-	const setStorm = (on: boolean) => {
+	/** strikeAfter: delay the storm's entry strike (ms) - the trigger cinematic lets the
+	 *  sky darken first; 0 strikes at once as the storm arrives */
+	const setStorm = (on: boolean, strikeAfter = 0) => {
 		const blood = on && isSuperBetMode(stateBet.activeBetModeKey) ? 1 : 0;
 		if (mood.night === (on ? 1 : 0) && mood.blood === blood) return;
 		const was = mood.night;
 		mood.night = on ? 1 : 0;
 		mood.blood = blood;
-		if (on && !was) mood.strikeNow = true;
+		if (on && !was) {
+			if (strikeAfter > 0) setTimeout(() => (mood.strikeNow = true), strikeAfter);
+			else mood.strikeNow = true;
+		}
 		context.eventEmitter.broadcast({
 			type: 'soundFade',
 			name: 'amb_storm',
@@ -416,6 +421,8 @@
 	if (context.stateGame.gameType === 'freeSpins') mood.night = 1;
 	context.eventEmitter.subscribeOnMount({
 		freeSpinIntroShow: () => setStorm(true),
+		// the bonus trigger's storm cinematic (StormCinematic): darken, then the bolt
+		stormCinematic: () => setStorm(true, 800 / Math.max(1, stateBetDerived.timeScale())),
 		freeSpinOutroHide: () => setStorm(false),
 	});
 	$effect(() => {
