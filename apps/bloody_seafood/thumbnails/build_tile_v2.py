@@ -14,6 +14,7 @@ frame 34, CAM="45,-10,20,110" MARGIN=1.6, 1800 px - sharper than the 640 px game
 """
 import json
 import math
+import os
 import random
 import sys
 
@@ -58,6 +59,9 @@ LAYOUTS['square'] = rescaled(dict(
     chest=(200, 24, 830), anchor=(260, 790, 760), logo_w=640, logo=(None, 14),
     focus=(0.5, 0.5)), 2, 'bloody_seafood_tile')
 L = LAYOUTS[sys.argv[1] if len(sys.argv) > 1 else 'tile']
+# VERSION=v3 -> <out>_v3 (cover: its _v2 becomes _v3), so earlier submissions stay on disk
+if os.environ.get('VERSION'):
+    L = dict(L, out=L['out'].removesuffix('_v2') + '_' + os.environ['VERSION'])
 W, H = L['W'], L['H']
 S = L.get('S', 1)
 
@@ -70,7 +74,8 @@ def odd(v):
     return px(v) | 1
 SPR = 'static/assets/sprites'
 STORM = f'{SPR}/storm'
-HERO = '/root/bs-render/render/rig/h1_shark_v3/hero/win_0001.png'
+# hero_gum: re-rendered 2026-10-31 with charcoal lip edges (was hero/, the red-lipped mouth)
+HERO = '/root/bs-render/render/rig/h1_shark_v3/hero_gum/win_0001.png'
 # the BS wild and the SCATTER anchor (the chest was retired and the anchor became the
 # scatter on 2026-10-31); the names keep the layout keys
 CHEST = '/root/bs-render/render/rig/sw/w_bs/final/static_hi.png'
