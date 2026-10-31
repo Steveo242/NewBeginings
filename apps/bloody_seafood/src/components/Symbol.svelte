@@ -1,10 +1,9 @@
 <script lang="ts">
-	import SymbolSpine from './SymbolSpine.svelte';
 	import SymbolSprite from './SymbolSprite.svelte';
 	import SymbolAnimatedSprite from './SymbolAnimatedSprite.svelte';
 	import SymbolPop from './SymbolPop.svelte';
 	import WinFlash from './WinFlash.svelte';
-	import { getSymbolBackgroundInfo, getSymbolInfo } from '../game/utils';
+	import { getSymbolInfo } from '../game/utils';
 	import type { SymbolState, RawSymbol } from '../game/types';
 	import { getContext } from '../game/context';
 	import { HIGH_SYMBOLS, SYMBOL_SIZE } from '../game/constants';
@@ -67,7 +66,7 @@
 		loop={props.loop}
 		onFrameChange={(frame) => {
 			// The wild's explode sound. It used to hang off a 'wildExplode'
-			// event on the old explosion spine (see the spine branch below),
+			// event on the old explosion spine,
 			// but that skeleton declared no events at all, so the cue never
 			// actually fired. Now that the explode is a spritesheet, it is
 			// triggered off the frame instead - early, so it lands with the
@@ -75,27 +74,6 @@
 			if (frame === 1 && props.state === 'explosion' && props.rawSymbol.name === 'W') {
 				context.eventEmitter?.broadcast({ type: 'soundOnce', name: 'sfx_wild_explode' });
 			}
-		}}
-	/>
-{:else}
-	{@const symbolBackgroundInfo = getSymbolBackgroundInfo({
-		rawSymbol: props.rawSymbol,
-		state: props.state,
-	})}
-	<SymbolSpine
-		loop={props.loop}
-		{symbolInfo}
-		{symbolBackgroundInfo}
-		x={props.x}
-		y={props.y}
-		showWinFrame={props.state === 'win' && !['S', 'M'].includes(props.rawSymbol.name)}
-		listener={{
-			complete: props.oncomplete,
-			event: (_, event) => {
-				if (event.data?.name === 'wildExplode') {
-					context.eventEmitter?.broadcast({ type: 'soundOnce', name: 'sfx_wild_explode' });
-				}
-			},
 		}}
 	/>
 {/if}

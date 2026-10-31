@@ -22,7 +22,6 @@
 
 	import { getContext } from '../game/context';
 	import { winLevelApplauseSfx } from '../game/bookEventHandlerMap';
-	import FreeSpinAnimation from './FreeSpinAnimation.svelte';
 	import PressToContinue from './PressToContinue.svelte';
 
 	type AnimationName = 'intro' | 'idle';

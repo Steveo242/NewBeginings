@@ -7,31 +7,31 @@
 </script>
 
 <script lang="ts">
- import WinAmountText from "./WinAmountText.svelte";
-	import { BitmapText, SpineProvider, SpineSlot, SpineTrack } from 'pixi-svelte';
-	import { waitForResolve } from 'utils-shared/wait';
-	import { stateBetDerived } from 'state-shared';
+	import WinAmountText from './WinAmountText.svelte';
+	import { Container } from 'pixi-svelte';
+	import { Tween } from 'svelte/motion';
+	import { backOut } from 'svelte/easing';
 
 	import { getContext } from '../game/context';
 	import { SYMBOL_SIZE } from '../game/constants';
 	import BoardContainer from './BoardContainer.svelte';
 
-	type Animation = 'explosion' | 'static';
-
+	// The board multiplier total (only reached by boardMultiplierInfo, which the current
+	// math never emits). Drawn in code - it used to ride the sample game's
+	// tumble_multiplier spine: the number slams in and settles.
 	const context = getContext();
 
 	let show = $state(false);
-	let animationName = $state<Animation>('static');
 	let totalMultiplier = $state(0);
-	let oncomplete = $state(() => {});
+	const slam = new Tween(1, { duration: 520, easing: backOut });
 
 	context.eventEmitter.subscribeOnMount({
 		multiplierTotalShow: () => (show = true),
 		multiplierTotalHide: () => (show = false),
 		multiplierTotalUpdate: (emitterEvent) => (totalMultiplier = emitterEvent.totalMultiplier),
 		multiplierTotalAnimate: async () => {
-			animationName = 'explosion';
-			await waitForResolve((resolve) => (oncomplete = resolve));
+			slam.set(2.2, { duration: 0 });
+			await slam.set(1);
 		},
 	});
 </script>
@@ -51,26 +51,12 @@
 
 {#if show}
 	<BoardContainer>
-		<SpineProvider
+		<Container
 			x={context.stateGameDerived.boardLayout().width * 0.5}
 			y={context.stateGameDerived.boardLayout().height * 0.5}
-			key="tumble_multiplier"
-			width={context.stateGameDerived.boardLayout().width * 4}
+			scale={slam.current}
 		>
-			<SpineTrack
-				trackIndex={0}
-				{animationName}
-				timeScale={stateBetDerived.timeScale()}
-				listener={{
-					complete: oncomplete,
-				}}
-			/>
-			<SpineSlot slotName="tumblemultiplier">
-				{@render multiplierSnippet()}
-			</SpineSlot>
-			<SpineSlot slotName="tumblemultiplier_add">
-				{@render multiplierSnippet()}
-			</SpineSlot>
-		</SpineProvider>
+			{@render multiplierSnippet()}
+		</Container>
 	</BoardContainer>
 {/if}
