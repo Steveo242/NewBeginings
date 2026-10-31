@@ -190,6 +190,7 @@
 		let k = 1;
 		let seaY = 0;
 		let horizonY = 0;
+		let lastTitle = true;
 
 		const layout = (W: number, H: number) => {
 			k = Math.max(W / SRC_W, H / SRC_H);
@@ -222,9 +223,17 @@
 			// where the horizon falls on screen: the plate's own, except on stacked layouts
 			// (below) where it rises to meet the lifted lighthouse and ship
 			let horizon = oy + HORIZON_Y * k;
-			const hk = k * 0.75;
-			const tk = k * 0.62;
-			if (narrow) horizon = H * 0.12 - LAMP.y * hk + (HORIZON_Y - LAYERS.headland.y) * hk;
+			let hk = k * 0.75;
+			let tk = k * 0.62;
+			// the title screen: the logo stands at the top (LoadingScreen), so the horizon
+			// drops below it - open sea between the title and the lighthouse and ship
+			const title = context.stateLayout.showLoadingScreen;
+			if (narrow && title) {
+				hk = k * 0.55;
+				tk = k * 0.46;
+				horizon = H * 0.6;
+			} else if (narrow) horizon = H * 0.12 - LAMP.y * hk + (HORIZON_Y - LAYERS.headland.y) * hk;
+			else if (title) horizon += H * 0.07;
 			// the sea scales up (uniformly) so it still runs under the dock's planks from a
 			// higher horizon (the sea layer stops SEA_BOTTOM in, just below the plank line)
 			const planks = dock.y + (PLANK_TOP_Y - LAYERS.dock.y) * dock.scale.y;
@@ -250,10 +259,10 @@
 			} else {
 				headland.scale.set(k);
 				const towerX = Math.min(ox + TOWER_X * k, side * 0.78);
-				headWrap.position.set(towerX - TOWER_X * k, oy + LAYERS.headland.y * k);
+				headWrap.position.set(towerX - TOWER_X * k, horizon - (HORIZON_Y - LAYERS.headland.y) * k);
 				trawler.scale.set(k);
 				const cx = Math.max(ox + (LAYERS.trawler.x + TRAWLER_PIVOT.x) * k, W - side * 0.62);
-				trawlerWrap.position.set(cx, oy + (LAYERS.trawler.y + TRAWLER_PIVOT.y) * k);
+				trawlerWrap.position.set(cx, horizon + (LAYERS.trawler.y + TRAWLER_PIVOT.y - HORIZON_Y) * k);
 			}
 			const hs = headland.scale.x;
 			lampGlow.position.set(LAMP.x * hs, LAMP.y * hs);
@@ -299,10 +308,12 @@
 			const dt = ticker.deltaMS;
 			t += dt;
 			const { width: W, height: H } = context.stateLayoutDerived.canvasSizes();
-			if (W !== lastW || H !== lastH) {
+			const title = context.stateLayout.showLoadingScreen;
+			if (W !== lastW || H !== lastH || title !== lastTitle) {
 				layout(W, H);
 				lastW = W;
 				lastH = H;
+				lastTitle = title;
 			}
 
 			skyNoise.x = -(t * 0.006) % (256 * 6);
