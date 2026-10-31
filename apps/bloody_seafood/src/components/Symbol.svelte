@@ -36,7 +36,9 @@
 <!-- under the symbol, so the silhouette copies only show as a rim round it. Not during
 	 'win': the outline traces the RESTING art, so while the 3D win jumps out of its cell it
 	 was left behind as a gold silhouette backing - it shows once the symbol is back. -->
-{#if props.state === 'postWinStatic' && (props.rawSymbol.name as string) !== 'M'}
+<!-- not on the wild: the BS letters' own pale-gold rim plus the additive gold copies and
+	 white core read as a washed-out backlight spilling round them - it shows its art only -->
+{#if props.state === 'postWinStatic' && !['M', 'W'].includes(props.rawSymbol.name as string)}
 	<WinFlash
 		x={props.x}
 		y={props.y}
@@ -60,7 +62,7 @@
 	/>
 {:else if isSpriteSheet}
 	{#if props.state === 'explosion' && staticInfo.type === 'sprite'}
-		<SymbolPop symbolInfo={staticInfo} x={props.x} y={props.y} />
+		<SymbolPop symbolInfo={staticInfo} x={props.x} y={props.y} flashStrength={props.rawSymbol.name === 'W' ? 0.25 : 0.9} />
 	{/if}
 	<SymbolAnimatedSprite
 		{symbolInfo}
