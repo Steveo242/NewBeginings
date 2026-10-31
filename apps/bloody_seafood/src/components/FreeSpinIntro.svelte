@@ -38,9 +38,9 @@
 	// The feature in three lines (matches the math: +1 per winning cluster holding a
 	// wild, never reset during the feature; super carries every landed wild, max 6).
 	const lines = $derived([
-		'EACH WINNING CLUSTER WITH A WILD: MULTIPLIER +1',
-		'THE MULTIPLIER NEVER RESETS DURING THE FEATURE',
-		isSuper ? 'LANDED WILDS CARRY INTO EVERY NEXT SPIN (MAX 6)' : '3+ ANCHORS AWARD EXTRA SPINS',
+		'WILD IN A WINNING CLUSTER: MULTIPLIER +1',
+		'NO MULTIPLIER RESET UNTIL THE FEATURE ENDS',
+		isSuper ? 'LANDED WILDS CARRY OVER (MAX 6)' : '3+ ANCHORS AWARD EXTRA SPINS',
 	]);
 	/** WinBanner's plaque height (W 0.86 x board, H = 0.34 W) */
 	const BANNER_H = $derived(context.stateGameDerived.boardLayout().width * 0.86 * 0.34);
@@ -61,13 +61,14 @@
 	const lineStyle = {
 		fontFamily: DISPLAY_FONT,
 		fontWeight: 'bold',
-		fontSize: SYMBOL_SIZE * 0.2,
+		// (was 0.2: ~8 px at 1280x720 - unreadable; shorter lines so the bigger type fits)
+		fontSize: SYMBOL_SIZE * 0.25,
 		fill: 0xe9dcc0,
 		align: 'center',
 		letterSpacing: SYMBOL_SIZE * 0.01,
 		dropShadow: { color: 0x000000, alpha: 0.9, blur: 3, distance: 2, angle: Math.PI / 2 },
 		wordWrap: true,
-		wordWrapWidth: SYMBOL_SIZE * 7.2,
+		wordWrapWidth: SYMBOL_SIZE * 7.6,
 	} as const;
 
 	context.eventEmitter.subscribeOnMount({
@@ -97,7 +98,7 @@
 				<Text anchor={0.5} y={SYMBOL_SIZE * 0.62} text="AWARDED" style={captionStyle} />
 			</WinBanner>
 			<!-- what the feature does, in one glance -->
-			<Container y={BANNER_H * 0.5 + SYMBOL_SIZE * 0.55} alpha={linesAlpha.current}>
+			<Container y={BANNER_H * 0.5 + SYMBOL_SIZE * 0.45} alpha={linesAlpha.current}>
 				{#each lines as line, i}
 					<Text anchor={0.5} y={i * SYMBOL_SIZE * 0.36} text={line} style={lineStyle} />
 				{/each}
