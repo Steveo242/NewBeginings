@@ -9,16 +9,16 @@
 	// The celebration tiers hit harder as they climb (screen space, over the dim, under the
 	// plaque): a camera shake as the title slams down, and a sweep of blood and seawater
 	// flung across the screen. MAX WIN also has the shark breach the tank (SharkBreach).
-	// Code VFX only: a pool of droplet Graphics, no filters, gone after ~1.6 s.
+	// Code VFX only: pools of droplet and splat Graphics, no filters, gone after ~2.6 s.
 	type Props = { alias: string };
 	const props: Props = $props();
 
-	const TIER: Record<string, { shake: number; shakeMs: number; drops: number }> = {
-		big: { shake: 5, shakeMs: 380, drops: 30 },
-		superwin: { shake: 8, shakeMs: 450, drops: 50 },
-		mega: { shake: 12, shakeMs: 550, drops: 80 },
-		epic: { shake: 16, shakeMs: 650, drops: 110 },
-		max: { shake: 22, shakeMs: 850, drops: 150 },
+	const TIER: Record<string, { shake: number; shakeMs: number; drops: number; splats: number }> = {
+		big: { shake: 11, shakeMs: 520, drops: 45, splats: 4 },
+		superwin: { shake: 15, shakeMs: 620, drops: 70, splats: 6 },
+		mega: { shake: 21, shakeMs: 760, drops: 100, splats: 9 },
+		epic: { shake: 27, shakeMs: 900, drops: 130, splats: 12 },
+		max: { shake: 36, shakeMs: 1150, drops: 170, splats: 16 },
 	};
 	const tier = TIER[props.alias] ?? TIER.big;
 
@@ -47,17 +47,34 @@
 		const g = blood ? teardrop(0x6e0508, 0.92, 0xd0383e) : teardrop(0xcfeaff, 0.5, 0xffffff);
 		g.visible = false;
 		root.addChild(g);
-		const vx = rand(1.1, 2.1) * W * (fromLeft ? 1 : -1);
+		const vx = rand(0.8, 1.5) * W * (fromLeft ? 1 : -1);
 		return {
 			g,
-			delay: rand(0, 260),
+			delay: rand(0, 380),
 			x: fromLeft ? rand(-0.08, 0.02) * W : rand(0.98, 1.08) * W,
 			y: rand(0.08, 0.92) * H,
 			vx,
 			vy: rand(-0.55, 0.15) * H,
-			size: rand(2.5, blood ? 7 : 5) * k,
-			life: rand(700, 1250),
+			size: rand(5, blood ? 15 : 10) * k,
+			life: rand(1300, 2100),
 		};
+	});
+
+	// blood splats that hit the screen (the glass of the camera), hang and slide down - the
+	// sweep's mark that stays a beat after the drops have flown past
+	const splats = Array.from({ length: tier.splats }, () => {
+		const g = new PIXI.Graphics();
+		const r = rand(14, 34) * k;
+		g.circle(0, 0, r).fill({ color: 0x6a0408, alpha: 0.88 });
+		for (let i = 0; i < 9; i++) {
+			const a = Math.random() * Math.PI * 2;
+			const d = r * rand(0.8, 1.9);
+			g.circle(Math.cos(a) * d, Math.sin(a) * d, r * rand(0.12, 0.38)).fill({ color: 0x7c070c, alpha: 0.85 });
+		}
+		g.circle(-r * 0.3, -r * 0.35, r * 0.28).fill({ color: 0xc8343a, alpha: 0.5 }); // wet highlight
+		g.visible = false;
+		root.addChild(g);
+		return { g, x: rand(0.06, 0.94) * W, y: rand(0.08, 0.8) * H, delay: rand(180, 650), slide: rand(18, 60) * k, r };
 	});
 
 	const stage = app?.stage;
@@ -95,6 +112,20 @@
 			const stretch = 1 + Math.min(1.2, Math.hypot(d.vx, vy) / (H * 1.5));
 			d.g.scale.set(d.size * stretch * (1 - u * 0.3), d.size * (1 - u * 0.3));
 			d.g.alpha = Math.min(1, (1 - u) * 3);
+		}
+		for (const sp of splats) {
+			const age = t - sp.delay;
+			sp.g.visible = age > 0 && age < 2600;
+			if (!sp.g.visible) {
+				if (age <= 0) alive = true;
+				continue;
+			}
+			alive = true;
+			// slaps on (overshoot), hangs, slides down as it fades
+			const pop = age < 90 ? 0.6 + (age / 90) * 0.55 : age < 180 ? 1.15 - ((age - 90) / 90) * 0.15 : 1;
+			sp.g.scale.set(pop, pop * (1 + Math.max(0, age - 600) / 4000));
+			sp.g.position.set(sp.x, sp.y + (Math.max(0, age - 500) / 2000) * sp.slide);
+			sp.g.alpha = age < 1600 ? 1 : 1 - (age - 1600) / 1000;
 		}
 		if (!alive && t > tier.shakeMs + 200) app?.ticker.remove(tick);
 	};

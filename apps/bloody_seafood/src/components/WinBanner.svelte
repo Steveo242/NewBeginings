@@ -94,13 +94,23 @@
   // plaque pops in; the title slams down onto it a beat later, overshooting
   const pop = $derived(t < 0.35 ? easeOutBack(t / 0.35) : 1);
   const slamT = $derived(Math.max(0, Math.min(1, (t - 0.12) / 0.28)));
-  const slam = $derived(1 + (1 - easeOutBack(slamT)) * 0.9);
+  // (a harder punch: the title drops in from 2.6x)
+  const slam = $derived(1 + (1 - easeOutBack(slamT)) * 1.6);
   const titleAlpha = $derived(Math.min(1, slamT * 3));
   // a slow breathe on the halo once it has landed
   const glowPulse = $derived(1 + Math.sin(t * 2.4) * 0.06);
 </script>
 
 <Container scale={pop}>
+  <!-- a dark backdrop pooled behind the title so the moment pops off the board -->
+  <Sprite
+    key="fxGlow"
+    anchor={0.5}
+    width={W * 2.3}
+    height={W * 1.5}
+    tint={0x000000}
+    alpha={0.55 * Math.min(1, t * 4)}
+  />
   <!-- light rays + halo behind the plaque -->
   <Graphics draw={drawRays} blendMode="add" />
   <Sprite
