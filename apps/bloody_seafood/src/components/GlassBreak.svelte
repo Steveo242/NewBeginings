@@ -18,9 +18,10 @@
 
 	/** the glass opening, as a share of the board width (BoardFrame's OPENING_RATIO) */
 	const OPENING_RATIO = 720 / 700;
-	const DELAY_MS = 900;
-	const CRACK_MS = 160;
-	const FLY_MS = 1300;
+	// long enough after the loading screen hands over that the player is looking at the tank
+	const DELAY_MS = 1300;
+	const CRACK_MS = 320; // the cracks visibly race out before the pane bursts
+	const FLY_MS = 1700;
 
 	type Pt = [number, number];
 	const rand = (a: number, b: number) => a + Math.random() * (b - a);
@@ -107,7 +108,7 @@
 					cracks.moveTo(a[0], a[1]).lineTo(b[0], b[1]);
 				}
 			}
-			cracks.stroke({ width: 3, color: 0xffffff, alpha: 0.9 });
+			cracks.stroke({ width: 4.5, color: 0xffffff, alpha: 1 });
 		};
 
 		// shards: one per cell, clipped to the pane
@@ -122,7 +123,7 @@
 				const local = poly.flatMap(([x, y]) => [x - cx, y - cy]);
 				const g = new PIXI.Graphics()
 					.poly(local)
-					.fill({ color: 0xd8f4ff, alpha: 0.2 })
+					.fill({ color: 0xd8f4ff, alpha: 0.32 })
 					.poly(local)
 					.stroke({ width: 3, color: 0xffffff, alpha: 0.85 });
 				g.position.set(cx, cy);

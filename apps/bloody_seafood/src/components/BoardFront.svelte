@@ -17,8 +17,11 @@
 -->
 <!-- half strength: its two reflection streaks added up to 35/255 of light across the middle
      reels and washed out the symbols under them -->
-<!-- gone for good once GlassBreak smashes it as the game opens -->
+<!-- gone for good once GlassBreak smashes it as the game opens; until then it shows at full
+     strength so the player sees there IS a pane before it bursts (over the deep-blue water
+     the half-strength reflections no longer read, and the smash looked like it came from
+     nowhere) -->
 {#if glass.intact}
-	<Sprite key="tankGlass" anchor={0.5} x={layout.x} y={layout.y} width={size} height={size} blendMode="add" alpha={0.5} />
+	<Sprite key="tankGlass" anchor={0.5} x={layout.x} y={layout.y} width={size} height={size} blendMode="add" alpha={0.9} />
 {/if}
 <Sprite key="tankFront" anchor={0.5} x={layout.x} y={layout.y} width={size} height={size} />
