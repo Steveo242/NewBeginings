@@ -85,12 +85,14 @@
 	};
 
 	const drawnW = $derived(
-		SYMBOL_SIZE * props.symbolInfo.sizeRatios.width * scale.current * idleScale * pulseScale,
+		SYMBOL_SIZE * props.symbolInfo.sizeRatios.width * scaleX.current * idleScale * pulseScale,
 	);
 	const drawnH = $derived(
-		SYMBOL_SIZE * props.symbolInfo.sizeRatios.height * scale.current * idleScale * pulseScale,
+		SYMBOL_SIZE * props.symbolInfo.sizeRatios.height * scaleY.current * idleScale * pulseScale,
 	);
-	const drawnY = $derived((props.y ?? 0) + idleY + pulseY);
+	// the squash sits the symbol down onto its base instead of shrinking it round its centre
+	const squashY = $derived(SYMBOL_SIZE * props.symbolInfo.sizeRatios.height * (1 - scaleY.current) * 0.4);
+	const drawnY = $derived((props.y ?? 0) + idleY + pulseY + squashY);
 	const drawnRotation = $derived(rotation.current + idleRotation);
 
 	// Fall blur: a vertical-only streak while tumbling, cheap (one Pixi
@@ -100,13 +102,14 @@
 		props.spinning ? [new PIXI.BlurFilter({ strengthX: 0, strengthY: 6, quality: 2 })] : [],
 	);
 
-	// A quick squash-and-release on landing, not a full animation state -
-	// every symbol just settles into place with a little life instead of
-	// popping in dead-still. Starts pre-squashed and springs out to 1, so
-	// the "impact" reads as instant rather than a delayed grow-in.
+	// Squash-and-stretch on landing: the symbol hits wide and flat on its base, then
+	// springs up through a tall overshoot and settles - width and height spring with
+	// opposite phase, so the elastic overshoot reads as a stretch, not a size wobble.
+	// Starts pre-squashed so the impact reads as instant rather than a delayed grow-in.
 	// one beat: the landings were snappier than the music's pulse
 	const BOUNCE_DURATION = Math.round(BEAT_MS);
-	const scale = new Tween(1, { duration: BOUNCE_DURATION, easing: elasticOut });
+	const scaleX = new Tween(1, { duration: BOUNCE_DURATION, easing: elasticOut });
+	const scaleY = new Tween(1, { duration: BOUNCE_DURATION, easing: elasticOut });
 	const rotation = new Tween(0, { duration: BOUNCE_DURATION, easing: elasticOut });
 
 	// This component instance is reused across every state a symbol passes
@@ -117,9 +120,11 @@
 	$effect(() => {
 		props.symbolInfo;
 		if (props.bounce) {
-			scale.set(0.82, { duration: 0 });
-			rotation.set(Math.random() < 0.5 ? -0.07 : 0.07, { duration: 0 });
-			scale.set(1);
+			scaleX.set(1.16, { duration: 0 });
+			scaleY.set(0.76, { duration: 0 });
+			rotation.set(Math.random() < 0.5 ? -0.05 : 0.05, { duration: 0 });
+			scaleX.set(1);
+			scaleY.set(1);
 			rotation.set(0);
 			const timeout = setTimeout(() => props.oncomplete?.(), BOUNCE_DURATION);
 			return () => clearTimeout(timeout);
