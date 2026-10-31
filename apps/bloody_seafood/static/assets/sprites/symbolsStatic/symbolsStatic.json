@@ -4,16 +4,16 @@
       "frame": {
         "x": 1,
         "y": 1,
-        "w": 352,
-        "h": 251
+        "w": 353,
+        "h": 252
       },
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
-        "x": 24,
+        "x": 23,
         "y": 74,
-        "w": 352,
-        "h": 251
+        "w": 353,
+        "h": 252
       },
       "sourceSize": {
         "w": 400,
