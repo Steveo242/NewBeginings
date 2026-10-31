@@ -553,6 +553,23 @@
 		font-family: BloodySeafoodDisplay, Georgia, 'Times New Roman', serif;
 		color: #fff4c8;
 	}
+	/* settings rows: the ON/OFF button's column was 15% of the row, and portrait phones
+	   scale the menus' rem down to 8 px - a 30x25 px sliver narrower than its own 13 px
+	   label, which spilled out of a squashed pill (and under a 44 px touch target). Fixed
+	   size, never under 48x40 px; the slider takes the rest of the row */
+	:global(.pop-up-wrap .col > .row > .button-wrap) {
+		flex: 0 0 max(3.8rem, 50px);
+		width: max(3.8rem, 50px);
+	}
+	:global(.pop-up-wrap .col > .row > .button-wrap .rectangle) {
+		width: max(3.6rem, 48px) !important;
+		height: max(2.6rem, 40px) !important;
+	}
+	:global(.pop-up-wrap .col > .row > input.range) {
+		flex: 1 1 auto;
+		width: auto;
+		min-width: 0;
+	}
 	:global(.pop-up-wrap input.checkbox) {
 		accent-color: var(--m3-brass);
 	}
