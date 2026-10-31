@@ -261,7 +261,9 @@
 		border-image: var(--m3-btn) 34 124 42 110 fill / 9px 33px 11px 29px / 3px 17px 7px 13px stretch !important;
 		border-radius: 0 !important;
 		box-sizing: border-box;
-		min-height: 2.6rem;
+		/* the caps are fixed-width, so a pill under ~44 px tall squashed them into an oval
+		   (the 11 px phone rem made it 29 px); 44 px is also the touch-target minimum */
+		min-height: max(2.6rem, 44px);
 		filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.55));
 	}
 	:global(.pop-up-wrap button.button:hover:not(:disabled) .rectangle),
@@ -408,6 +410,28 @@
 		text-shadow:
 			0 0.1rem 0 #000,
 			0 0 0.9rem rgba(var(--tier-glow), 0.7);
+	}
+	/* the text box is a scroller capped by the frame: on phones the 9rem art + title left
+	   it ~2 lines, so the last line was cut through the middle - erased-looking letter
+	   tops under the text on every confirm. Art and title scale with the screen height
+	   and the text never scrolls, so the whole description always shows. */
+	:global(.pop-up-wrap .ui-popup-standard-content-wrap[data-bs-tier] .content.scrollY) {
+		overflow: visible !important;
+		max-height: none !important;
+		flex-shrink: 0;
+	}
+	@media (max-height: 700px) {
+		:global(.pop-up-wrap .ui-popup-standard-content-wrap[data-bs-tier]::before) {
+			height: clamp(3.5rem, 20vh, 9rem);
+			margin: -0.6rem 0 0;
+		}
+		:global(.pop-up-wrap .ui-popup-standard-content-wrap[data-bs-tier] .ui-modal-title-wrap) {
+			font-size: 1.4rem;
+		}
+		:global(.pop-up-wrap .ui-popup-standard-content-wrap[data-bs-tier] .content.scrollY) {
+			gap: 0.4rem;
+			line-height: 1.3;
+		}
 	}
 	:global(.pop-up-wrap .bonus-card-wrap:hover) {
 		transform: translateY(-3px);
