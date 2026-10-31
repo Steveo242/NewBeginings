@@ -38,10 +38,8 @@
 		{ name: 'H2' },
 		{ name: 'H3' },
 		{ name: 'H4' },
-		{ name: 'H5' },
 		{ name: 'L2' },
 		{ name: 'L1' },
-		{ name: 'L4' },
 		{ name: 'L3' },
 	];
 </script>

@@ -116,7 +116,7 @@ export const PORTRAIT_MAIN_SIZES = {
 /** Width / height of static/assets/sprites/bgLayers/logo3d.webp (the 3D logo). */
 export const LOGO_ASPECT = 1976 / 796;
 
-export const HIGH_SYMBOLS = ['H1', 'H2', 'H3', 'H4', 'H5'];
+export const HIGH_SYMBOLS = ['H1', 'H2', 'H3', 'H4'];
 
 export const INITIAL_SYMBOL_STATE: SymbolState = 'static';
 
@@ -227,12 +227,10 @@ const h1Static = {
 const h2Static = { type: 'sprite', assetKey: 'h2.webp', sizeRatios: FILL };
 const h3Static = { type: 'sprite', assetKey: 'h3.webp', sizeRatios: FILL };
 const h4Static = { type: 'sprite', assetKey: 'h4.webp', sizeRatios: FILL };
-const h5Static = { type: 'sprite', assetKey: 'h5.webp', sizeRatios: FILL };
 
 const l1Static = { type: 'sprite', assetKey: 'l1.webp', sizeRatios: LOW_FILL };
 const l2Static = { type: 'sprite', assetKey: 'l2.webp', sizeRatios: LOW_FILL };
 const l3Static = { type: 'sprite', assetKey: 'l3.webp', sizeRatios: LOW_FILL };
-const l4Static = { type: 'sprite', assetKey: 'l4.webp', sizeRatios: LOW_FILL };
 
 const sStatic = { type: 'sprite', assetKey: 's.png', sizeRatios: FILL };
 const wStatic = { type: 'sprite', assetKey: 'w.png', sizeRatios: FILL };
@@ -332,19 +330,6 @@ export const SYMBOL_INFO_MAP = {
 		spin: h4Static,
 		land: h4Static,
 	},
-	H5: {
-		explosion,
-		// H5 appears in no reel data and has no paytable entry in
-		// game/config.ts, so it can never land and never win - its win
-		// spritesheet was ~610KB of art that could never play and has been
-		// removed. Win falls back to the static frame so a symbol arriving
-		// unexpectedly still renders instead of failing on a missing asset.
-		win: h5Static,
-		postWinStatic: h5Static,
-		static: h5Static,
-		spin: h5Static,
-		land: h5Static,
-	},
 	L1: {
 		explosion,
 		win: win3d('L1_win', 1.8, 0.5, LOW_SCALE),
@@ -368,16 +353,6 @@ export const SYMBOL_INFO_MAP = {
 		static: l3Static,
 		spin: l3Static,
 		land: l3Static,
-	},
-	L4: {
-		explosion,
-		// Same as H5 above: unreachable in the current math, so its ~456KB
-		// win spritesheet is gone and win falls back to the static frame.
-		win: l4Static,
-		postWinStatic: l4Static,
-		static: l4Static,
-		spin: l4Static,
-		land: l4Static,
 	},
 	W: {
 		explosion,

@@ -11,14 +11,12 @@ export const SYMBOL_BOLT: Record<string, Bolt> = {
 	H2: { glow: 0xff1ae0, mid: 0xffa6f4 }, // magenta
 	H3: { glow: 0x8a2bff, mid: 0xcfb0ff }, // violet
 	H4: { glow: 0x22ff5e, mid: 0xb6ffc8 }, // toxic green
-	H5: { glow: 0x22ff5e, mid: 0xb6ffc8 },
 	W: { glow: 0xffc400, mid: 0xfff2a8 }, // gold
 	S: { glow: 0xff7a00, mid: 0xffcf96 }, // molten orange
 	// the lows all share one lightning - the same electric blue as their boxes
 	L1: LOW_BOLT,
 	L2: LOW_BOLT,
 	L3: LOW_BOLT,
-	L4: LOW_BOLT,
 };
 
 /** the cell boxes: one lightning for every premium win, another for every low */
@@ -27,7 +25,7 @@ export const SQUARE_BOLT = {
 	low: LOW_BOLT, // electric blue lightning
 };
 
-export const isHighValue = (name: string) => ['H1', 'H2', 'H3', 'H4', 'H5', 'W', 'S'].includes(name);
+export const isHighValue = (name: string) => ['H1', 'H2', 'H3', 'H4', 'W', 'S'].includes(name);
 
 /** The storm's lightning, live: Background writes the strike's brightness (0..1) here every
  *  frame while the bonus storm is in, and the win highlights surge with it. */
