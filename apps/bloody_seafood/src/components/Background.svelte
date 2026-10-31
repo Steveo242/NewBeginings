@@ -10,6 +10,7 @@
 		dock: { x: 0, y: 1062 },
 	};
 	const HORIZON_Y = 985;
+	const SEA_BOTTOM = 1320; // the sea layer's bottom edge (it is 390 high)
 	const PLANK_TOP_Y = 1258; // front edge of the dock planks
 	const TANK_PLINTH_BELOW_CENTRE = 514; // game units from board centre to the tank's feet
 	const TOWER_X = 620; // lighthouse tower centre, headland-local
@@ -187,6 +188,8 @@
 		let lastW = 0;
 		let lastH = 0;
 		let k = 1;
+		let seaY = 0;
+		let horizonY = 0;
 
 		const layout = (W: number, H: number) => {
 			k = Math.max(W / SRC_W, H / SRC_H);
@@ -201,8 +204,6 @@
 			// transparent pixels in at the screen edges
 			sky.scale.set(k * 1.03);
 			sky.position.set(ox - SRC_W * k * 0.015, oy + LAYERS.sky.y * k - 10);
-			sea.scale.set(k * 1.03, k);
-			sea.position.set(ox - SRC_W * k * 0.015, oy + LAYERS.sea.y * k);
 			// The tank's plinth must stand on the planks. Where the board sits high
 			// (stacked layouts) lift the dock to meet it, scaling so it still
 			// reaches the bottom of the screen.
@@ -218,20 +219,34 @@
 				dock.position.set(ox, oy + LAYERS.dock.y * k);
 			}
 
+			// where the horizon falls on screen: the plate's own, except on stacked layouts
+			// (below) where it rises to meet the lifted lighthouse and ship
+			let horizon = oy + HORIZON_Y * k;
+			const hk = k * 0.75;
+			const tk = k * 0.62;
+			if (narrow) horizon = H * 0.12 - LAMP.y * hk + (HORIZON_Y - LAYERS.headland.y) * hk;
+			// the sea scales up (uniformly) so it still runs under the dock's planks from a
+			// higher horizon (the sea layer stops SEA_BOTTOM in, just below the plank line)
+			const planks = dock.y + (PLANK_TOP_Y - LAYERS.dock.y) * dock.scale.y;
+			const sk = Math.max(k, (planks + 40 * k - horizon) / (SEA_BOTTOM - HORIZON_Y));
+			sea.scale.set(sk * 1.03, sk);
+			seaY = horizon - (HORIZON_Y - LAYERS.sea.y) * sk;
+			sea.position.set(W / 2 - (SRC_W * sk * 1.03) / 2, seaY);
+			horizonY = horizon;
+
 			fog.width = W;
 			fog.height = 240 * k * 2.2;
 			fog.tileScale.set(k * 2.2);
-			fog.y = oy + HORIZON_Y * k - fog.height * 0.6;
+			fog.y = horizon - fog.height * 0.6;
 
 			if (narrow) {
 				// stacked layouts: the board spans the width, so lift the tower and
-				// masts into the band above it
-				const hk = k * 0.75;
+				// masts into the band above it - standing on the raised horizon, as on the
+				// plate (they used to hang in the sky on the title screen, the sea far below)
 				headland.scale.set(hk);
-				headWrap.position.set(W * 0.15 - TOWER_X * hk, H * 0.12 - LAMP.y * hk);
-				const tk = k * 0.62;
+				headWrap.position.set(W * 0.15 - TOWER_X * hk, horizon - (HORIZON_Y - LAYERS.headland.y) * hk);
 				trawler.scale.set(tk);
-				trawlerWrap.position.set(W * 0.85, H * 0.04 + TRAWLER_PIVOT.y * tk);
+				trawlerWrap.position.set(W * 0.85, horizon + (LAYERS.trawler.y + TRAWLER_PIVOT.y - HORIZON_Y) * tk);
 			} else {
 				headland.scale.set(k);
 				const towerX = Math.min(ox + TOWER_X * k, side * 0.78);
@@ -257,7 +272,7 @@
 		const startStrike = (W: number, H: number) => {
 			const leftSide = Math.random() < 0.5;
 			const x = leftSide ? rand(0.06, 0.34) * W : rand(0.66, 0.94) * W;
-			const horizon = (H - SRC_H * k) / 2 + HORIZON_Y * k;
+			const horizon = horizonY;
 			const g = new PIXI.Graphics();
 			g.blendMode = 'add';
 			for (const [i, p] of boltPaths(x + rand(-80, 80), -20, x + rand(-120, 120), horizon - rand(0, 40), 140 * k * 1.4).entries()) {
@@ -294,7 +309,7 @@
 			skyNoise.y = -(t * 0.002) % (256 * 6);
 			seaNoise.x = -(t * 0.03) % (256 * 2.2);
 			seaNoise.y = -(t * 0.018) % (256 * 1.1);
-			sea.y = (H - SRC_H * k) / 2 + LAYERS.sea.y * k + Math.sin(t / 1700) * 3 * k;
+			sea.y = seaY + Math.sin(t / 1700) * 3 * k;
 
 			fog.tilePosition.x = -t * 0.012;
 
