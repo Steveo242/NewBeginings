@@ -234,8 +234,11 @@
 		background: none !important;
 		border-style: solid !important;
 		border-color: transparent !important;
-		border-width: 19px 33px 23px 29px !important;
-		border-image: var(--m3-btn) 72 124 86 110 fill / 19px 33px 23px 29px / 3px 17px 7px 13px stretch !important;
+		/* sliced just inside the brass rim (34 / 42 px of the 160 px art): the old 72 / 86
+		   slices left a 2 px-tall centre that was stretched over the whole pill and smeared
+		   the iron's grain into streaks - like half-erased old lettering behind every label */
+		border-width: 9px 33px 11px 29px !important;
+		border-image: var(--m3-btn) 34 124 42 110 fill / 9px 33px 11px 29px / 3px 17px 7px 13px stretch !important;
 		border-radius: 0 !important;
 		box-sizing: border-box;
 		min-height: 2.6rem;
