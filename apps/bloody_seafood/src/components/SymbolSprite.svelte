@@ -54,8 +54,15 @@
 	});
 	const phase = $derived((cellIndex * 2.399) % (Math.PI * 2));
 	// IdleLife's occasional breath: one resting symbol swells ~3% and settles
+	const mine = $derived(props.resting && props.cell === idleLife.breathCell && idleLife.breath > 0);
 	const breathScale = $derived(
-		props.resting && props.cell === idleLife.breathCell ? 1 + Math.sin(Math.PI * idleLife.breath) * 0.032 : 1,
+		mine && idleLife.kind === 'breath' ? 1 + Math.sin(Math.PI * idleLife.breath) * 0.032 : 1,
+	);
+	// ...or, for a fish, a twitch: two quick flicks of the body, dying away
+	const twitch = $derived(
+		mine && idleLife.kind === 'twitch' && props.idle
+			? Math.sin(idleLife.breath * Math.PI * 4) * (1 - idleLife.breath) * 0.09
+			: 0,
 	);
 	const idleY = $derived(props.idle ? Math.sin(t / 1400 + phase) * SYMBOL_SIZE * 0.012 : 0);
 	const idleRotation = $derived(
@@ -71,7 +78,7 @@
 	// the squash sits the symbol down onto its base instead of shrinking it round its centre
 	const squashY = $derived(SYMBOL_SIZE * props.symbolInfo.sizeRatios.height * (1 - scaleY.current) * 0.4);
 	const drawnY = $derived((props.y ?? 0) + idleY + squashY);
-	const drawnRotation = $derived(rotation.current + idleRotation);
+	const drawnRotation = $derived(rotation.current + idleRotation + twitch);
 
 	// Fall blur: a vertical-only streak while tumbling, cheap (one Pixi
 	// BlurFilter, already a dependency) and removed the instant the symbol

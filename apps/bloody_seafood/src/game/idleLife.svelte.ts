@@ -10,4 +10,6 @@ export const idleLife = $state({
 	breathCell: '',
 	/** 0..1 progress of that breath */
 	breath: 0,
+	/** what the symbol in breathCell does: a slow swell, or (fish only) a quick twitch */
+	kind: 'breath' as 'breath' | 'twitch',
 });

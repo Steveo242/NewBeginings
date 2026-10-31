@@ -10,7 +10,7 @@
 	// Between spins the tank keeps living, quietly: now and then a stream of bubbles rises
 	// from the gravel, a small fish drifts past far behind the symbols, a slow ripple of
 	// light runs through the caustics (Caustics reads idleLife.ripple) and one resting
-	// symbol takes a breath (SymbolSprite reads idleLife.breath*). All of it is drawn under
+	// symbol takes a breath or (a fish) twitches (SymbolSprite reads idleLife.breath*). All of it is drawn under
 	// the symbols, nothing glows, and it stops - fading out - the moment a round starts.
 	// Cheap on phones: a pool of 10 circles and one sprite, no filters.
 	type Props = { x: number; y: number; width: number; height: number };
@@ -43,7 +43,7 @@
 
 	// ------------------------------------------------------------- schedule
 	let nextStream = rand(2500, 5000);
-	let nextFish = rand(6000, 12000);
+	let nextFish = rand(4000, 8000);
 	let nextRipple = rand(3000, 6000);
 	let nextBreath = rand(2000, 4000);
 	let ripple = -1;
@@ -101,12 +101,12 @@
 			const t = context.stateApp.loadedAssets?.[key] as PIXI.Texture | undefined;
 			if (t) {
 				fish.texture = t;
-				const s = (SYMBOL_SIZE * rand(0.38, 0.5)) / t.width;
+				const s = (SYMBOL_SIZE * rand(0.48, 0.62)) / t.width;
 				fish.scale.set(s);
 				swim = { age: 0, dur: rand(9000, 13000), y: rand(0.2, 0.8) * H };
 				fish.visible = true;
 			}
-			nextFish = rand(16000, 28000);
+			nextFish = rand(10000, 18000);
 		}
 		if (swim) {
 			swim.age += dt;
@@ -114,7 +114,7 @@
 			const span = W + SYMBOL_SIZE;
 			fish.position.set(W + SYMBOL_SIZE * 0.5 - u * span, swim.y + Math.sin(swim.age / 900) * SYMBOL_SIZE * 0.06);
 			fish.rotation = Math.sin(swim.age / 900 + 1.2) * 0.05;
-			fish.alpha = 0.32 * Math.min(1, u * 6) * Math.min(1, (1 - u) * 6);
+			fish.alpha = 0.42 * Math.min(1, u * 6) * Math.min(1, (1 - u) * 6);
 			if (u >= 1) {
 				swim = null;
 				fish.visible = false;
@@ -132,14 +132,16 @@
 			if (ripple >= 1) ripple = -1;
 		}
 
-		// one resting symbol takes a breath (1.4 s)
+		// one resting symbol takes a breath (1.4 s) or twitches (0.5 s)
 		if (breath < 0 && nextBreath <= 0) {
 			breath = 0;
 			idleLife.breathCell = `${Math.floor(Math.random() * BOARD_DIMENSIONS.x)}:${Math.floor(Math.random() * BOARD_DIMENSIONS.y)}`;
-			nextBreath = rand(3500, 7000);
+			// half are twitches: a quick flick (only the fish do it - SymbolSprite)
+			idleLife.kind = Math.random() < 0.5 ? 'twitch' : 'breath';
+			nextBreath = rand(2500, 5500);
 		}
 		if (breath >= 0) {
-			breath += dt / 1400;
+			breath += dt / (idleLife.kind === 'twitch' ? 520 : 1400);
 			idleLife.breath = breath < 1 && idle ? breath : 0;
 			if (breath >= 1 || !idle) {
 				breath = -1;
