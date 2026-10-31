@@ -91,6 +91,10 @@
 	// cluster on the right, and the board stands on the bottom edge (stateGame).
 	// (named for where it started; desktop uses the same columns, so the board can fill the height)
 	const phone = $derived(['landscape', 'desktop'].includes(context.stateLayoutDerived.layoutType()));
+	// On a landscape phone the full-size plates outweighed everything but the spin. They
+	// drop a step - still well over the menu icons, values still large - so the order of
+	// importance reads spin > bonus buy > amounts > menu icons.
+	const plateK = $derived(context.stateLayoutDerived.layoutType() === 'landscape' ? 0.74 : 1);
 	const BUY_H = B * 0.95 * BUY_K;
 	const LEFT_GAP = 34;
 	const LEFT_H = BUY_H + LEFT_GAP * 2 + PLATE_H * 2 + 18 + ICON;
@@ -158,7 +162,7 @@
 		turbo: S.SPIN / 2 + S.GAP * 2.6 + S.STEP + S.SMALL * 1.5,
 	};
 	/** the strip's amounts: drawn a step down from the plates' size */
-	const STRIP_LABEL_K = 0.86;
+	const STRIP_LABEL_K = 0.78;
 	const stripLeft = -STACKED_ROW_W / 2;
 	const menuStripX = stripLeft + S.ICON / 2;
 	const stripAmountsLeft = stripLeft + S.ICON + S.GAP;
@@ -221,8 +225,10 @@
 {/snippet}
 
 {#snippet amount(key: string)}
-	<LabelPlate width={LABEL_W * 1.06} height={PLATE_H} />
-	{@render amountValue(key)}
+	<Container scale={plateK}>
+		<LabelPlate width={LABEL_W * 1.06} height={PLATE_H} />
+		{@render amountValue(key)}
+	</Container>
 {/snippet}
 
 {#snippet spin(size: number)}
@@ -331,13 +337,13 @@
 	<Container zIndex={60} x={side.cx} y={side.cy} scale={side.q}>
 		<Container y={-CLUSTER_H * 0.5 + LABEL_H * 0.5}>
 			{#if shown('dec') && !counterInBar}
-				<Container x={-(LABEL_W + STEP) * 0.5 - SIDE_GAP}>
+				<Container x={-(LABEL_W * plateK + STEP) * 0.5 - SIDE_GAP}>
 					{@render step('dec')}
 				</Container>
 			{/if}
 			{@render amount('bet')}
 			{#if shown('inc') && !counterInBar}
-				<Container x={(LABEL_W + STEP) * 0.5 + SIDE_GAP}>
+				<Container x={(LABEL_W * plateK + STEP) * 0.5 + SIDE_GAP}>
 					{@render step('inc')}
 				</Container>
 			{/if}
