@@ -32,8 +32,10 @@
 	);
 </script>
 
-<!-- under the symbol, so the silhouette copies only show as a rim round it -->
-{#if ['win', 'postWinStatic'].includes(props.state) && (props.rawSymbol.name as string) !== 'M'}
+<!-- under the symbol, so the silhouette copies only show as a rim round it. Not during
+	 'win': the outline traces the RESTING art, so while the 3D win jumps out of its cell it
+	 was left behind as a gold silhouette backing - it shows once the symbol is back. -->
+{#if props.state === 'postWinStatic' && (props.rawSymbol.name as string) !== 'M'}
 	<WinFlash
 		x={props.x}
 		y={props.y}
