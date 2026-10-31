@@ -24,7 +24,7 @@ from PIL import Image, ImageChops, ImageEnhance, ImageFilter
 LAYOUTS = {
     'tile': dict(W=1080, H=1440, horizon=700, sky_dx=-180, sea_k=1.35 * 0.62, head_k=0.62, head_x=-150,
                  trawl_k=0.56, trawl_dx=150, TK=0.44, TX=None, TY=640, SH=1010, SX_off=-20, SY_off=-185,
-                 chest=(300, -10, 1110), anchor=(360, 800, 1050), logo_w=900, logo=(None, 18),
+                 chest=(250, 24, 1150), anchor=(360, 800, 1050), logo_w=900, logo=(None, 18),
                  focus=(0.5, 0.48), out='bloody_seafood_tile_3x4'),
     'cover': dict(W=1920, H=1080, horizon=500, sky_dx=0, sea_k=0.95, head_k=0.5, head_x=-60,
                   trawl_k=0.45, trawl_dx=40, TK=0.34, TX=1000, TY=300, SH=800, SX_off=-15, SY_off=-160,
@@ -55,7 +55,7 @@ LAYOUTS['banner'] = rescaled(LAYOUTS['cover'], 2 / 3, 'bloody_seafood_banner_128
 LAYOUTS['square'] = rescaled(dict(
     W=1024, H=1024, horizon=500, sky_dx=-120, sea_k=0.84, head_k=0.45, head_x=-110,
     trawl_k=0.42, trawl_dx=110, TK=0.36, TX=None, TY=445, SH=760, SX_off=-15, SY_off=-150,
-    chest=(220, -10, 800), anchor=(260, 790, 760), logo_w=640, logo=(None, 14),
+    chest=(200, 24, 830), anchor=(260, 790, 760), logo_w=640, logo=(None, 14),
     focus=(0.5, 0.5)), 2, 'bloody_seafood_tile')
 L = LAYOUTS[sys.argv[1] if len(sys.argv) > 1 else 'tile']
 W, H = L['W'], L['H']
@@ -71,8 +71,10 @@ def odd(v):
 SPR = 'static/assets/sprites'
 STORM = f'{SPR}/storm'
 HERO = '/root/bs-render/render/rig/h1_shark_v3/hero/win_0001.png'
-CHEST = '/root/bs-render/render/rig/sw/s_chest/final/static.png'
-ANCHOR = '/root/bs-render/render/rig/sw/w_anchor/final/static.png'
+# the BS wild and the SCATTER anchor (the chest was retired and the anchor became the
+# scatter on 2026-10-31); the names keep the layout keys
+CHEST = '/root/bs-render/render/rig/sw/w_bs/final/static_hi.png'
+ANCHOR = '/root/bs-render/render/rig/sw/w_anchor/final_scatter/static_hi.png'
 BOOK = '/root/bs-render/gameplay_capture/books/base_big.json'
 OUT = 'thumbnails'
 random.seed(7)
@@ -279,7 +281,7 @@ for _ in range(170):
 drops.putalpha(ImageChops.multiply(drops.getchannel('A'), ImageChops.invert(body.filter(ImageFilter.MaxFilter(5)))))
 canvas.alpha_composite(drops.filter(ImageFilter.GaussianBlur(0.7 * S)))
 
-# ---------------------------------------------------------- chest and anchor
+# ------------------------------------------------- BS wild and scatter anchor
 for path, (h, x, y) in ((CHEST, L['chest']), (ANCHOR, L['anchor'])):
     obj = tight(load(path))
     obj = scaled(obj, h / obj.height)
