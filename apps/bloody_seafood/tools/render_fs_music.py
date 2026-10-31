@@ -22,16 +22,25 @@ from scipy.signal import butter, sosfilt
 
 SR = 44100
 SF2 = "/usr/share/sounds/sf2/FluidR3_GM.sf2"
-BPM, BARS = 152, 24
-LOOP = int(round(BARS * 4 * 60 / BPM * SR))
 stem_dir, out, ref = sys.argv[1:4]
-GAIN = {"lead": 0.6, "brass": 0.5, "chords": 0.78, "strings": 0.72, "bass": 0.85, "drums": 0.8}
+# v3+ compositions describe themselves in meta.json (tempo, length, gains, high-passes, which
+# stems are the lead and the pad); without one, the v2 shanty's settings
+META = {"bpm": 152, "bars": 24,
+        "gain": {"lead": 0.6, "brass": 0.5, "chords": 0.78, "strings": 0.72, "bass": 0.85, "drums": 0.8},
+        "hp": {"lead": 140, "brass": 140, "chords": 140, "strings": 140},
+        "lead": ["lead"], "pad": ["chords", "strings"]}
+if os.path.exists(os.path.join(stem_dir, "meta.json")):
+    META = json.load(open(os.path.join(stem_dir, "meta.json")))
+BPM, BARS, GAIN = META["bpm"], META["bars"], META["gain"]
+LOOP = int(round(BARS * 4 * 60 / BPM * SR))
 
 
 def render(name):
     wav = os.path.join(stem_dir, f"{name}.wav")
-    subprocess.run(["fluidsynth", "-ni", "-g", "0.5", "-r", str(SR), "-R", "1", "-C", "0",
-                    "-F", wav, SF2, os.path.join(stem_dir, f"{name}.mid")], check=True, capture_output=True)
+    # a stem with no MIDI is pre-rendered audio (v3's synthesised thunder)
+    if os.path.exists(os.path.join(stem_dir, f"{name}.mid")):
+        subprocess.run(["fluidsynth", "-ni", "-g", "0.5", "-r", str(SR), "-R", "1", "-C", "0",
+                        "-F", wav, SF2, os.path.join(stem_dir, f"{name}.mid")], check=True, capture_output=True)
     sr, x = wavfile.read(wav)
     x = x.astype(np.float32) / 32768 if x.dtype == np.int16 else x.astype(np.float32)
     return x
@@ -44,8 +53,8 @@ def hp(x, fc):
 stems = {}
 for name in GAIN:
     x = render(name)
-    if name not in ("bass", "drums"):
-        x = hp(x, 140)
+    if name in META["hp"]:
+        x = hp(x, META["hp"][name])
     stems[name] = x
 n = min(len(x) for x in stems.values())
 need = 2 * LOOP
@@ -101,6 +110,6 @@ def band_energy(x, lo, hi):
 
 
 sl = slice(LOOP, 2 * LOOP)
-lead = band_energy(GAIN["lead"] * stems["lead"][sl], 1000, 4000)
-pad = band_energy(GAIN["chords"] * stems["chords"][sl] + GAIN["strings"] * stems["strings"][sl], 1000, 4000)
+lead = band_energy(sum(GAIN[k] * stems[k][sl] for k in META["lead"]), 1000, 4000)
+pad = band_energy(sum(GAIN[k] * stems[k][sl] for k in META["pad"]), 1000, 4000)
 print(f"lead vs pad (1-4 kHz): {lead - pad:+.1f} dB")

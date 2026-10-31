@@ -240,50 +240,85 @@
 			1900.0,
 			false
 		],
-		"bgm_freespin": [
-			143371.41,
-			37894.74,
-			true
-		],
 		"sfx_btn_spin": [
-			181516.15,
+			143371.41,
 			450.0,
 			false
 		],
 		"sfx_cluster_hit_1": [
-			182216.15,
+			144071.41,
 			600.0,
 			false
 		],
 		"sfx_cluster_burst_1": [
-			183066.15,
+			144921.41,
 			480.0,
 			false
 		],
 		"sfx_cluster_hit_2": [
-			183796.15,
+			145651.41,
 			600.0,
 			false
 		],
 		"sfx_cluster_burst_2": [
-			184646.15,
+			146501.41,
 			480.0,
 			false
 		],
 		"sfx_cluster_hit_3": [
-			185376.15,
+			147231.41,
 			600.0,
 			false
 		],
 		"sfx_cluster_burst_3": [
-			186226.15,
+			148081.41,
 			480.0,
 			false
 		],
 		"amb_storm": [
-			186956.15,
-			14000.0,
+			148811.41,
+			48000.0,
 			true
+		],
+		"bgm_freespin": [
+			197061.41,
+			53333.33,
+			true
+		],
+		"sfx_mult_up_1": [
+			250644.74,
+			1800.0,
+			false
+		],
+		"sfx_mult_up_2": [
+			252694.74,
+			1800.0,
+			false
+		],
+		"sfx_mult_up_3": [
+			254744.74,
+			1800.0,
+			false
+		],
+		"sfx_mult_up_4": [
+			256794.74,
+			1800.0,
+			false
+		],
+		"sfx_mult_up_5": [
+			258844.74,
+			1800.0,
+			false
+		],
+		"sfx_mult_up_6": [
+			260894.74,
+			1800.0,
+			false
+		],
+		"sfx_mult_down": [
+			262944.74,
+			1900.0,
+			false
 		]
 	},
 	"src": [
@@ -458,6 +493,27 @@
 		},
 		"sfx_cluster_burst_3": {
 			"volume": 0.8
+		},
+		"sfx_mult_up_1": {
+			"volume": 0.8
+		},
+		"sfx_mult_up_2": {
+			"volume": 0.8
+		},
+		"sfx_mult_up_3": {
+			"volume": 0.8
+		},
+		"sfx_mult_up_4": {
+			"volume": 0.8
+		},
+		"sfx_mult_up_5": {
+			"volume": 0.8
+		},
+		"sfx_mult_up_6": {
+			"volume": 0.8
+		},
+		"sfx_mult_down": {
+			"volume": 0.5
 		}
 	}
 }

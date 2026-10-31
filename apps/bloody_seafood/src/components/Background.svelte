@@ -378,9 +378,8 @@
 	// runs blood red. The storm comes in with a whiteout lightning strike as the bonus
 	// intro opens, and clears once the TOTAL HAUL panel closes.
 	const mood = { night: 0, blood: 0, strikeNow: false };
-	// The storm bed sits well under the music in every mode (low-passed, so no hiss). In the
-	// bonus it used to rise to full and drowned the free-spins music in rain noise: it now
-	// tops out ~15 dB under it.
+	// The surf bed (amb_storm: breaking waves and lapping, make_surf_amb.py) sits well under
+	// the music in every mode, a little louder in the storm bonus but still ~15 dB under it.
 	const AMB_DAY = 0.15;
 	const AMB_STORM = 0.2;
 	const setStorm = (on: boolean) => {
