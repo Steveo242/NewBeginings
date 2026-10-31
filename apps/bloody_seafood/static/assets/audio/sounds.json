@@ -319,6 +319,31 @@
 			263244.74,
 			1600.0,
 			false
+		],
+		"sfx_stinger_big": [
+			265344.74,
+			2700.0,
+			false
+		],
+		"sfx_stinger_superwin": [
+			268294.74,
+			2950.0,
+			false
+		],
+		"sfx_stinger_mega": [
+			271494.74,
+			3200.0,
+			false
+		],
+		"sfx_stinger_epic": [
+			274944.74,
+			3450.0,
+			false
+		],
+		"sfx_stinger_max": [
+			278644.74,
+			3950.0,
+			false
 		]
 	},
 	"src": [
@@ -514,6 +539,21 @@
 		},
 		"sfx_mult_down": {
 			"volume": 0.5
+		},
+		"sfx_stinger_big": {
+			"volume": 0.75
+		},
+		"sfx_stinger_superwin": {
+			"volume": 0.75
+		},
+		"sfx_stinger_mega": {
+			"volume": 0.75
+		},
+		"sfx_stinger_epic": {
+			"volume": 0.75
+		},
+		"sfx_stinger_max": {
+			"volume": 0.75
 		}
 	}
 }

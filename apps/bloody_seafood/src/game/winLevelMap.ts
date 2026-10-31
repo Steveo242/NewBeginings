@@ -1,5 +1,8 @@
 import { SECOND } from 'constants-shared/time';
 
+// Celebration tiers (type 'big'): count-ups of 3 / 4 / 5 / 6.5 / 8 s (they ran 6-32 s),
+// each opening on its own stinger (tools/make_bigwin_stingers.py); Win.svelte adds the
+// shake + splash (BigWinFx) and, for MAX, the shark breach. Turbo shortens them.
 export const winLevelMap = {
 	1: {
 		level: 1,
@@ -51,8 +54,8 @@ export const winLevelMap = {
 		alias: 'big',
 		type: 'big',
 		text: 'BIG WIN',
-		presentDuration: 6 * SECOND,
-		sound: { sfx: undefined, bgm: undefined },
+		presentDuration: 3 * SECOND,
+		sound: { sfx: 'sfx_stinger_big', bgm: undefined },
 		animation: { intro: 'big_win_intro', idle: 'big_win_idle', outro: 'big_win_exit' },
 	},
 	7: {
@@ -60,8 +63,8 @@ export const winLevelMap = {
 		alias: 'superwin',
 		type: 'big',
 		text: 'SUPER WIN',
-		presentDuration: 18 * SECOND,
-		sound: { sfx: undefined, bgm: undefined },
+		presentDuration: 4 * SECOND,
+		sound: { sfx: 'sfx_stinger_superwin', bgm: undefined },
 		animation: { intro: 'super_win_intro', idle: 'super_win_idle', outro: 'super_win_exit' },
 	},
 	8: {
@@ -69,8 +72,8 @@ export const winLevelMap = {
 		alias: 'mega',
 		type: 'big',
 		text: 'MEGA WIN',
-		presentDuration: 20 * SECOND,
-		sound: { sfx: undefined, bgm: undefined },
+		presentDuration: 5 * SECOND,
+		sound: { sfx: 'sfx_stinger_mega', bgm: undefined },
 		animation: { intro: 'mega_win_intro', idle: 'mega_win_idle', outro: 'mega_win_exit' },
 	},
 	9: {
@@ -78,8 +81,8 @@ export const winLevelMap = {
 		alias: 'epic',
 		type: 'big',
 		text: 'EPIC WIN!',
-		presentDuration: 26 * SECOND,
-		sound: { sfx: undefined, bgm: undefined },
+		presentDuration: 6.5 * SECOND,
+		sound: { sfx: 'sfx_stinger_epic', bgm: undefined },
 		animation: { intro: 'epic_win_intro', idle: 'epic_win_idle', outro: 'epic_win_exit' },
 	},
 	10: {
@@ -87,8 +90,8 @@ export const winLevelMap = {
 		alias: 'max',
 		type: 'big',
 		text: 'MAX WIN',
-		presentDuration: 32 * SECOND,
-		sound: { sfx: undefined, bgm: undefined },
+		presentDuration: 8 * SECOND,
+		sound: { sfx: 'sfx_stinger_max', bgm: undefined },
 		animation: { intro: 'max_win_intro', idle: 'max_win_idle', outro: 'max_win_exit' },
 	},
 } as const;

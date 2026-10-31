@@ -18,6 +18,9 @@
 	import WinBanner from "./WinBanner.svelte";
  import WinAmountText from "./WinAmountText.svelte";
  	import PressToContinue from './PressToContinue.svelte';
+	import BigWinFx from './BigWinFx.svelte';
+	import SharkBreach from './SharkBreach.svelte';
+	import { stateBetDerived } from 'state-shared';
 	import { GAME_SPEED, SYMBOL_SIZE } from '../game/constants';
 	import { getContext } from '../game/context';
 
@@ -43,12 +46,14 @@
 <FadeContainer {show}>
 	{#if winLevelData}
 		{@const isBigWin = winLevelData.type === 'big'}
-		{@const duration = winLevelData.presentDuration}
+		{@const duration = winLevelData.presentDuration / Math.max(1, stateBetDerived.timeScale())}
 		<WinCountUpProvider {amount} {duration} oncomplete={() => onCountUpComplete()}>
 			{#snippet children({ countUpAmount, startCountUp, finishCountUp, countUpCompleted })}
 				{#if isBigWin}
 					<!-- dark enough that the plaque owns the screen -->
 					<CanvasSizeRectangle backgroundColor={0x000000} backgroundAlpha={0.7} />
+					<!-- shake + blood-and-water sweep, scaled by tier -->
+					<BigWinFx alias={winLevelData.alias} />
 				{/if}
 
 				<OnMount
@@ -64,6 +69,9 @@
 						x={context.stateGameDerived.boardLayout().x}
 						y={context.stateGameDerived.boardLayout().y}
 					>
+						{#if winLevelData.alias === 'max'}
+							<SharkBreach />
+						{/if}
 						{#if winLevelData?.animation}
 							<WinBanner text={winLevelData.text} alias={winLevelData.alias}>
 								<WinAmountText

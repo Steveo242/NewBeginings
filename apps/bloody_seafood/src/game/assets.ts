@@ -69,6 +69,11 @@ export default {
 		src: new URL('../../assets/sprites/storm/fx_glow.webp', import.meta.url).href,
 		preload: true,
 	},
+	fxSharkBreach: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/storm/fx_shark_breach.webp', import.meta.url).href,
+		preload: true,
+	},
 	fxBeam: {
 		type: 'sprite',
 		src: new URL('../../assets/sprites/storm/fx_beam.webp', import.meta.url).href,
