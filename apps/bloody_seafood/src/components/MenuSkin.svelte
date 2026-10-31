@@ -112,6 +112,13 @@
 </script>
 
 <style lang="scss">
+	/* the shared Modals sets the root font to 50% (8 px) under 500 px wide, which made every
+	   portrait menu's type ~6-9 px. 11 px still fits a 360 px phone's panels. */
+	@media screen and (max-width: 500px) {
+		:global(html:root) {
+			font-size: 11px;
+		}
+	}
 	:global(:root) {
 		--m3-bone: #f2ecde;
 		--m3-brass: #e3b858;
