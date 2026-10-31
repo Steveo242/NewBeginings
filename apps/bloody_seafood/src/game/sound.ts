@@ -11,7 +11,14 @@ export const bonusMusicName = (superMode: boolean): MusicName =>
 		? bonusMusic.dropped ? 'bgm_superspin' : 'bgm_super_intro'
 		: bonusMusic.dropped ? 'bgm_freespin' : 'bgm_fs_intro';
 
+export const ALL_MUSIC: MusicName[] = ['bgm_main', ...BONUS_MUSIC];
+
+/** big-win music, one per celebration tier (tools/make_bigwin_music.py): the base game's
+ *  jig and the bonuses' shanty set (_fs). One-shots over the ducked music. */
+export type WinMusicName = `bgm_win_${'big' | 'superwin' | 'mega' | 'epic' | 'max'}${'' | '_fs'}`;
+
 export type SoundEffectName =
+	| WinMusicName
 	| 'amb_storm'
 	| 'jng_intro_fs'
 	| 'sfx_anticipation'

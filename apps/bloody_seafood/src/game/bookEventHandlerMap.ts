@@ -10,7 +10,7 @@ import { stateGame, stateGameDerived } from './stateGame.svelte';
 import { startsInFeature } from './constants';
 import type { BookEvent, BookEventOfType, BookEventContext } from './typesBookEvent';
 import type { Position } from './types';
-import { clusterSfx, type SoundEffectName } from './sound';
+import { clusterSfx, ALL_MUSIC, type SoundEffectName, type WinMusicName } from './sound';
 
 // big/mega/epic get their own applause recording; superwin and max fall back
 // to the generic sfx_applause loop.
@@ -35,14 +35,26 @@ export const winLevelApplauseSfx = (winLevelData?: WinLevelData): SoundEffectNam
 		: undefined;
 
 let activeApplauseSfx: SoundEffectName | undefined;
+let activeWinMusic: WinMusicName | undefined;
 
-const winLevelSoundsPlay = ({ winLevelData }: { winLevelData: WinLevelData }) => {
+const fadeAllMusic = (from: number, to: number, duration: number) =>
+	ALL_MUSIC.forEach((name) => eventEmitter.broadcast({ type: 'soundFade', name, from, to, duration }));
+
+/** bonus: the bonuses' set (in free spins, or the TOTAL HAUL after them) */
+const winLevelSoundsPlay = ({ winLevelData, bonus = stateGame.gameType === 'freeSpins' }: { winLevelData: WinLevelData; bonus?: boolean }) => {
 	if (winLevelData?.alias === 'max') eventEmitter.broadcastAsync({ type: 'uiHide' });
 	if (winLevelData?.sound?.sfx) {
 		eventEmitter.broadcast({ type: 'soundOnce', name: winLevelData.sound.sfx });
 	}
 	if (winLevelData?.sound?.bgm) {
 		eventEmitter.broadcast({ type: 'soundMusic', name: winLevelData.sound.bgm });
+	}
+	// The celebration tiers get their own music, bigger each tier, over the ducked loop;
+	// it rings out on its own when the count-up ends
+	if (winLevelData?.type === 'big') {
+		activeWinMusic = `bgm_win_${winLevelData.alias as 'big'}${bonus ? '_fs' : ''}` as WinMusicName;
+		fadeAllMusic(1, 0, 150);
+		eventEmitter.broadcast({ type: 'soundOnce', name: activeWinMusic, forcePlay: true });
 	}
 	// The celebration tiers applaud through the whole count-up. A regular win
 	// gets two strikes of a bell instead - level 1 is "zero", silent.
@@ -58,6 +70,15 @@ const winLevelSoundsStop = ({ featureOver = false } = {}) => {
 	if (activeApplauseSfx) {
 		eventEmitter.broadcast({ type: 'soundStop', name: activeApplauseSfx });
 		activeApplauseSfx = undefined;
+	}
+	if (activeWinMusic) {
+		// the win track's last chord keeps ringing while the loop comes back up under it
+		const name = activeWinMusic;
+		activeWinMusic = undefined;
+		fadeAllMusic(0, 1, 900);
+		setTimeout(() => {
+			if (activeWinMusic !== name) eventEmitter.broadcast({ type: 'soundStop', name });
+		}, 2500);
 	}
 	// featureOver: the bonus has just ended. A bought bonus leaves the buy mode active,
 	// so the mode check alone kept the bonus track playing on into the base game.
@@ -205,7 +226,7 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		eventEmitter.broadcast({ type: 'tumbleWinAmountHide' });
 		eventEmitter.broadcast({ type: 'freeSpinOutroShow' });
 		eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_youwon_panel' });
-		winLevelSoundsPlay({ winLevelData });
+		winLevelSoundsPlay({ winLevelData, bonus: true });
 		await eventEmitter.broadcastAsync({
 			type: 'freeSpinOutroCountUp',
 			amount: bookEvent.amount,

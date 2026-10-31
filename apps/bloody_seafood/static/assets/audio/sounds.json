@@ -359,6 +359,56 @@
 			335389.12,
 			55384.63,
 			true
+		],
+		"bgm_win_big": [
+			391273.74,
+			4800.0,
+			false
+		],
+		"bgm_win_big_fs": [
+			396323.74,
+			5227.26,
+			false
+		],
+		"bgm_win_superwin": [
+			401801.0,
+			5769.23,
+			false
+		],
+		"bgm_win_superwin_fs": [
+			407820.23,
+			6739.12,
+			false
+		],
+		"bgm_win_mega": [
+			414809.34,
+			6545.44,
+			false
+		],
+		"bgm_win_mega_fs": [
+			421604.78,
+			8124.99,
+			false
+		],
+		"bgm_win_epic": [
+			429979.77,
+			8275.85,
+			false
+		],
+		"bgm_win_epic_fs": [
+			438505.62,
+			9276.3,
+			false
+		],
+		"bgm_win_max": [
+			448031.93,
+			9000.0,
+			false
+		],
+		"bgm_win_max_fs": [
+			457281.93,
+			10312.49,
+			false
 		]
 	},
 	"src": [
@@ -577,6 +627,36 @@
 			"volume": 0.8
 		},
 		"bgm_superspin": {
+			"volume": 0.8
+		},
+		"bgm_win_big": {
+			"volume": 0.8
+		},
+		"bgm_win_big_fs": {
+			"volume": 0.8
+		},
+		"bgm_win_superwin": {
+			"volume": 0.8
+		},
+		"bgm_win_superwin_fs": {
+			"volume": 0.8
+		},
+		"bgm_win_mega": {
+			"volume": 0.8
+		},
+		"bgm_win_mega_fs": {
+			"volume": 0.8
+		},
+		"bgm_win_epic": {
+			"volume": 0.8
+		},
+		"bgm_win_epic_fs": {
+			"volume": 0.8
+		},
+		"bgm_win_max": {
+			"volume": 0.8
+		},
+		"bgm_win_max_fs": {
 			"volume": 0.8
 		}
 	}
