@@ -204,7 +204,7 @@ const FILL = { width: SYMBOL_FILL, height: SYMBOL_FILL };
 // while the fish are long and slim - at equal scale the cheapest symbols dominated the
 // board (43-47% of the cell vs the shark's 12%). Drawn a step smaller, the fish read as
 // the prizes they are.
-const LOW_SCALE = 0.88;
+const LOW_SCALE = 0.84;
 const LOW_FILL = { width: SYMBOL_FILL * LOW_SCALE, height: SYMBOL_FILL * LOW_SCALE };
 
 // Win sheets rendered from the rigged 3D models (pack_symbol3d.py). Each frame covers
@@ -221,15 +221,19 @@ const win3d = (assetKey: string, ratio: number, animationSpeed = 1, scale = 1) =
 
 // The shark is the top symbol, shot as a nose-up three-quarter lunge (camera below and
 // ahead of it) and allowed to break its square a little - premium symbols should.
-const H1_SCALE = 1.12;
+const H1_SCALE = 1.24;
+// the other fish a step over the lows too - next to a chunky white chum bucket they still
+// looked small; noticeable, not huge, and the shark stays the biggest
+const HIGH_SCALE = 1.1;
+const HIGH_FILL = { width: SYMBOL_FILL * HIGH_SCALE, height: SYMBOL_FILL * HIGH_SCALE };
 const h1Static = {
 	type: 'sprite',
 	assetKey: 'h1.webp',
 	sizeRatios: { width: SYMBOL_FILL * H1_SCALE, height: SYMBOL_FILL * H1_SCALE },
 };
-const h2Static = { type: 'sprite', assetKey: 'h2.webp', sizeRatios: FILL };
-const h3Static = { type: 'sprite', assetKey: 'h3.webp', sizeRatios: FILL };
-const h4Static = { type: 'sprite', assetKey: 'h4.webp', sizeRatios: FILL };
+const h2Static = { type: 'sprite', assetKey: 'h2.webp', sizeRatios: HIGH_FILL };
+const h3Static = { type: 'sprite', assetKey: 'h3.webp', sizeRatios: HIGH_FILL };
+const h4Static = { type: 'sprite', assetKey: 'h4.webp', sizeRatios: HIGH_FILL };
 
 const l1Static = { type: 'sprite', assetKey: 'l1.webp', sizeRatios: LOW_FILL };
 const l2Static = { type: 'sprite', assetKey: 'l2.webp', sizeRatios: LOW_FILL };
@@ -311,7 +315,7 @@ export const SYMBOL_INFO_MAP = {
 	},
 	H2: {
 		explosion,
-		win: win3d('H2_win', 1.8, 0.5),
+		win: win3d('H2_win', 1.8, 0.5, HIGH_SCALE),
 		postWinStatic: h2Static,
 		static: h2Static,
 		spin: h2Static,
@@ -319,7 +323,7 @@ export const SYMBOL_INFO_MAP = {
 	},
 	H3: {
 		explosion,
-		win: win3d('H3_win', 1.8, 0.5),
+		win: win3d('H3_win', 1.8, 0.5, HIGH_SCALE),
 		postWinStatic: h3Static,
 		static: h3Static,
 		spin: h3Static,
@@ -327,7 +331,7 @@ export const SYMBOL_INFO_MAP = {
 	},
 	H4: {
 		explosion,
-		win: win3d('H4_win', 1.8, 0.5),
+		win: win3d('H4_win', 1.8, 0.5, HIGH_SCALE),
 		postWinStatic: h4Static,
 		static: h4Static,
 		spin: h4Static,
