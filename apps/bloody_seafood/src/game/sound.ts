@@ -51,7 +51,17 @@ export type SoundEffectName =
 	| 'tumble_win_1'
 	| 'tumble_win_2'
 	| 'tumble_win_3'
-	| 'tumble_win_4';
+	| 'tumble_win_4'
+	| 'sfx_cluster_hit_1'
+	| 'sfx_cluster_hit_2'
+	| 'sfx_cluster_hit_3'
+	| 'sfx_cluster_burst_1'
+	| 'sfx_cluster_burst_2'
+	| 'sfx_cluster_burst_3';
+
+/** one of the three takes, so a long cascade never repeats the same hit */
+export const clusterSfx = (kind: 'hit' | 'burst') =>
+	`sfx_cluster_${kind}_${1 + Math.floor(Math.random() * 3)}` as SoundEffectName;
 
 export type SoundName = MusicName | SoundEffectName;
 

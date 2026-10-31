@@ -10,7 +10,7 @@ import { stateGame, stateGameDerived } from './stateGame.svelte';
 import { startsInFeature } from './constants';
 import type { BookEvent, BookEventOfType, BookEventContext } from './typesBookEvent';
 import type { Position } from './types';
-import type { SoundEffectName } from './sound';
+import { clusterSfx, type SoundEffectName } from './sound';
 
 // big/mega/epic get their own applause recording; superwin and max fall back
 // to the generic sfx_applause loop.
@@ -97,9 +97,8 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		const gm = Math.max(1, ...bookEvent.wins.map((w: any) => Number(w?.meta?.globalMult ?? 1)));
 		eventEmitter.broadcast({ type: 'globalMultiplierUpdate', multiplier: gm });
 		const promise1 = async () => {
-			// Accelerating clack that winds up into the explosion the tumble
-			// step fires next, in place of the old single ding.
-			eventEmitter.broadcast({ type: 'soundOnce', name: 'tumble_win_1' });
+			// the cluster hits: a bass thump, a brass ching and a wet slap (one of three takes)
+			eventEmitter.broadcast({ type: 'soundOnce', name: clusterSfx('hit') });
 			await animateSymbols({ positions: _.flatten(bookEvent.wins.map((win) => win.positions)) });
 		};
 
@@ -251,7 +250,8 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		eventEmitter.broadcast({ type: 'boardHide' });
 		eventEmitter.broadcast({ type: 'tumbleBoardShow' });
 		eventEmitter.broadcast({ type: 'tumbleBoardInit', addingBoard: bookEvent.newSymbols });
-		eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_multiplier_explosion_b' });
+		// the winning symbols burst: a wet splat over a water splash, synced to the blood-burst
+		eventEmitter.broadcast({ type: 'soundOnce', name: clusterSfx('burst') });
 		await eventEmitter.broadcastAsync({
 			type: 'tumbleBoardExplode',
 			explodingPositions: bookEvent.explodingSymbols,
