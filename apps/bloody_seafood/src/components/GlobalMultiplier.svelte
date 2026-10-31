@@ -20,6 +20,7 @@
 	import { SYMBOL_SIZE } from '../game/constants';
 	import { DISPLAY_FONT, displayTextStyle } from '../game/fonts';
 	import { HUD_PANEL_W, hudColumn } from '../game/hud';
+	import type { SoundEffectName } from '../game/sound';
 
 	// The free-spin multiplier is the bonus's whole story (+1 for every winning cluster
 	// with a wild in it, kept for the entire feature), so it gets a real meter: an iron
@@ -34,6 +35,10 @@
 
 	let show = $state(false);
 	let multiplier = $state(1);
+	// steps up since the last reset: each one's bell/brass stinger is a semitone higher,
+	// capped at the 6th (make_multiplier_fx.py)
+	let steps = 0;
+	const UP_STEPS = 6;
 	const pop = new Tween(1, { easing: cubicOut });
 	const flash = new Tween(0, { easing: cubicOut });
 
@@ -49,6 +54,9 @@
 	context.eventEmitter.subscribeOnMount({
 		globalMultiplierShow: () => (show = true),
 		globalMultiplierHide: () => {
+			// the feature ends with the multiplier dropping back to x1
+			if (multiplier > 1) context.eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_mult_down' });
+			steps = 0;
 			show = false;
 			multiplier = 1;
 			pop.set(1, { duration: 0 });
@@ -57,14 +65,16 @@
 		globalMultiplierUpdate: async (emitterEvent) => {
 			const speed = stateBetDerived.timeScale();
 			if (emitterEvent.multiplier === 1 && multiplier !== 1) {
-				context.eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_multiplier_reset' });
+				context.eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_mult_down' });
+				steps = 0;
 				await pop.set(0.6, { duration: 180 / speed });
 				multiplier = 1;
 				await pop.set(1, { duration: 220 / speed });
 				return;
 			}
 			if (emitterEvent.multiplier > multiplier) {
-				context.eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_multiplier_update' });
+				steps = Math.min(steps + 1, UP_STEPS);
+				context.eventEmitter.broadcast({ type: 'soundOnce', name: `sfx_mult_up_${steps}` as SoundEffectName });
 				multiplier = emitterEvent.multiplier;
 				// slam: big and bright, then settle with a flash behind the number
 				pop.set(1.9, { duration: 0 });
