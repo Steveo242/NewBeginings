@@ -88,13 +88,33 @@
 		const k = Math.min(1, (innerWidth - 24) / w, (innerHeight - 120) / h);
 		wrap.style.setProperty('--bs-scale', String(k));
 	};
+	// Portrait phones: the shared layout shrank the 2 x 2 grid (a 240 px-per-card benchmark)
+	// and pinned the play-amount stepper to the screen bottom, leaving a band of nothing
+	// between them. The grid now fills the width at full size (CSS below) and the stepper
+	// sits just under it.
+	const fitPortraitBonuses = () => {
+		const bonuses = document.querySelector<HTMLElement>('.pop-up-wrap .bonuses-wrap .bonuses, .pop-up-wrap .wrap > .bonuses');
+		const badge = document.querySelector<HTMLElement>('.pop-up-wrap .badge-amount-wrap-scaled');
+		if (!bonuses || !badge || innerWidth > 600 || innerHeight <= innerWidth) return;
+		const r = bonuses.getBoundingClientRect();
+		const top = `${Math.round(r.bottom + 12)}px`;
+		if (badge.style.top !== top) {
+			badge.style.top = top;
+			badge.style.bottom = 'auto';
+			badge.style.transform = 'translateX(-50%)';
+		}
+	};
+	const fitBonuses = () => {
+		fitLandscapeBonuses();
+		fitPortraitBonuses();
+	};
 	$effect(() => {
-		const observer = new MutationObserver(fitLandscapeBonuses);
+		const observer = new MutationObserver(fitBonuses);
 		observer.observe(document.body, { childList: true, subtree: true });
-		addEventListener('resize', fitLandscapeBonuses);
+		addEventListener('resize', fitBonuses);
 		return () => {
 			observer.disconnect();
-			removeEventListener('resize', fitLandscapeBonuses);
+			removeEventListener('resize', fitBonuses);
 		};
 	});
 
@@ -582,5 +602,60 @@
 	}
 	:global(.pop-up-wrap input.checkbox) {
 		accent-color: var(--m3-brass);
+	}
+	/* ---------------------------------------------------------------- phone bonus cards */
+	/* Phones: the cards were mostly frame and empty space - a 24 px rim round small type
+	   and a 4 rem hero. Slimmer rims, a hero twice the size, bigger type, tight gaps. */
+	@media (max-width: 600px), (max-height: 500px) and (orientation: landscape) {
+		:global(.pop-up-wrap .bonus-card-wrap) {
+			border-width: 14px 15px 16px 13px !important;
+			border-image-width: 14px 15px 16px 13px !important;
+			padding: 0.25rem 0.3rem 0.35rem !important;
+			gap: 0.25rem !important;
+		}
+		:global(.pop-up-wrap .bonus-card-wrap::before) {
+			height: 7rem;
+			margin: 0 0 -0.4rem;
+		}
+		:global(.pop-up-wrap .bonus-card-wrap .title) {
+			font-size: 1.2rem !important;
+		}
+		:global(.pop-up-wrap .bonus-card-wrap .description) {
+			font-size: 0.85rem !important;
+			line-height: 1.3;
+		}
+		:global(.pop-up-wrap .bonus-card-wrap .price) {
+			font-size: 1.4rem !important;
+		}
+	}
+	@media (max-width: 600px) and (orientation: portrait) {
+		/* full size, two cards a row filling the width (the shared code scaled it to ~0.8) */
+		:global(.pop-up-wrap .wrap > .bonuses) {
+			transform: none !important;
+			gap: 0.5rem !important;
+			width: calc(100vw - 1.6rem);
+		}
+		:global(.pop-up-wrap .wrap.scaled) {
+			transform: translate(-50%, calc(-50% - 1.6rem)) !important;
+		}
+		:global(.pop-up-wrap .wrap > .bonuses > *) {
+			gap: 0.5rem !important;
+			width: 100%;
+			justify-content: center;
+		}
+		:global(.pop-up-wrap .wrap > .bonuses .bonus-card-wrap) {
+			min-width: 0 !important;
+			max-width: none !important;
+			flex: 1 1 0;
+		}
+	}
+	@media (max-height: 500px) and (orientation: landscape) {
+		/* the panel round the row of cards: a slimmer frame and less padding */
+		:global(.pop-up-wrap .bonuses-wrap.bs-row .bonuses) {
+			border-width: 20px 24px 22px 22px !important;
+			border-image-width: 20px 24px 22px 22px !important;
+			padding: 0.3rem 0.4rem !important;
+			gap: 0.5rem !important;
+		}
 	}
 </style>
