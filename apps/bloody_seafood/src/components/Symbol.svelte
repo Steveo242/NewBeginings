@@ -62,7 +62,7 @@
 	/>
 {:else if isSpriteSheet}
 	{#if props.state === 'explosion' && staticInfo.type === 'sprite'}
-		<SymbolPop symbolInfo={staticInfo} x={props.x} y={props.y} flashStrength={props.rawSymbol.name === 'W' ? 0.25 : 0.9} />
+		<SymbolPop symbolInfo={staticInfo} x={props.x} y={props.y} flashStrength={props.rawSymbol.name === 'W' ? 0.2 : 0.3} />
 	{/if}
 	<SymbolAnimatedSprite
 		{symbolInfo}

@@ -13,7 +13,7 @@
 		x?: number;
 		y?: number;
 		symbolInfo: ReturnType<typeof getSymbolInfo>;
-		/** how hot the additive flash gets (the wild keeps it low: no white wash on its red) */
+		/** how hot the additive flash gets - kept low (it washed every bursting symbol white) */
 		flashStrength?: number;
 	};
 
@@ -27,7 +27,7 @@
 	const w = $derived(SYMBOL_SIZE * props.symbolInfo.sizeRatios.width * (1 + 0.3 * p));
 	const h = $derived(SYMBOL_SIZE * props.symbolInfo.sizeRatios.height * (1 + 0.3 * p));
 	const alpha = $derived(Math.max(0, 1 - Math.max(0, p - 0.25) / 0.75));
-	const flash = $derived(Math.sin(Math.min(1, p * 2.2) * Math.PI) * (props.flashStrength ?? 0.9));
+	const flash = $derived(Math.sin(Math.min(1, p * 2.2) * Math.PI) * (props.flashStrength ?? 0.3));
 </script>
 
 {#if alpha > 0}

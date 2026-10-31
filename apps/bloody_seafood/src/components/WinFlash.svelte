@@ -5,14 +5,13 @@
 
 	import { SYMBOL_SIZE } from '../game/constants';
 	import { solidFilter } from '../game/fxTextures';
-	import { SYMBOL_BOLT, isHighValue, storm } from '../game/lightning';
+	import { SYMBOL_BOLT, storm } from '../game/lightning';
 	import { getContext } from '../game/context';
 
-	// A winning symbol's own lightning: its silhouette traced in that symbol's colour
-	// (game/lightning.ts) - a thin coloured glow round a bright core, flickering like an
-	// arc. It is the only win indicator, and deliberately restrained: an outline, never a
-	// light behind the symbol (the old bloom and cell boxes washed the art out - the gold
-	// anchor became unreadable). It flares as the symbol wins and surges with the storm.
+	// A winning symbol's outline: a thin gold rim traced round its silhouette (colour from
+	// game/lightning.ts), under the symbol, flaring a little as it wins and with the storm's
+	// lightning. Never a light behind or round the symbol - an additive glow with a white
+	// core read as a washed-out halo on every symbol.
 	type Props = {
 		x?: number;
 		y?: number;
@@ -38,37 +37,24 @@
 		return () => ticker.remove(tick);
 	});
 
-	const high = $derived(isHighValue(props.name));
-	const bolt = $derived(SYMBOL_BOLT[props.name] ?? SYMBOL_BOLT.L1);
-	/** a new random arc state ~20 times a second: the flicker and the jitter */
-	const frame = $derived(Math.floor(now / 50));
-	const rnd = (k: number) => {
-		const v = Math.sin(frame * 12.9898 + k * 78.233) * 43758.5453;
-		return v - Math.floor(v);
-	};
-	const flicker = $derived(0.7 + 0.3 * rnd(1));
 	// storm.pulse is a plain object written by Background: re-read it every tick
 	const surge = $derived.by(() => {
 		void now;
 		return storm.pulse;
 	});
-	const level = $derived(Math.min(1, 0.55 * ((high ? 1 : 0.85) * flicker + 0.6 * hit.current + surge * 0.5)));
-	/** glow and core radii, in board units */
-	const GLOW_R = $derived((high ? 5 : 4.2) * (1 + 0.2 * surge) + rnd(2));
-	const CORE_R = $derived((high ? 2 : 1.7) + 0.5 * rnd(3));
+	const bolt = $derived(SYMBOL_BOLT[props.name] ?? SYMBOL_BOLT.L1);
+	/** the rim's width, in board units: thin, and only a touch wider on the storm's flash */
+	const RIM_R = $derived(1.6 + 0.6 * surge);
 	const DIRS = Array.from({ length: 12 }, (_, i) => [Math.cos((i / 12) * Math.PI * 2), Math.sin((i / 12) * Math.PI * 2)]);
 	const w = $derived(SYMBOL_SIZE * props.sizeRatios.width);
 	const h = $derived(SYMBOL_SIZE * props.sizeRatios.height);
 </script>
 
-<!-- the arc: a wide coloured glow, then a white-hot core hugging the silhouette -->
-<Container x={props.x} y={props.y} filters={[solidFilter(bolt.glow)]} alpha={0.55 * level} blendMode="add">
-	{#each DIRS as [dx, dy], i}
-		<Sprite key={props.assetKey} anchor={0.5} x={dx * GLOW_R * (0.8 + 0.4 * rnd(10 + i))} y={dy * GLOW_R * (0.8 + 0.4 * rnd(30 + i))} width={w} height={h} />
-	{/each}
-</Container>
-<Container x={props.x} y={props.y} filters={[solidFilter(bolt.mid)]} alpha={0.75 * level} blendMode="add">
+<!-- A thin, crisp gold rim hugging the silhouette, drawn UNDER the symbol in normal blend:
+	 the old version (12 additive gold copies 4-5 units out + a white-hot core) read as a
+	 faded white halo round every winning symbol. No glow layer, no white, nothing spills. -->
+<Container x={props.x} y={props.y} filters={[solidFilter(bolt.glow)]} alpha={Math.min(1, 0.55 + 0.35 * hit.current)}>
 	{#each DIRS as [dx, dy]}
-		<Sprite key={props.assetKey} anchor={0.5} x={dx * CORE_R} y={dy * CORE_R} width={w} height={h} />
+		<Sprite key={props.assetKey} anchor={0.5} x={dx * RIM_R} y={dy * RIM_R} width={w} height={h} />
 	{/each}
 </Container>
