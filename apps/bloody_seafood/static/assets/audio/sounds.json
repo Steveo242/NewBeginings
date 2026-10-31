@@ -247,42 +247,42 @@
 		],
 		"bgm_freespin": [
 			157621.41,
-			48000.0,
+			37894.74,
 			true
 		],
+		"sfx_btn_spin": [
+			195766.15,
+			450.0,
+			false
+		],
 		"sfx_cluster_hit_1": [
-			205871.41,
+			196466.15,
 			600.0,
 			false
 		],
 		"sfx_cluster_burst_1": [
-			206721.41,
+			197316.15,
 			480.0,
 			false
 		],
 		"sfx_cluster_hit_2": [
-			207451.41,
+			198046.15,
 			600.0,
 			false
 		],
 		"sfx_cluster_burst_2": [
-			208301.41,
+			198896.15,
 			480.0,
 			false
 		],
 		"sfx_cluster_hit_3": [
-			209031.41,
+			199626.15,
 			600.0,
 			false
 		],
 		"sfx_cluster_burst_3": [
-			209881.41,
+			200476.15,
 			480.0,
-			false
-		],
-		"sfx_btn_spin": [
-			210611.41,
-			450.0,
 			false
 		]
 	},
