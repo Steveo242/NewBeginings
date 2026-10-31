@@ -133,11 +133,6 @@ export default {
 		src: new URL('../../assets/sprites/ui/spin_bs.png', import.meta.url).href,
 		preload: true,
 	},
-	shineBand: {
-		type: 'sprite',
-		src: new URL('../../assets/sprites/ui/shine_band.png', import.meta.url).href,
-		preload: true,
-	},
 	buyBonus: {
 		type: 'sprite',
 		src: new URL('../../assets/sprites/ui/mode_kiss.png', import.meta.url).href,

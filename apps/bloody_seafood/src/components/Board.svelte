@@ -20,7 +20,6 @@
 	import BoardContainer from './BoardContainer.svelte';
 	import BoardMask from './BoardMask.svelte';
 	import BoardBase from './BoardBase.svelte';
-	import ScatterShine from './ScatterShine.svelte';
 	import { vividFilter } from '../game/fxTextures';
 
 	const context = getContext();
@@ -72,7 +71,6 @@
 	<BoardContext animate={true}>
 		<BoardContainer filters={[vividFilter()]}>
 			<BoardBase />
-			<ScatterShine />
 		</BoardContainer>
 	</BoardContext>
 {/if}

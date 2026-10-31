@@ -46,7 +46,7 @@
 			const s = new PIXI.TilingSprite({ texture: caustics, width: 10, height: 10 });
 			s.tileScale.set(scale);
 			s.alpha = alpha;
-			s.tint = 0x9ff5ea;
+			s.tint = 0xa8dcff;
 			s.blendMode = 'add';
 			root.addChild(s);
 			layers.push(s);
@@ -55,7 +55,7 @@
 		noise.renderable = false;
 		noise.scale.set(2);
 		root.addChild(noise);
-		root.filters = [new PIXI.DisplacementFilter({ sprite: noise, scale: 14 })];
+		root.filters = [new PIXI.DisplacementFilter({ sprite: noise, scale: 14, resolution: 1 })];
 		context.stateApp.pixiApplication?.ticker.add(tick);
 		// sizes may have been applied before the textures existed
 		applyLayout();

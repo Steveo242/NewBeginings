@@ -2,7 +2,6 @@
 	import SymbolSpine from './SymbolSpine.svelte';
 	import SymbolSprite from './SymbolSprite.svelte';
 	import SymbolAnimatedSprite from './SymbolAnimatedSprite.svelte';
-	import SymbolGlow from './SymbolGlow.svelte';
 	import SymbolPop from './SymbolPop.svelte';
 	import WinFlash from './WinFlash.svelte';
 	import { getSymbolBackgroundInfo, getSymbolInfo } from '../game/utils';
@@ -31,24 +30,6 @@
 		(props.state === 'static' || props.state === 'postWinStatic') &&
 			HIGH_SYMBOLS.includes(props.rawSymbol.name),
 	);
-	// the light behind a symbol: scatters always (except while they win/burst - they
-	// have their own show then), premiums only on their way down and landing
-	const PREMIUMS = ['H1', 'H2', 'H3', 'H4'];
-	// the wild is the power symbol: always lit in gold, like the scatter
-	const glowKind = $derived(
-		props.rawSymbol.name === 'S'
-			? 'scatter'
-			: props.rawSymbol.name === 'W'
-				? 'wild'
-				: PREMIUMS.includes(props.rawSymbol.name)
-					? 'premium'
-					: null,
-	);
-	const glowLit = $derived(
-		glowKind === 'scatter' || glowKind === 'wild'
-			? !['win', 'explosion'].includes(props.state)
-			: props.state === 'spin' || props.state === 'land',
-	);
 </script>
 
 <!-- under the symbol, so the silhouette copies only show as a rim round it -->
@@ -62,10 +43,6 @@
 	/>
 {/if}
 
-{#if glowKind}
-	<SymbolGlow x={props.x} y={props.y} kind={glowKind} lit={glowLit} />
-{/if}
-
 {#if isSprite}
 	<SymbolSprite
 		{symbolInfo}
@@ -75,8 +52,6 @@
 		bounce={props.state === 'land'}
 		{idle}
 		spinning={props.state === 'spin'}
-		pulse={(glowKind === 'scatter' || glowKind === 'wild') && glowLit}
-		shine={glowKind === 'wild' && glowLit}
 	/>
 {:else if isSpriteSheet}
 	{#if props.state === 'explosion' && staticInfo.type === 'sprite'}

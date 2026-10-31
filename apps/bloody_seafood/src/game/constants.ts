@@ -122,11 +122,11 @@ export const INITIAL_SYMBOL_STATE: SymbolState = 'static';
 
 const M_SIZE = 0.3;
 
-// Overall pace of the symbol animations (wins, bursts): 1 = as rendered. Players found
-// them rushed at 1; 0.6 played them ~65% longer, which then read as slow - GAME_SPEED
-// takes 15% back off that, and off the reels and tumbles. Turbo is unaffected.
+// Overall pace of the symbol animations (wins, bursts): 1 = as rendered (30 fps renders
+// at animationSpeed 0.5). They had been slowed to 0.69 and read as sluggish - back to
+// full speed. GAME_SPEED still sets the reels and tumbles. Turbo is unaffected.
 export const GAME_SPEED = 1.15;
-export const ANIM_PACE = 0.6 * GAME_SPEED;
+export const ANIM_PACE = 1;
 
 const SPIN_OPTIONS_SHARED = {
 	reelFallInDelay: Math.round(80 / GAME_SPEED),
@@ -187,13 +187,12 @@ export const zIndexes = {
 // chunks and brine spray (build_explode_v2.py). Symbol.svelte pops the symbol itself
 // (swell + flash + fade) underneath it so the symbol bursts rather than vanishes.
 // SymbolAnimatedSprite fires onComplete for it, which TumbleBoard awaits per symbol -
-// a burst that never completed would hang the cascade. 20 frames at 1.25x pace keeps
-// the ~0.4 s the 16-frame v1 took.
+// a burst that never completed would hang the cascade. 20 frames, ~0.33 s.
 const explosion = {
 	type: 'spriteSheet',
 	assetKey: 'symbolExplode',
 	sizeRatios: { width: 1.6, height: 1.6 },
-	animationSpeed: ANIM_PACE * 1.25,
+	animationSpeed: ANIM_PACE,
 };
 
 // Symbol art fills ~88% of its atlas cell. Drawn 1.2x, the fish reach just past their

@@ -84,7 +84,7 @@
 
 		// the harbour gets the same push of colour as the board, a step gentler so the
 		// reels still pop in front of it
-		const grade = new PIXI.ColorMatrixFilter();
+		const grade = new PIXI.ColorMatrixFilter({ resolution: 1 });
 		grade.saturate(0.28, false);
 		grade.contrast(0.08, true);
 		root.filters = [grade];
@@ -95,7 +95,7 @@
 		const skyNoise = new PIXI.Sprite(noiseTex);
 		skyNoise.renderable = false;
 		skyNoise.scale.set(6);
-		const skyDisp = new PIXI.DisplacementFilter({ sprite: skyNoise, scale: 26 });
+		const skyDisp = new PIXI.DisplacementFilter({ sprite: skyNoise, scale: 26, resolution: 1 });
 		// The base game plays in clear daylight; the bonus rounds flash to the night storm
 		// (bs-render daymode/: the same plate re-lit by FLUX Kontext, registered to the
 		// night layers and cut with their alphas). Each day layer sits over its night twin
@@ -115,7 +115,7 @@
 		const seaNoise = new PIXI.Sprite(noiseTex);
 		seaNoise.renderable = false;
 		seaNoise.scale.set(2.2, 1.1);
-		const seaDisp = new PIXI.DisplacementFilter({ sprite: seaNoise, scale: { x: 10, y: 16 } });
+		const seaDisp = new PIXI.DisplacementFilter({ sprite: seaNoise, scale: { x: 10, y: 16 }, resolution: 1 });
 		const daySea = new PIXI.Sprite(tex('daySea'));
 		seaWrap.addChild(sea, daySea, seaNoise);
 		seaWrap.filters = [seaDisp];
@@ -174,7 +174,7 @@
 		root.addChild(rainWrap);
 
 		// lightning flash: sky brightness spike plus a cold wash over the whole scene
-		const flashMatrix = new PIXI.ColorMatrixFilter();
+		const flashMatrix = new PIXI.ColorMatrixFilter({ resolution: 1 });
 		const flashWash = new PIXI.Graphics();
 		flashWash.blendMode = 'add';
 		root.addChild(flashWash);

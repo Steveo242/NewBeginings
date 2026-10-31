@@ -1,4 +1,4 @@
-import { loadTextures, type ResolvedAsset } from 'pixi.js';
+import { Filter, loadTextures, type ResolvedAsset } from 'pixi.js';
 
 // Symbols are rendered at ~176-560px and drawn at ~55-100px (about a third of that on a
 // phone). Without mipmaps the GPU minifies with a 2x2 bilinear tap, which skips most
@@ -13,3 +13,10 @@ loadTextures.load = function (url: string, asset: ResolvedAsset, loader) {
 	const data = { autoGenerateMipmaps: true, scaleMode: 'linear', ...asset?.data };
 	return load.call(this, url, { ...asset, data }, loader);
 };
+
+// Filters render into their own texture at Filter.defaultOptions.resolution, which is 1 -
+// while the app renders at devicePixelRatio. The colour grade on the symbol layer
+// (vividFilter) therefore drew every symbol at half resolution on a 2x screen (a third
+// on 3x phones) and stretched it back up: the whole board read soft. 'inherit' renders
+// each filter at its target's resolution.
+Filter.defaultOptions.resolution = 'inherit';

@@ -25,7 +25,7 @@
 	// The tank renders cover 11.2 x 11.2 units (frame, lid handle and plinth) round the 7 x 7 grid, with a 7.2-unit opening.
 	const FRAME_RATIO = 1120 / 700;
 	const OPENING_RATIO = 720 / 700;
-	const TANK_WATER_TINT = 0x5a8c96;
+	const TANK_WATER_TINT = 0xa8c4e0;
 </script>
 
 <!--
@@ -40,8 +40,8 @@
 	{@const open = layout.width * OPENING_RATIO}
 	{@const left = layout.x - open * 0.5}
 	{@const top = layout.y - open * 0.5}
-	<!-- TANK_WATER_TINT: the lit water behind the symbols was as bright and busy as they
-	     are, so they didn't pop. Darkened to a deep backdrop they stand in front of. -->
+	<!-- tank_back is re-tinted deep ocean blue (recolor_tank_water.py; was murky teal-green);
+	     TANK_WATER_TINT keeps it a step darker than the symbols so they pop in front of it. -->
 	<Sprite key="tankBack" anchor={0.5} x={layout.x} y={layout.y} width={size} height={size} tint={TANK_WATER_TINT} />
 	<Container>
 		<Rectangle isMask x={left} y={top} width={open} height={open} />

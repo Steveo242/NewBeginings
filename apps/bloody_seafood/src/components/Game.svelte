@@ -25,8 +25,6 @@
 	import BoardFront from './BoardFront.svelte';
 	import BoardBanner from './BoardBanner.svelte';
 	import GlassBreak from './GlassBreak.svelte';
-	import WinCells from './WinCells.svelte';
-	import BoardContainer from './BoardContainer.svelte';
 	import Board from './Board.svelte';
 	import Anticipations from './Anticipations.svelte';
 	import ClusterWinAmounts from './ClusterWinAmounts.svelte';
@@ -38,7 +36,6 @@
 	import Win from './Win.svelte';
 	import FreeSpinIntro from './FreeSpinIntro.svelte';
 	import FreeSpinCounter from './FreeSpinCounter.svelte';
-	import TriggerGlow from './TriggerGlow.svelte';
 	import FreeSpinOutro from './FreeSpinOutro.svelte';
 	import Transition from './Transition.svelte';
 	import MenuSkin from './MenuSkin.svelte';
@@ -84,19 +81,9 @@
 			<Anticipations />
 		</MainContainer>
 
-		<!-- gold glow on the chests that trigger free spins (over the resting symbols,
-		     under the 3D win, which plays in the board's unmasked animate layer) -->
-		<MainContainer>
-			<TriggerGlow />
-		</MainContainer>
-
 		<MainContainer>
 			<TumbleBoard />
 			<!-- <TumbleAnticipations /> -->
-			<!-- lightning boxes round winning cells: over the symbols, under the amounts -->
-			<BoardContainer>
-				<WinCells />
-			</BoardContainer>
 			<ClusterWinAmounts />
 		</MainContainer>
 

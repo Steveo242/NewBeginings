@@ -91,7 +91,6 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 
 		stateGame.gameType = bookEvent.gameType;
 		await stateGameDerived.enhancedBoard.spin({ revealEvent: bookEvent });
-		eventEmitter.broadcast({ type: 'scatterShine' });
 		eventEmitter.broadcast({ type: 'soundScatterCounterClear' });
 	},
 	winInfo: async (bookEvent: BookEventOfType<'winInfo'>) => {
@@ -140,7 +139,6 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 	freeSpinTrigger: async (bookEvent: BookEventOfType<'freeSpinTrigger'>) => {
 		// animate scatters
 		eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_scatter_win_v2' });
-		eventEmitter.broadcast({ type: 'scatterTriggerGlow', positions: bookEvent.positions });
 		await animateSymbols({ positions: bookEvent.positions });
 		// show free spin intro
 		eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_superfreespin' });
