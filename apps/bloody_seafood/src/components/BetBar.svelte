@@ -236,7 +236,6 @@
 <!-- The bonus buy breathes while the game is idle - a slow swell and a warm glow, the way
      bonus buys invite a tap in the big studios' games - and holds still otherwise. -->
 {#snippet buyPlaque()}
-	<Sprite key="fxGlow" anchor={0.5} width={B * 3.6} height={B * 1.9} tint={0x000000} alpha={0.5} />
 	<Sprite
 		key="fxGlow"
 		anchor={0.5}
@@ -254,7 +253,6 @@
 {#if side.ok && phone}
 	<!-- landscape phone: the left column - bonus buy, balance, win, menu icons -->
 	<Container zIndex={60} x={side.lx} y={side.cy} scale={side.stripScale}>
-		<Sprite key="fxGlow" anchor={0.5} width={LEFT_W * 1.4} height={LEFT_H * 1.25} tint={0x000000} alpha={0.6} />
 		{#if buyVisible}
 			<Container y={-LEFT_H * 0.5 + BUY_H * 0.5} scale={BUY_K}>
 				{@render buyPlaque()}
@@ -322,16 +320,9 @@
 
 {#if side.ok}
 	<!-- the play cluster, right of the tank: bet -/+ over a big spin, autoplay and turbo.
-	     A soft shadow pool under it keeps it legible over the trawler and the surf. -->
+	     No dark pool behind it: over the trawler it read as a black hole in the picture
+	     (the 3D controls carry their own rims and shadows). -->
 	<Container zIndex={60} x={side.cx} y={side.cy} scale={side.q}>
-		<Sprite
-			key="fxGlow"
-			anchor={0.5}
-			width={CLUSTER_W * 1.45}
-			height={CLUSTER_H * 1.5}
-			tint={0x000000}
-			alpha={0.7}
-		/>
 		<Container y={-CLUSTER_H * 0.5 + LABEL_H * 0.5}>
 			{#if shown('dec') && !counterInBar}
 				<Container x={-(LABEL_W + STEP) * 0.5 - SIDE_GAP}>
@@ -402,16 +393,8 @@
 			{/each}
 		</Container>
 
-		<!-- the control row: spin dead centre, a soft shadow pool keeping it legible -->
+		<!-- the control row: spin dead centre -->
 		<Container x={canvas.width * 0.5} y={rowCy} scale={sq}>
-			<Sprite
-				key="fxGlow"
-				anchor={0.5}
-				width={STACKED_ROW_W * 1.25}
-				height={STACKED_ROW_H * 1.6}
-				tint={0x000000}
-				alpha={0.6}
-			/>
 			{#if buyVisible}
 				<Container x={ROW.buy} scale={S.BUY_K}>
 					{@render buyPlaque()}
