@@ -1,6 +1,15 @@
 import { createSound } from 'utils-sound';
 
-export type MusicName = 'bgm_main' | 'bgm_freespin';
+export type MusicName = 'bgm_main' | 'bgm_fs_intro' | 'bgm_freespin' | 'bgm_super_intro' | 'bgm_superspin';
+
+/** The bonus music (Sound.svelte): a lone voice sings the intro loop until the first free
+ *  spin, then the crew's loop drops in on its downbeat with a lightning strike. */
+export const bonusMusic = { dropped: false };
+export const BONUS_MUSIC: MusicName[] = ['bgm_fs_intro', 'bgm_freespin', 'bgm_super_intro', 'bgm_superspin'];
+export const bonusMusicName = (superMode: boolean): MusicName =>
+	superMode
+		? bonusMusic.dropped ? 'bgm_superspin' : 'bgm_super_intro'
+		: bonusMusic.dropped ? 'bgm_freespin' : 'bgm_fs_intro';
 
 export type SoundEffectName =
 	| 'amb_storm'

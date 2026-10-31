@@ -1,5 +1,5 @@
 <script lang="ts" module>
-	import { sound, type MusicName, type SoundEffectName, type SoundName } from '../game/sound';
+	import { sound, bonusMusic, bonusMusicName, BONUS_MUSIC, type MusicName, type SoundEffectName, type SoundName } from '../game/sound';
 
 	export type EmitterEventSound =
 		| { type: 'soundMusic'; name: MusicName }
@@ -7,6 +7,9 @@
 		| { type: 'soundLoop'; name: SoundEffectName }
 		| { type: 'soundStop'; name: SoundName }
 		| { type: 'soundFade'; name: SoundName; from: number; to: number; duration: number }
+		| { type: 'soundBonusMusic' }
+		| { type: 'soundBonusMusicDrop' }
+		| { type: 'soundBonusMusicReset' }
 		| { type: 'soundScatterCounterIncrease' }
 		| { type: 'soundScatterCounterClear' };
 </script>
@@ -19,9 +22,11 @@
 	import { stateBet } from 'state-shared';
 
 	import { getContext } from '../game/context';
-	import { startsInFeature } from '../game/constants';
+	import { startsInFeature, isSuperBetMode } from '../game/constants';
 
 	const context = getContext();
+	const playBonusMusic = () =>
+		sound.players.music.play({ name: bonusMusicName(isSuperBetMode(stateBet.activeBetModeKey)) });
 
 	context.eventEmitter.subscribeOnMount({
 		// ui
@@ -29,7 +34,7 @@
 			if (startsInFeature(betModeKey)) {
 				sound.players.once.play({ name: 'sfx_winlevel_end' });
 				await waitForTimeout(SECOND);
-				sound.players.music.play({ name: 'bgm_freespin' });
+				playBonusMusic();
 			} else {
 				sound.players.music.play({ name: 'bgm_main' });
 			}
@@ -41,6 +46,19 @@
 		soundScatterCounterClear: () => (context.stateGame.scatterCounter = 0),
 		// game
 		soundMusic: ({ name }) => sound.players.music.play({ name }),
+		soundBonusMusic: () => playBonusMusic(),
+		// voice -> crew: the main loop starts on its downbeat crash in the same task as the
+		// strike (Background flashes and fires the thunder synchronously), so they land together
+		soundBonusMusicDrop: () => {
+			if (bonusMusic.dropped) return;
+			bonusMusic.dropped = true;
+			context.eventEmitter.broadcast({ type: 'stormStrike' });
+			playBonusMusic();
+		},
+		soundBonusMusicReset: () => {
+			bonusMusic.dropped = false;
+			for (const name of BONUS_MUSIC) sound.stop({ name });
+		},
 		soundLoop: ({ name }) => sound.players.loop.play({ name }),
 		soundOnce: ({ name, forcePlay }) => sound.players.once.play({ name, forcePlay }),
 		soundStop: ({ name }) => sound.stop({ name }),
@@ -52,7 +70,7 @@
 		sound.players.loop.play({ name: 'amb_storm' });
 		if (startsInFeature(stateBet.activeBetModeKey)) {
 			// Resuming an in-progress Play Bonus / Play Super.
-			sound.players.music.play({ name: 'bgm_freespin' });
+			playBonusMusic();
 		} else {
 			sound.players.music.play({ name: 'bgm_main' });
 

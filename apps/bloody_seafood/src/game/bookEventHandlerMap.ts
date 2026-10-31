@@ -62,8 +62,10 @@ const winLevelSoundsStop = ({ featureOver = false } = {}) => {
 	// featureOver: the bonus has just ended. A bought bonus leaves the buy mode active,
 	// so the mode check alone kept the bonus track playing on into the base game.
 	if (!featureOver && (startsInFeature(stateBet.activeBetModeKey) || stateGame.gameType === 'freeSpins')) {
-		eventEmitter.broadcast({ type: 'soundMusic', name: 'bgm_freespin' });
+		eventEmitter.broadcast({ type: 'soundBonusMusic' });
 	} else {
+		// the next bonus starts again from its lone-voice intro
+		if (featureOver) eventEmitter.broadcast({ type: 'soundBonusMusicReset' });
 		eventEmitter.broadcast({ type: 'soundMusic', name: 'bgm_main' });
 	}
 	eventEmitter.broadcastAsync({ type: 'uiShow' });
@@ -146,7 +148,7 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		await eventEmitter.broadcastAsync({ type: 'transition' });
 		eventEmitter.broadcast({ type: 'freeSpinIntroShow' });
 		eventEmitter.broadcast({ type: 'soundOnce', name: 'jng_intro_fs' });
-		eventEmitter.broadcast({ type: 'soundMusic', name: 'bgm_freespin' });
+		eventEmitter.broadcast({ type: 'soundBonusMusic' });
 		await eventEmitter.broadcastAsync({
 			type: 'freeSpinIntroUpdate',
 			totalFreeSpins: bookEvent.totalFs,
@@ -170,6 +172,8 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		eventEmitter.broadcast({ type: 'drawerFold' });
 	},
 	updateFreeSpin: async (bookEvent: BookEventOfType<'updateFreeSpin'>) => {
+		// the first free spin: the crew's music and a lightning strike (once per bonus)
+		eventEmitter.broadcast({ type: 'soundBonusMusicDrop' });
 		eventEmitter.broadcast({ type: 'freeSpinCounterShow' });
 		eventEmitter.broadcast({
 			type: 'freeSpinCounterUpdate',

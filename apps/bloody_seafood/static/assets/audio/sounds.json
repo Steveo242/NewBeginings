@@ -190,160 +190,175 @@
 			48000.0,
 			true
 		],
-		"bgm_freespin": [
-			151522.2,
-			53333.33,
-			true
-		],
 		"sfx_mult_up_1": [
-			205105.53,
+			151522.2,
 			1800.0,
 			false
 		],
 		"sfx_mult_up_2": [
-			207155.53,
+			153572.2,
 			1800.0,
 			false
 		],
 		"sfx_mult_up_3": [
-			209205.53,
+			155622.2,
 			1800.0,
 			false
 		],
 		"sfx_mult_up_4": [
-			211255.53,
+			157672.2,
 			1800.0,
 			false
 		],
 		"sfx_mult_up_5": [
-			213305.53,
+			159722.2,
 			1800.0,
 			false
 		],
 		"sfx_mult_up_6": [
-			215355.53,
+			161772.2,
 			1800.0,
 			false
 		],
 		"sfx_mult_down": [
-			217405.53,
+			163822.2,
 			1900.0,
 			false
 		],
 		"sfx_applause": [
-			219555.53,
+			165972.2,
 			7540.0,
 			true
 		],
 		"sfx_applause_big": [
-			227345.53,
+			173762.2,
 			7635.99,
 			true
 		],
 		"sfx_applause_epic": [
-			235231.52,
+			181648.19,
 			4540.0,
 			true
 		],
 		"sfx_applause_mega": [
-			240021.52,
+			186438.19,
 			7540.0,
 			true
 		],
 		"sfx_bigwin_coinloop": [
-			247811.52,
+			194228.19,
 			87.1,
 			true
 		],
 		"sfx_multiplier_combine_b": [
-			248148.62,
+			194565.28,
 			357.32,
 			false
 		],
 		"sfx_multiplier_explosion_c": [
-			248755.94,
+			195172.61,
 			761.9,
 			false
 		],
 		"sfx_scatter_reveal": [
-			249767.85,
+			196184.51,
 			806.24,
 			false
 		],
 		"sfx_scatter_toot": [
-			250824.08,
+			197240.75,
 			384.01,
 			false
 		],
 		"sfx_wild_explode": [
-			251458.1,
+			197874.76,
 			557.01,
 			false
 		],
 		"sfx_winlevel_end": [
-			252265.1,
+			198681.77,
 			716.96,
 			false
 		],
 		"sfx_youwon_panel": [
-			253232.06,
+			199648.73,
 			1320.27,
 			false
 		],
 		"tumble_win_1": [
-			254802.34,
+			201219.0,
 			448.25,
 			false
 		],
 		"tumble_win_2": [
-			255500.59,
+			201917.26,
 			497.07,
 			false
 		],
 		"tumble_win_3": [
-			256247.66,
+			202664.33,
 			547.1,
 			false
 		],
 		"sfx_thunder_close": [
-			257044.76,
+			203461.43,
 			5000.0,
 			false
 		],
 		"sfx_premium_land": [
-			262294.76,
+			208711.43,
 			699.98,
 			false
 		],
 		"sfx_rope_snap": [
-			263244.74,
+			209661.41,
 			1600.0,
 			false
 		],
 		"sfx_stinger_big": [
-			265344.74,
+			211511.41,
 			2700.0,
 			false
 		],
 		"sfx_stinger_superwin": [
-			268294.74,
+			214461.41,
 			2950.0,
 			false
 		],
 		"sfx_stinger_mega": [
-			271494.74,
+			217661.41,
 			3200.0,
 			false
 		],
 		"sfx_stinger_epic": [
-			274944.74,
+			221111.41,
 			3450.0,
 			false
 		],
 		"sfx_stinger_max": [
-			278644.74,
+			224811.41,
 			3950.0,
 			false
+		],
+		"bgm_fs_intro": [
+			229011.41,
+			22857.14,
+			true
+		],
+		"bgm_freespin": [
+			252118.55,
+			60952.38,
+			true
+		],
+		"bgm_super_intro": [
+			313320.93,
+			21818.19,
+			true
+		],
+		"bgm_superspin": [
+			335389.12,
+			55384.63,
+			true
 		]
 	},
 	"src": [
@@ -554,6 +569,15 @@
 		},
 		"sfx_stinger_max": {
 			"volume": 0.75
+		},
+		"bgm_fs_intro": {
+			"volume": 0.8
+		},
+		"bgm_super_intro": {
+			"volume": 0.8
+		},
+		"bgm_superspin": {
+			"volume": 0.8
 		}
 	}
 }

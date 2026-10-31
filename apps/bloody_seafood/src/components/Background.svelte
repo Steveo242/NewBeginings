@@ -44,6 +44,7 @@
 
 	let built = false;
 	let tick: ((t: PIXI.Ticker) => void) | undefined;
+	let strikeNowBig: (() => void) | undefined;
 
 	const rand = (a: number, b: number) => a + Math.random() * (b - a);
 
@@ -278,7 +279,8 @@
 			flashWash.alpha = 0;
 		};
 
-		const startStrike = (W: number, H: number) => {
+		/** big: the bonus music's drop - a full whiteout and close thunder at once (no delay) */
+		const startStrike = (W: number, H: number, big = false) => {
 			const leftSide = Math.random() < 0.5;
 			const x = leftSide ? rand(0.06, 0.34) * W : rand(0.66, 0.94) * W;
 			const horizon = horizonY;
@@ -297,11 +299,22 @@
 			}
 			boltLayer.addChild(g);
 			// flicker: a few bright pulses in the first ~400ms
-			strike = { age: 0, g, pulses: [0, rand(70, 110), rand(170, 260)], entry: night < 0.6 };
+			strike = { age: 0, g, pulses: [0, rand(70, 110), rand(170, 260)], entry: big || night < 0.6 };
+			if (big) {
+				context.eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_thunder_close', forcePlay: true });
+				return;
+			}
 			// thunder follows the flash; the one-shot player won't restart a clip
 			// that's still rolling, so a double strike doesn't stack
 			const name = Math.random() < 0.7 ? 'sfx_thunder_close' : 'sfx_thunder_far';
 			setTimeout(() => context.eventEmitter.broadcast({ type: 'soundOnce', name }), rand(120, 420));
+		};
+
+		strikeNowBig = () => {
+			const { width: W, height: H } = context.stateLayoutDerived.canvasSizes();
+			strike?.g.destroy();
+			startStrike(W, H, true);
+			nextStrike = rand(4000, 8000);
 		};
 
 		tick = (ticker: PIXI.Ticker) => {
@@ -435,6 +448,10 @@
 		// the bonus trigger's storm cinematic (StormCinematic): darken, then the bolt
 		stormCinematic: () => setStorm(true, 800 / Math.max(1, stateBetDerived.timeScale())),
 		freeSpinOutroHide: () => setStorm(false),
+		stormStrike: () => {
+			mood.night = 1;
+			strikeNowBig?.();
+		},
 	});
 	$effect(() => {
 		if (context.stateGame.gameType === 'freeSpins') setStorm(true);

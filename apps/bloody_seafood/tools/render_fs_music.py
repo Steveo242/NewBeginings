@@ -32,7 +32,7 @@ META = {"bpm": 152, "bars": 24,
 if os.path.exists(os.path.join(stem_dir, "meta.json")):
     META = json.load(open(os.path.join(stem_dir, "meta.json")))
 BPM, BARS, GAIN = META["bpm"], META["bars"], META["gain"]
-LOOP = int(round(BARS * 4 * 60 / BPM * SR))
+LOOP = int(round(BARS * META.get("beats", 4) * 60 / BPM * SR))  # beats: crotchets a bar (3 for 6/8)
 
 
 def render(name):

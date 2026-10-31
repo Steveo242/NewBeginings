@@ -1,5 +1,9 @@
 <script lang="ts" module>
-	export type EmitterEventStormCinematic = { type: 'stormCinematic' };
+	export type EmitterEventStormCinematic =
+		| { type: 'stormCinematic' }
+		// a lightning strike now, with a whiteout and close thunder (Background) - the bonus
+		// music's voice -> crew switch
+		| { type: 'stormStrike' };
 </script>
 
 <script lang="ts">
