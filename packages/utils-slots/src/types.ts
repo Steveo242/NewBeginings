@@ -33,6 +33,9 @@ export type CascadingReelSpinOptions = {
 	reelPaddingMultiplierNormal: number;
 	reelPaddingMultiplierAnticipated: number;
 	reelFallOutDelay: number;
+	// optional wind-up before falling out: the reel pulls back up by `distance` x the symbol
+	// height over `duration` ms (ease-out), then drops. Skipped on turbo spins.
+	reelWindUp?: { distance: number; duration: number };
 };
 
 type ReelCreateOptions<TRawSymbol extends object, TSymbolState extends string> = {

@@ -1,4 +1,4 @@
-import { backOut } from 'svelte/easing';
+import { backOut, cubicOut } from 'svelte/easing';
 import { Tween } from 'svelte/motion';
 
 import { stateBet } from 'state-shared';
@@ -97,11 +97,26 @@ export function createReelForCascading<TRawSymbol extends object, TSymbolState e
 		await Promise.all(reelState.symbols.map(moveSymbol));
 	};
 
+	const windUp = async () => {
+		const options = reelState.spinOptions().reelWindUp;
+		if (!options || reelState.spinType === 'fast') return;
+		const lift = options.distance * reelOptions.symbolHeight;
+
+		await moveAllSymbolsWith(async (reelSymbol) => {
+			await reelSymbol.symbolY.set(reelSymbol.symbolY.current - lift, {
+				duration: options.duration,
+				easing: cubicOut,
+			});
+		});
+	};
+
 	const fallOut = async () => {
+		await windUp();
 		reelState.motion = 'fallingOut';
 
 		await moveAllSymbolsWith(async (reelSymbol) => {
-			const oldSymbolY = reelSymbol.symbolY.current;
+			// timed from the resting position, so a wind-up doesn't lengthen the drop
+			const oldSymbolY = getSymbolY(reelSymbol.symbolIndexOfBoard);
 			const newSymbolY = getSymbolY(reelSymbol.symbolIndexOfBoard + reelLength);
 			const distance = newSymbolY - oldSymbolY;
 			const duration = distance / reelState.spinOptions().symbolFallOutSpeed;

@@ -133,6 +133,9 @@ const SPIN_OPTIONS_SHARED = {
 	reelPaddingMultiplierNormal: 1.25,
 	reelPaddingMultiplierAnticipated: 18,
 	reelFallOutDelay: Math.round(145 / GAME_SPEED),
+	// each reel pulls back up a touch before it drops, staggered with reelFallOutDelay;
+	// createReelForCascading skips it on turbo spins
+	reelWindUp: { distance: 0.12, duration: 130 },
 };
 
 // normal drops a fifth slower than they were (3.5 / 30 ms): the board settled too fast to follow
