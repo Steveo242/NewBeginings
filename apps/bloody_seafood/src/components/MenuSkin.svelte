@@ -168,16 +168,25 @@
 	   box collapses to nothing - frame the card rows (.bonuses) instead, in every layout.
 	   (Never put a filter/transform on the content box: the phone play-amount stepper is
 	   position: fixed, and either would trap it inside.) */
-	:global(.pop-up-wrap .ui-popup-standard-content-wrap:has(.bonuses)) {
+	:global(.pop-up-wrap .ui-popup-standard-content-wrap:has(.bonuses, .bonuses-wrap)) {
 		border: 0 !important;
 		border-image: none !important;
 		padding: 0 !important;
 	}
 	:global(.pop-up-wrap .bonuses) {
-		padding: 1.4rem 1.6rem;
-		border-style: solid;
-		border-width: 31px 38px 35px 34px;
-		border-image: var(--m3-frame) 155 190 175 170 fill / 31px 38px 35px 34px / 6px 13px 10px 9px stretch;
+		/* no panel: the four cards float over the dimmed game (the blur layer stays) */
+		padding: 0.6rem;
+		border: 0 !important;
+		border-image: none !important;
+	}
+	/* the play-amount line, title and close button read off the dim alone now */
+	:global(.pop-up-wrap:has(.bonuses, .bonuses-wrap) .badge-amount-wrap),
+	:global(.pop-up-wrap:has(.bonuses, .bonuses-wrap) .ui-modal-title-wrap),
+	:global(.pop-up-wrap:has(.bonuses, .bonuses-wrap) button) {
+		text-shadow: 0 2px 3px rgba(0, 0, 0, 0.9), 0 0 8px rgba(0, 0, 0, 0.7);
+	}
+	:global(.pop-up-wrap:has(.bonuses, .bonuses-wrap) [class*='close']) {
+		filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.85));
 	}
 	/* landscape phones: the rules / paytable / settings pages had a thin band of text in a
 	   thick frame - tighter frame and title so the page uses the screen */
@@ -674,10 +683,8 @@
 		}
 	}
 	@media (max-height: 500px) and (orientation: landscape) {
-		/* the panel round the row of cards: a slimmer frame and less padding */
+		/* the row of cards: less padding and gap */
 		:global(.pop-up-wrap .bonuses-wrap.bs-row .bonuses) {
-			border-width: 20px 24px 22px 22px !important;
-			border-image-width: 20px 24px 22px 22px !important;
 			padding: 0.3rem 0.4rem !important;
 			gap: 0.5rem !important;
 		}
