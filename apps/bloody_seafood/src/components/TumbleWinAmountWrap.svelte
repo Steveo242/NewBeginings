@@ -21,21 +21,12 @@
 	// and the logo - drawn first, so the frame painted straight over it.
 	const beamY = $derived(context.stateGameDerived.boardLayout().height + SYMBOL_SIZE * 0.4);
 
-	const desktopPosition = $derived({
+	// one fixed spot in every mode and orientation: centred on the beam (portrait used to
+	// slide it left during free spins, so it jumped between the base game and the bonus)
+	const position = $derived({
 		x: context.stateGameDerived.boardLayout().width * 0.5,
 		y: beamY,
 	});
-
-	const portraitPosition = $derived({
-		x:
-			context.stateGameDerived.boardLayout().width *
-			(context.stateGame.gameType === 'basegame' ? 0.5 : 0.37),
-		y: beamY,
-	});
-
-	const position = $derived(
-		context.stateLayoutDerived.isStacked() ? portraitPosition : desktopPosition,
-	);
 
 	const scale = 1;
 </script>

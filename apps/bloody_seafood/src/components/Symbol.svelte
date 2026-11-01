@@ -2,7 +2,6 @@
 	import SymbolSprite from './SymbolSprite.svelte';
 	import SymbolAnimatedSprite from './SymbolAnimatedSprite.svelte';
 	import SymbolPop from './SymbolPop.svelte';
-	import WinFlash from './WinFlash.svelte';
 	import { getSymbolInfo } from '../game/utils';
 	import type { SymbolState, RawSymbol } from '../game/types';
 	import { getContext } from '../game/context';
@@ -33,21 +32,9 @@
 	);
 </script>
 
-<!-- under the symbol, so the silhouette copies only show as a rim round it. Not during
-	 'win': the outline traces the RESTING art, so while the 3D win jumps out of its cell it
-	 was left behind as a gold silhouette backing - it shows once the symbol is back. -->
-<!-- not on the wild: the BS letters' own pale-gold rim plus the additive gold copies and
-	 white core read as a washed-out backlight spilling round them - it shows its art only -->
-{#if props.state === 'postWinStatic' && !['M', 'W'].includes(props.rawSymbol.name as string)}
-	<WinFlash
-		x={props.x}
-		y={props.y}
-		name={props.rawSymbol.name}
-		assetKey={staticInfo.assetKey}
-		sizeRatios={staticInfo.sizeRatios}
-	/>
-{/if}
-
+<!-- No outline, tint or colour boost on a win (the old gold WinFlash rim and the animate
+	 layer's saturation filter left fish looking flat once they dropped back): symbols keep
+	 their true rendered colours throughout; the pop-out alone marks the win. -->
 {#if isSprite}
 	<SymbolSprite
 		{symbolInfo}
@@ -62,7 +49,7 @@
 	/>
 {:else if isSpriteSheet}
 	{#if props.state === 'explosion' && staticInfo.type === 'sprite'}
-		<SymbolPop symbolInfo={staticInfo} x={props.x} y={props.y} flashStrength={props.rawSymbol.name === 'W' ? 0.2 : 0.3} />
+		<SymbolPop symbolInfo={staticInfo} x={props.x} y={props.y} />
 	{/if}
 	<SymbolAnimatedSprite
 		{symbolInfo}

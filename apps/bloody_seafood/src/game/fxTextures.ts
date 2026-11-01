@@ -10,21 +10,6 @@ const canvasTexture = (w: number, h: number, draw: (ctx: CanvasRenderingContext2
 	return PIXI.Texture.from(canvas);
 };
 
-let vivid: PIXI.ColorMatrixFilter | undefined;
-/**
- * The board's colour grade: richer colour, a touch more contrast and light, so the fish
- * and chum read saturated and bright against the dark tank rather than photo-flat.
- * One shared filter on the symbol layer, not one per symbol.
- */
-export const vividFilter = () => {
-	if (vivid) return vivid;
-	vivid = new PIXI.ColorMatrixFilter({ resolution: 'inherit' });
-	vivid.saturate(0.5, false);
-	vivid.contrast(0.2, true);
-	vivid.brightness(1.1, true);
-	return vivid;
-};
-
 let drop: PIXI.Texture | undefined;
 /** A glossy blood droplet, round end down, anchored (0.5, 0.25) at its neck: the falling drip. */
 export const bloodDropTexture = () =>
