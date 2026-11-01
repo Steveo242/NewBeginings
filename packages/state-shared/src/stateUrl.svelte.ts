@@ -24,8 +24,13 @@ export type Key =
 const getUrlSearchParam = (key: Key) => page.url.searchParams.get(key) as string;
 
 // params for play
+// Social mode (stake.us) is English only, whatever lang the URL carries.
 const lang = () =>
-	getUrlSearchParam('lang') === 'br' ? 'pt' : (getUrlSearchParam('lang') as Language) || 'en';
+	getUrlSearchParam('social') === 'true'
+		? 'en'
+		: getUrlSearchParam('lang') === 'br'
+			? 'pt'
+			: (getUrlSearchParam('lang') as Language) || 'en';
 const sessionID = () => getUrlSearchParam('sessionID') || '';
 const rgsUrl = () => getUrlSearchParam('rgs_url') || '';
 const social = () => getUrlSearchParam('social') === 'true';

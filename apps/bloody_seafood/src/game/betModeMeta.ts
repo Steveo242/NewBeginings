@@ -1,6 +1,11 @@
 import { stateMeta } from 'state-shared';
 
-const M = (mode, costMultiplier, type, title, description, dialog, button) => ({
+import { socialText } from './social';
+
+const M = (mode, costMultiplier, type, title, description, dialog, button) => {
+  // social=true: Stake.us wording (no "buy", "bet", "cost" ...)
+  [title, description, dialog, button] = [title, description, dialog, button].map(socialText);
+  return {
   mode, costMultiplier, type,
   parent: '', children: '',
   assets: { icon: '', dialogImage: '', dialogVolatility: '', volatility: '', button: '' },
@@ -12,7 +17,8 @@ const M = (mode, costMultiplier, type, title, description, dialog, button) => ({
     bannerText: '',
   },
   maxWin: 10000,
-});
+  };
+};
 
 export const applyBetModeMeta = () => {
   stateMeta.betModeMeta = {
@@ -20,12 +26,12 @@ export const applyBetModeMeta = () => {
     ante_bonus: M('ante_bonus', 1.5, 'activate',
       'DEEP WATERS',
       'Improved chance of landing the bonus.',
-      'Raises the chance of triggering the bonus round. Costs 1.5x the base play amount and stays active until turned off.',
+      'Raises the chance of triggering the bonus round. Plays at 1.5x the base play amount and stays active until turned off.',
       'ACTIVATE'),
     ante_super: M('ante_super', 2.0, 'activate',
       'BLOOD TIDE',
       'Improved chance of landing the super bonus.',
-      'Raises the chance of triggering the super bonus round, where landed wilds carry into the next spin (up to 6). Costs 2x the base play amount and stays active until turned off.',
+      'Raises the chance of triggering the super bonus round, where landed wilds carry into the next spin (up to 6). Plays at 2x the base play amount and stays active until turned off.',
       'ACTIVATE'),
     buy_bonus: M('buy_bonus', 100.0, 'buy',
       'THE HAUL',

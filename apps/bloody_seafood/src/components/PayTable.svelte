@@ -57,7 +57,7 @@
 		<li>
 			<img class="bs-symbol bs-symbol--special" src={wIcon} alt="Wild: blood-drenched BS letters" />
 			<span>
-				<strong>WILD</strong> &mdash; substitutes for any paying symbol. Appears
+				<strong>WILD</strong> &mdash; substitutes for any symbol except the SCATTER. Appears
 				during free spins only. Has no win of its own.
 			</span>
 		</li>

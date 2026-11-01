@@ -30,7 +30,7 @@
 
 	<h2 class="bs-h2">Wild</h2>
 	<p>
-		The <strong>WILD</strong> substitutes for any paying symbol to help complete
+		The <strong>WILD</strong> substitutes for any symbol except the SCATTER to help complete
 		a cluster. It appears only during free spins. In the super bonus, landed wilds
 		are carried into the next spin (see Carried wilds).
 	</p>
@@ -98,7 +98,7 @@
 	<h2 class="bs-h2">Play modes</h2>
 	<table class="bs-table">
 		<thead>
-			<tr><th>Mode</th><th>Cost</th><th>What it does</th></tr>
+			<tr><th>Mode</th><th>Played for</th><th>What it does</th></tr>
 		</thead>
 		<tbody>
 			<tr>
