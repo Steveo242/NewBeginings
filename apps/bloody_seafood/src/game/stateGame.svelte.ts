@@ -36,9 +36,11 @@ export const rope = { snappedAt: -Infinity };
 const onSymbolLand = ({
 	rawSymbol,
 	anticipating,
+	reelIndex,
 }: {
 	rawSymbol: RawSymbol;
 	anticipating: boolean;
+	reelIndex: number;
 }) => {
 	// a heavy thump + iron clang; not forced, so a run of premiums landing together
 	// plays one hit instead of stacking into a wall of noise
@@ -54,10 +56,16 @@ const onSymbolLand = ({
 			rope.snappedAt = performance.now();
 		}
 		eventEmitter.broadcast({ type: 'soundScatterCounterIncrease' });
-		eventEmitter.broadcast({
-			type: 'soundOnce',
-			name: 'sfx_scatter_toot',
-		});
+		// the anchor hits the board: an iron clang, a chain and a boom, heavier and higher
+		// for the 2nd and 3rd anchor of the spin (LandFx draws the impact)
+		const n = Math.min(3, Math.max(1, stateGame.scatterCounter));
+		eventEmitter.broadcast({ type: 'soundOnce', name: `sfx_anchor_land_${n as 1 | 2 | 3}`, forcePlay: true });
+		eventEmitter.broadcast({ type: 'landFx', name: 'S', reelIndex, rawSymbol, n });
+	}
+
+	if (rawSymbol.name === 'W') {
+		eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_wild_land', forcePlay: true });
+		eventEmitter.broadcast({ type: 'landFx', name: 'W', reelIndex, rawSymbol, n: 1 });
 	}
 
 	if (rawSymbol.name === 'M') {
@@ -84,7 +92,7 @@ const board = _.range(BOARD_DIMENSIONS.x).map((reelIndex) => {
 			});
 		},
 		onSymbolLand: ({ rawSymbol }) =>
-			onSymbolLand({ rawSymbol, anticipating: reel.reelState.anticipating }),
+			onSymbolLand({ rawSymbol, anticipating: reel.reelState.anticipating, reelIndex }),
 	});
 
 	reel.reelState.spinOptions = () =>

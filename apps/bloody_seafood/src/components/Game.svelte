@@ -15,7 +15,9 @@
 
 	import { getContext } from '../game/context';
 	import { applyBetModeMeta } from '../game/betModeMeta';
+	import { installSocialMode } from '../game/social';
 	import EnableSound from './EnableSound.svelte';
+	import LandFx from './LandFx.svelte';
 	import EnableGameActor from './EnableGameActor.svelte';
 	import ResumeBet from './ResumeBet.svelte';
 	import Sound from './Sound.svelte';
@@ -43,6 +45,7 @@
 	
 	const context = getContext();
 
+	installSocialMode();
 	applyBetModeMeta();
 
 	onMount(() => (context.stateLayout.showLoadingScreen = true));
@@ -80,6 +83,7 @@
 		<MainContainer>
 			<Board />
 			<Anticipations />
+			<LandFx />
 		</MainContainer>
 
 		<MainContainer>

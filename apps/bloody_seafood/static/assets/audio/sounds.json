@@ -409,6 +409,36 @@
 			418941.61,
 			54000.0,
 			true
+		],
+		"sfx_anchor_land_1": [
+			473191.61,
+			1750.0,
+			false
+		],
+		"sfx_anchor_land_2": [
+			475191.61,
+			2000.0,
+			false
+		],
+		"sfx_anchor_land_3": [
+			477441.61,
+			2250.0,
+			false
+		],
+		"sfx_wild_land": [
+			479941.61,
+			850.0,
+			false
+		],
+		"sfx_heartbeat": [
+			481041.61,
+			2666.67,
+			true
+		],
+		"sfx_antic_miss": [
+			483958.28,
+			900.0,
+			false
 		]
 	},
 	"src": [

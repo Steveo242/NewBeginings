@@ -18,7 +18,22 @@
 			(reel) => reel.reelState.anticipating && reel.reelState.motion !== 'stopped',
 		),
 	);
+	// On top of the rope (kept as it was): a low heartbeat that swells under it while a reel
+	// anticipates and cuts dead on the last stop - then the anchor clang if one landed
+	// (stateGame) or, if the reels came up short, a quick deflating trombone.
+	let wasStraining = false;
+	let strainStart = 0;
 	$effect(() => {
+		if (straining && !wasStraining) {
+			strainStart = performance.now();
+			context.eventEmitter.broadcast({ type: 'soundLoop', name: 'sfx_heartbeat' });
+			context.eventEmitter.broadcast({ type: 'soundFade', name: 'sfx_heartbeat', from: 0.25, to: 1, duration: 2.5 * SECOND });
+		}
+		if (!straining && wasStraining) {
+			context.eventEmitter.broadcast({ type: 'soundStop', name: 'sfx_heartbeat' });
+			if (rope.snappedAt < strainStart) context.eventEmitter.broadcast({ type: 'soundOnce', name: 'sfx_antic_miss', forcePlay: true });
+		}
+		wasStraining = straining;
 		if (!straining) context.eventEmitter.broadcast({ type: 'soundStop', name: 'sfx_rope_strain' });
 	});
 

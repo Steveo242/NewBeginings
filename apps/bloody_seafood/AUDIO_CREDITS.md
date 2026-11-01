@@ -9,10 +9,11 @@
 | `sfx_mult_up_1..6` (global multiplier steps up), `sfx_mult_down` (multiplier back to x1) | Original (2026-10-31): synthesised ship's bell and chain ratchet with a brass-section stab rendered through FluidR3_GM, a semitone higher per step; the reset is a synthesised hull thud, gong and timber groan - `tools/make_multiplier_fx.py`. | Original work (Steel Gaming); soundfont FluidR3_GM, MIT. |
 | `sfx_cluster_hit_1..3` (a cluster wins) | Original (2026-10-31): timpani, brass-section stab on D minor and glockenspiel sparkle, MIDI rendered through FluidR3_GM, plus a synthesised wet slap - `tools/make_cluster_fx_v2.py`. | Original work (Steel Gaming); soundfont FluidR3_GM, MIT. |
 | `sfx_cluster_burst_1..3` (winning symbols burst), `sfx_btn_spin` (spin button: iron clank) | Original sound design, synthesised from scratch by `tools/make_cluster_fx_v2.py` (no samples). | Original work owned by the game's publisher (Steel Gaming); no third-party rights. |
+| `sfx_anchor_land_1..3` (SCATTER anchor lands: 1st, 2nd, 3rd+ of a spin), `sfx_wild_land` (WILD lands), `sfx_heartbeat` (low heartbeat under the anticipation rope), `sfx_antic_miss` (anticipation ends without an anchor) | Original (2026-11-01): struck tubular bell, timpani and taiko rendered through FluidR3_GM plus a synthesised inharmonic iron clang, chain rattle and low boom, two semitones higher and heavier per anchor; the wild is a side-stick/clap crack, taiko and a synthesised sub thump and wet splatter; the heartbeat is kick + taiko on the game's 90 BPM pulse; the miss is a trombone bending down - `tools/make_landing_fx.py`. | Original work (Steel Gaming); soundfont FluidR3_GM, MIT. |
 | `bgm_main` (base game) | "Campfire Guitar" by ImmergoMedia, Freesound #670001, edited into a 59 s crossfaded loop. | CC0 1.0 (public domain) |
 
 To regenerate: `python3 tools/compose_shanty.py <dir>` then, for each of its four stem folders
 (bonus_intro, bonus_main, super_intro, super_main), `python3 tools/render_fs_music.py <dir>/<set> <set>.wav <base-music.wav>` (needs fluidsynth and
 fluid-soundfont-gm), `python3 tools/make_cluster_fx_v2.py <dir>`, `python3 tools/make_surf_amb.py <out.wav>` and
-`python3 tools/make_multiplier_fx.py <dir>`, `python3 tools/make_bigwin_music.py <dir>`; splice the results into
+`python3 tools/make_multiplier_fx.py <dir>`, `python3 tools/make_bigwin_music.py <dir>`, `python3 tools/make_landing_fx.py <dir>`; splice the results into
 `static/assets/audio/sounds.*` under the same keys.

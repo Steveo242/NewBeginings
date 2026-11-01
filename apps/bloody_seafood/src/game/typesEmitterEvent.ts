@@ -13,6 +13,7 @@ import type { EmitterEventWin } from '../components/Win.svelte';
 import type { EmitterEventSound } from '../components/Sound.svelte';
 import type { EmitterEventTransition } from '../components/Transition.svelte';
 import type { EmitterEventStormCinematic } from '../components/StormCinematic.svelte';
+import type { EmitterEventLandFx } from '../components/LandFx.svelte';
 
 export type EmitterEventGame =
 	| EmitterEventBoard
@@ -29,4 +30,5 @@ export type EmitterEventGame =
 	| EmitterEventFreeSpinOutro
 	| EmitterEventSound
 	| EmitterEventTransition
-	| EmitterEventStormCinematic;
+	| EmitterEventStormCinematic
+	| EmitterEventLandFx;
