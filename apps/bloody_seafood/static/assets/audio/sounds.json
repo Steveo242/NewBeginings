@@ -340,105 +340,105 @@
 			3950.0,
 			false
 		],
-		"bgm_fs_intro": [
-			229011.41,
-			22857.14,
-			true
-		],
-		"bgm_freespin": [
-			252118.55,
-			60952.38,
-			true
-		],
 		"bgm_win_big": [
-			313320.93,
+			229011.41,
 			4800.0,
 			false
 		],
 		"bgm_win_big_fs": [
-			318370.93,
+			234061.41,
 			5227.26,
 			false
 		],
 		"bgm_win_superwin": [
-			323848.19,
+			239538.66,
 			5769.23,
 			false
 		],
 		"bgm_win_superwin_fs": [
-			329867.41,
+			245557.89,
 			6739.12,
 			false
 		],
 		"bgm_win_mega": [
-			336856.53,
+			252547.01,
 			6545.44,
 			false
 		],
 		"bgm_win_mega_fs": [
-			343651.97,
+			259342.45,
 			8124.99,
 			false
 		],
 		"bgm_win_epic": [
-			352026.96,
+			267717.44,
 			8275.85,
 			false
 		],
 		"bgm_win_epic_fs": [
-			360552.81,
+			276243.29,
 			9276.3,
 			false
 		],
 		"bgm_win_max": [
-			370079.12,
+			285769.59,
 			9000.0,
 			false
 		],
 		"bgm_win_max_fs": [
-			379329.12,
+			295019.59,
 			10312.49,
 			false
 		],
-		"bgm_super_intro": [
-			389891.61,
-			28800.0,
-			true
-		],
-		"bgm_superspin": [
-			418941.61,
-			54000.0,
-			true
-		],
 		"sfx_anchor_land_1": [
-			473191.61,
+			305582.09,
 			1750.0,
 			false
 		],
 		"sfx_anchor_land_2": [
-			475191.61,
+			307582.09,
 			2000.0,
 			false
 		],
 		"sfx_anchor_land_3": [
-			477441.61,
+			309832.09,
 			2250.0,
 			false
 		],
 		"sfx_wild_land": [
-			479941.61,
+			312332.09,
 			850.0,
 			false
 		],
 		"sfx_heartbeat": [
-			481041.61,
+			313432.09,
 			2666.67,
 			true
 		],
 		"sfx_antic_miss": [
-			483958.28,
+			316348.75,
 			900.0,
 			false
+		],
+		"bgm_fs_intro": [
+			317498.75,
+			7118.68,
+			true
+		],
+		"bgm_freespin": [
+			324867.44,
+			136000.0,
+			true
+		],
+		"bgm_super_intro": [
+			461117.44,
+			9605.71,
+			true
+		],
+		"bgm_superspin": [
+			470973.15,
+			121668.5,
+			true
 		]
 	},
 	"src": [

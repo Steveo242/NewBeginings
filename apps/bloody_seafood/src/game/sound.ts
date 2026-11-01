@@ -2,8 +2,8 @@ import { createSound } from 'utils-sound';
 
 export type MusicName = 'bgm_main' | 'bgm_fs_intro' | 'bgm_freespin' | 'bgm_super_intro' | 'bgm_superspin';
 
-/** The bonus music (Sound.svelte): a lone voice sings the intro loop until the first free
- *  spin, then the crew's loop drops in on its downbeat with a lightning strike. */
+/** The bonus music (Sound.svelte): the track's calm section loops until the first free
+ *  spin, then the main loop drops in on its downbeat with a lightning strike. */
 export const bonusMusic = { dropped: false };
 export const BONUS_MUSIC: MusicName[] = ['bgm_fs_intro', 'bgm_freespin', 'bgm_super_intro', 'bgm_superspin'];
 export const bonusMusicName = (superMode: boolean): MusicName =>

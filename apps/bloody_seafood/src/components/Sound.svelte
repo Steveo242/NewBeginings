@@ -47,7 +47,7 @@
 		// game
 		soundMusic: ({ name }) => sound.players.music.play({ name }),
 		soundBonusMusic: () => playBonusMusic(),
-		// voice -> crew: the main loop starts on its downbeat crash in the same task as the
+		// intro -> drop: the main loop starts on its downbeat crash in the same task as the
 		// strike (Background flashes and fires the thunder synchronously), so they land together
 		soundBonusMusicDrop: () => {
 			if (bonusMusic.dropped) return;

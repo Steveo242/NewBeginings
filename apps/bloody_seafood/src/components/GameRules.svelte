@@ -141,6 +141,20 @@
 		<li>Sound can be turned off in settings.</li>
 	</ul>
 
+	<h2 class="bs-h2">Music</h2>
+	<ul class="bs-music">
+		<li>
+			Bonus music: "Blackmoor Tides" by Matthew Pablo (http://www.matthewpablo.com), No Chants
+			version, licensed under Creative Commons: By Attribution 3.0 License
+			(http://creativecommons.org/licenses/by/3.0/). Edited into loops.
+		</li>
+		<li>
+			Super bonus music: "Hitman" Kevin MacLeod (incompetech.com), Licensed under Creative
+			Commons: By Attribution 4.0 License (http://creativecommons.org/licenses/by/4.0/).
+			Edited into loops.
+		</li>
+	</ul>
+
 	<div class="bs-note">
 		Every result is determined the moment the play is placed, independently of
 		every other play. Nothing you do during a round changes the outcome. Play
@@ -267,6 +281,11 @@
 		background: rgba(0, 0, 0, 0.28);
 		color: var(--bone);
 		font-weight: 800;
+	}
+
+	.bs-music {
+		font-size: 0.85rem;
+		overflow-wrap: anywhere;
 	}
 
 	.bs-disclaimer {

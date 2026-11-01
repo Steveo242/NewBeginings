@@ -85,7 +85,7 @@ const winLevelSoundsStop = ({ featureOver = false } = {}) => {
 	if (!featureOver && (startsInFeature(stateBet.activeBetModeKey) || stateGame.gameType === 'freeSpins')) {
 		eventEmitter.broadcast({ type: 'soundBonusMusic' });
 	} else {
-		// the next bonus starts again from its lone-voice intro
+		// the next bonus starts again from its calm intro
 		if (featureOver) eventEmitter.broadcast({ type: 'soundBonusMusicReset' });
 		eventEmitter.broadcast({ type: 'soundMusic', name: 'bgm_main' });
 	}
@@ -196,7 +196,7 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		eventEmitter.broadcast({ type: 'drawerFold' });
 	},
 	updateFreeSpin: async (bookEvent: BookEventOfType<'updateFreeSpin'>) => {
-		// the first free spin: the crew's music and a lightning strike (once per bonus)
+		// the first free spin: the music drops and lightning strikes (once per bonus)
 		eventEmitter.broadcast({ type: 'soundBonusMusicDrop' });
 		eventEmitter.broadcast({ type: 'freeSpinCounterShow' });
 		eventEmitter.broadcast({
