@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { Tween } from 'svelte/motion';
+	import { elasticOut } from 'svelte/easing';
 	import { Container, Rectangle, Sprite } from 'pixi-svelte';
 	import { stateUi } from 'state-shared';
 	import { BLACK } from 'constants-shared/colors';
@@ -184,6 +186,17 @@
 	const counterInBar = $derived(
 		stateUi.freeSpinCounterShow,
 	);
+	// the count ticks with a small punch each time it changes (a spin used, spins added)
+	const counterPop = new Tween(1, { easing: elasticOut });
+	let lastCount = '';
+	$effect(() => {
+		const c = `${stateUi.freeSpinCounterCurrent}/${stateUi.freeSpinCounterTotal}`;
+		if (lastCount && c !== lastCount) {
+			counterPop.set(1.18, { duration: 0 });
+			counterPop.set(1, { duration: 480 });
+		}
+		lastCount = c;
+	});
 
 	const menuX = $derived(canvas.width * 0.5 + menuStripX * sq);
 	const menuY = $derived(stripCy);
@@ -217,11 +230,13 @@
 		{@render props.amountWin({ stacked: true })}
 	{:else if counterInBar}
 		<!-- the shared LabelFreeSpinCounter draws a plate asset this game never shipped -->
-		<BarLabel
-			label="FREE SPINS"
-			value={`${stateUi.freeSpinCounterCurrent} / ${stateUi.freeSpinCounterTotal}`}
-			maxWidth={PLATE_TEXT_W}
-		/>
+		<Container scale={counterPop.current}>
+			<BarLabel
+				label="FREE SPINS"
+				value={`${stateUi.freeSpinCounterCurrent} / ${stateUi.freeSpinCounterTotal}`}
+				maxWidth={PLATE_TEXT_W}
+			/>
+		</Container>
 	{:else}
 		{@render props.amountBet({ stacked: true })}
 	{/if}
