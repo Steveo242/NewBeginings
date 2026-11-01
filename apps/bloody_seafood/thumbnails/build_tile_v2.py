@@ -74,8 +74,8 @@ def odd(v):
     return px(v) | 1
 SPR = 'static/assets/sprites'
 STORM = f'{SPR}/storm'
-# hero_gum: re-rendered 2026-10-31 with charcoal lip edges (was hero/, the red-lipped mouth)
-HERO = '/root/bs-render/render/rig/h1_shark_v3/hero_gum/win_0001.png'
+# hero_snout: re-rendered 2026-11-01 with charcoal lip edges and the snout scab painted out (was hero/)
+HERO = '/root/bs-render/render/rig/h1_shark_v3/hero_snout/win_0001.png'
 # the BS wild and the SCATTER anchor (the chest was retired and the anchor became the
 # scatter on 2026-10-31); the names keep the layout keys
 CHEST = '/root/bs-render/render/rig/sw/w_bs/final/static_hi.png'
