@@ -4,6 +4,7 @@
 	// greys the idle frame. Frames include the drop shadow, so they're drawn a little
 	// larger than the hit area.
 	import type { Snippet } from 'svelte';
+	import { Rectangle } from 'pixi.js';
 	import { Container, Sprite } from 'pixi-svelte';
 	import { Button } from 'components-pixi';
 
@@ -30,7 +31,15 @@
 	const anchor = $derived(props.icon === 'buy' ? { x: 0.483, y: 0.453 } : { x: 0.475, y: 0.475 });
 </script>
 
-<Button anchor={0.5} sizes={{ width: w, height: h }} onpress={props.onpress} disabled={props.disabled}>
+<!-- hit area = the button's own box, not the (bigger) art and its shadow, so neighbouring
+     buttons can never catch each other's taps -->
+<Button
+	anchor={0.5}
+	sizes={{ width: w, height: h }}
+	hitArea={new Rectangle(0, 0, w, h)}
+	onpress={props.onpress}
+	disabled={props.disabled}
+>
 	{#snippet children({ center, hovered, pressed })}
 		{@const state = props.disabled
 			? 'idle'

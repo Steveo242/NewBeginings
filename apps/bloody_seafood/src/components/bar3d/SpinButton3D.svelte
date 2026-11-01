@@ -3,6 +3,7 @@
 	// idle/hover/pressed frames, and the arrow glyph is its own layer so it can turn
 	// while the reels run. Bet/stop behaviour and the Space hotkey
 	// are the shared ButtonBet's, via the shared ButtonBetProvider.
+	import { Circle } from 'pixi.js';
 	import { Sprite } from 'pixi-svelte';
 	import { Button } from 'components-pixi';
 	import { OnHotkey } from 'components-shared';
@@ -48,7 +49,10 @@
 	{#snippet children({ key, onpress })}
 		{@const greyed = disabled || key === 'spin_disabled' || key === 'stop_disabled'}
 		<OnHotkey hotkey="Space" {disabled} {onpress} />
-		<Button anchor={0.5} sizes={{ width: size, height: size }} {onpress} {disabled}>
+		<!-- the hit area is the porthole itself: without it Pixi hit-tests every child's full
+		     rectangle, and the breathing halo (about twice the button) reached over the play
+		     -/+ buttons beside it, so a tap meant for them started a spin -->
+		<Button anchor={0.5} sizes={{ width: size, height: size }} hitArea={new Circle(size / 2, size / 2, size / 2)} {onpress} {disabled}>
 			{#snippet children({ center, hovered, pressed })}
 				{@const state = greyed ? 'idle' : pressed ? 'pressed' : hovered ? 'hover' : 'idle'}
 				{#if !greyed}
