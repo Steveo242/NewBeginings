@@ -14,10 +14,10 @@ metre, length, stem gains, high-passes) that render_fs_music.py renders through 
                 3 + palm-muted distortion guitar, picked bass, rock kit
                 4 the metal finale: lead guitar on the tune an octave up, double kick,
                   crashes, the crew on full chords; tom fill back to the top
-  super_intro   an original shanty (2026-10-31) in E minor, 6/8, the lone voice an octave
-                down and darker
-  super_main    the same tune by the crew at dotted crotchet = 104, 3 passes of 16 bars:
-                crew -> fiddle and drums -> metal finale
+  super_intro   "Blow the Man Down" (traditional sea shanty, public domain) in E minor, 3/4,
+                the lone voice slow and dark - loops until the first free spin
+  super_main    the crew shout it at crotchet = 160, 3 passes of 16 bars:
+                crew -> fiddle, drums and orchestra hits -> metal finale
 
 The main loops open on a downbeat crash: the game cuts to them at the first free spin with
 a lightning strike. Each loop is written three times and the middle one is kept, so
@@ -248,46 +248,53 @@ def drunken_sailor():
           ["choir", "fiddle", "lead"], ["accord", "choir2", "dist"])
 
 
-# ============================================================= the super bonus: original, 6/8
-# E minor; (note, eighths), 6 eighths a bar. Original composition, 2026-10-31.
-B3, E4_, Fs4, G4_, A4_, B4_, C5_, D5_, E5, D4_, Ds4, Ds5 = 59, 64, 66, 67, 69, 71, 72, 74, 76, 62, 63, 75
+# ============================================================= the super bonus: Blow the Man Down
+# Traditional sea shanty (public domain), 3/4, set in E minor (the usual major tune with
+# its scale degrees kept, so the hook is the one everyone knows, only darker); (note,
+# eighths), 6 eighths a bar. Verse line, "Way, hey, blow the man down", verse line,
+# "Give me some time to blow the man down".
+B3, Ds4, E4_, Fs4, G4_, A4_, B4_ = 59, 63, 64, 66, 67, 69, 71
 SUPER = [
-    [(B3, 1), (E4_, 2), (E4_, 1), (Fs4, 1), (G4_, 1)],     # haul away, me bloody boys
-    [(A4_, 2), (G4_, 1), (Fs4, 2), (E4_, 1)],
-    [(D4_, 2), (Fs4, 1), (A4_, 2), (D5_, 1)],
-    [(B4_, 3), (A4_, 1), (G4_, 1), (Fs4, 1)],
-    [(B3, 1), (E4_, 2), (E4_, 1), (Fs4, 1), (G4_, 1)],
-    [(A4_, 2), (B4_, 1), (C5_, 2), (B4_, 1)],
-    [(A4_, 1), (G4_, 1), (Fs4, 1), (Ds4, 2), (Fs4, 1)],
-    [(E4_, 5), (None, 1)],
-    [(E5, 2), (D5_, 1), (B4_, 2), (G4_, 1)],               # chorus: fill the cup with red, red rum
-    [(A4_, 2), (B4_, 1), (C5_, 3)],
-    [(D5_, 2), (C5_, 1), (A4_, 2), (Fs4, 1)],
-    [(B4_, 6)],
-    [(E5, 2), (D5_, 1), (B4_, 2), (G4_, 1)],
-    [(A4_, 2), (B4_, 1), (C5_, 2), (E5, 1)],
-    [(Ds5, 2), (B4_, 1), (A4_, 1), (Fs4, 1), (Ds4, 1)],
-    [(E4_, 3), (E4_, 1), (None, 2)],
+    [(E4_, 2), (E4_, 2), (Fs4, 1), (G4_, 1)],          # as I was a-walking down
+    [(A4_, 2), (G4_, 2), (Fs4, 1), (E4_, 1)],          # Paradise Street
+    [(Fs4, 4), (Ds4, 2)],
+    [(B3, 4), (B3, 2)],
+    [(B4_, 4), (G4_, 2)],                              # WAY, HEY,
+    [(A4_, 2), (Fs4, 2), (Ds4, 2)],                    # blow the man
+    [(E4_, 4), (None, 2)],                             # DOWN
+    [(None, 4), (B3, 2)],
+    [(E4_, 2), (E4_, 2), (Fs4, 1), (G4_, 1)],          # a pretty young damsel I
+    [(A4_, 2), (B4_, 2), (A4_, 1), (G4_, 1)],          # chanced for to meet
+    [(Fs4, 4), (G4_, 1), (Fs4, 1)],
+    [(E4_, 2), (Ds4, 2), (B3, 2)],
+    [(B4_, 2), (B4_, 2), (G4_, 2)],                    # GIVE me some
+    [(A4_, 2), (Fs4, 2), (Ds4, 2)],                    # time to blow the man
+    [(E4_, 6)],                                        # DOWN
+    [(None, 4), (B3, 2)],
 ]
-SUPER_CHORDS = ["Em", "Am", "D", "G", "Em", "Am", "B7", "Em", "Em", "Am", "D", "G", "Em", "Cmaj", "B7", "Em"]
+SUPER_CHORDS = ["Em", "Am", "B7", "B7", "Em", "B7", "Em", "B7", "Em", "Am", "B7", "B7", "Em", "B7", "Em", "B7"]
+HOOK = {4, 5, 6, 12, 13, 14}                           # the shouted refrain bars
 AEOLIAN = {4, 6, 7, 9, 11, 0, 2}
 
 
 def super_shanty():
-    # ---- intro: the lone voice, low and dark
-    bpm, bars = 132, 16                             # crotchet 132 = dotted crotchet 88
+    # ---- intro: the lone voice, slow and dark, a 28.8 s loop
+    bpm, bars = 100, 16
     bar = 3 * TPB
     voice = Part("voice", 53, 0, 112, 104)
     for loop in range(LOOPS):
         for b, line in enumerate(SUPER):
             t = (loop * bars + b) * bar
-            play(voice, t, line, E, 94 if b < 8 else 102, shift=-12)
+            play(voice, t, line, E, 104 if b in HOOK else 92)
             for k in range(6):
                 voice.cc(t + k * E, 11, 90 + 32 * (1 - abs(k - 2.5) / 2.5))
     write("super_intro", bpm, 3, bars, [voice], {"voice": 1.0}, {"voice": 80}, ["voice"], ["voice"])
 
-    # ---- main: dotted crotchet 104, 3 passes of 16 bars
-    bpm, bars = 156, 48
+    # ---- main: crotchet 160, 3 passes of 16 bars (54 s)
+    #   1 the crew shout it over accordion oom-pah-pah, stomp and clap
+    #   2 + fiddle, harmony a third under, bass, snare and tambourine, orchestra hits on WAY/HEY
+    #   3 metal: galloping distortion guitar, lead guitar on the tune, double kick, ride, crashes
+    bpm, bars = 160, 48
     choir = Part("choir", 52, 0, 112, 60)
     choir2 = Part("choir2", 52, 1, 98, 60)
     accord = Part("accord", 21, 2, 104, 35)
@@ -296,39 +303,47 @@ def super_shanty():
     pbass = Part("pbass", 34, 5, 106, 15)
     dist = Part("dist", 30, 6, 102, 18)
     lead = Part("lead", 29, 7, 110, 40)
+    hits = Part("hits", 55, 8, 100, 50)
     drums = Part("drums", 0, 9, 118, 30)
-    D3 = 3 * E                                       # a dotted crotchet: the 6/8 beat
     for loop in range(LOOPS):
         for b in range(bars):
             t = (loop * bars + b) * bar
             p, i = b // 16, b % 16
             line = SUPER[i]
+            hook = i in HOOK
             c0, c1, c2, root = CHD[SUPER_CHORDS[i]]
-            play(choir, t, line, E, 94 + 8 * p)
-            play(choir, t, line, E, 86 + 8 * p, shift=-12)
-            if p >= 1:
-                play(choir2, t, [(None if n is None else third_below(n, AEOLIAN), u) for n, u in line], E, 82 + 6 * p)
-            for h in range(2):                       # two dotted-crotchet beats a bar
-                th = t + h * D3
-                av = 98 if p < 2 else 76
-                accord.note(th, root + 12, E * 2 - 30, av + 6)
+            cv = 94 + 8 * p + (14 if hook else 0)       # the crew bellow the refrain
+            play(choir, t, line, E, min(127, cv))
+            play(choir, t, line, E, min(127, cv - 8), shift=-12)
+            if hook or p >= 1:
+                play(choir2, t, [(None if n is None else third_below(n, AEOLIAN), u) for n, u in line], E,
+                     min(127, 84 + 6 * p + (12 if hook else 0)))
+            if hook and p >= 1 and i in (4, 12):         # WAY . HEY stabs
+                for tt in (t, t + 4 * E):
+                    for n in (c0, c1, c2):
+                        hits.note(tt, n + 12, E * 2, 112)
+            # accordion: oom-pah-pah
+            av = 98 if p < 2 else 74
+            accord.note(t, root + 12, TPB - 30, av + 6)
+            for k in (1, 2):
                 for n in (c0, c1, c2):
-                    accord.note(th + 2 * E, n + 12, E - 30, av)
-                if p == 1:
-                    bass.note(th, root, D3 - 20, 106)
-                if p == 2:                           # metal: galloping 6/8 chug
-                    for k in range(3):
-                        acc = k == 0
-                        pbass.note(th + k * E, root, E - 20, 112 if acc else 98)
-                        for n in (root + 12, root + 19, root + 24):
-                            dist.note(th + k * E, n, E - 15, 114 if acc else 100)
-                    for n in (c0 + 12, c1 + 12, c2 + 12):
-                        choir2.note(th, n, D3, 86)
+                    accord.note(t + k * TPB, n + 12, TPB - 60, av)
+            if p == 1:
+                bass.note(t, root, TPB * 2 - 20, 108)
+                bass.note(t + 2 * TPB, root + 7, TPB - 20, 98)
+            if p == 2:                                   # metal: galloping eighth chug
+                for k in range(6):
+                    acc = k % 2 == 0
+                    pbass.note(t + k * E, root, E - 20, 114 if acc else 96)
+                    for n in (root + 12, root + 19, root + 24):
+                        dist.note(t + k * E, n, E - 15, 116 if acc else 98)
+                for n in (c0 + 12, c1 + 12, c2 + 12):
+                    choir2.note(t, n, bar, 84)
             if p == 1:
                 tt = t
                 for n, u in line:
                     if n is not None:
-                        if u == 1 and random.random() < 0.4:
+                        if u == 1 and random.random() < 0.5:
                             fiddle.note(tt, n + 14, 40, 92, human=False)
                             fiddle.note(tt + 40, n + 12, u * E - 40, 106)
                         else:
@@ -336,29 +351,28 @@ def super_shanty():
                     tt += u * E
             if p == 2:
                 play(fiddle, t, line, E, 100, shift=24, legato=0.9)
-                play(lead, t, line, E, 118, shift=12, legato=0.95)
-                play(lead, t, line, E, 102, legato=0.95)
-            # drums, per dotted-crotchet beat
-            for h in range(2):
-                th = t + h * D3
-                if p == 0:
-                    drums.note(th, KICK2, E, 114)
-                    drums.note(th + 2 * E, CLAP, E, 96)
-                elif p == 1:
-                    drums.note(th, KICK, E, 112)
-                    if h == 1:
-                        drums.note(th, SNARE, E, 110)
-                    for k in range(3):
-                        drums.note(th + k * E, TAMB, E, 84 if k == 0 else 66)
-                else:
-                    if h == 1:
-                        drums.note(th, SNARE, E, 124)
-                    for k in range(3):
-                        drums.note(th + k * E, RIDE, E, 98 if k == 0 else 80)
-                    for k in range(6):               # double kick in sixteenths
-                        drums.note(th + k * E // 2, KICK, E // 2, 116 if k == 0 else 100)
-            if i == 0 or (p == 2 and i % 2 == 0):
-                drums.note(t, CRASH if b % 4 == 0 else CRASH2, TPB, 122)
+                play(lead, t, line, E, 120, shift=12, legato=0.95)
+                play(lead, t, line, E, 104, legato=0.95)
+            # drums, per crotchet beat of the 3/4 bar
+            if p == 0:
+                drums.note(t, KICK2, E, 116)
+                for k in (1, 2):
+                    drums.note(t + k * TPB, CLAP, E, 98 if k == 1 else 88)
+            elif p == 1:
+                drums.note(t, KICK, E, 114)
+                drums.note(t + TPB, SNARE, E, 104)
+                drums.note(t + 2 * TPB, SNARE, E, 112)
+                for k in range(6):
+                    drums.note(t + k * E, TAMB, E, 84 if k % 2 == 0 else 64)
+            else:
+                drums.note(t + TPB, SNARE, E, 124)
+                drums.note(t + 2 * TPB, SNARE, E, 118)
+                for k in range(3):
+                    drums.note(t + k * TPB, RIDE, E, 100 if k == 0 else 82)
+                for k in range(12):                      # double kick in sixteenths
+                    drums.note(t + k * E // 2, KICK, E // 2, 118 if k == 0 else 100)
+            if i == 0 or (hook and i in (4, 12)) or (p == 2 and i % 2 == 0):
+                drums.note(t, CRASH if b % 4 == 0 else CRASH2, TPB, 124)
             if i == 15:
                 if p < 2:
                     for k in range(6):
@@ -366,10 +380,10 @@ def super_shanty():
                 else:
                     for k in range(12):
                         drums.note(t + k * E // 2, TOMS[min(5, k // 2)], E // 2, 102 + k)
-    write("super_main", bpm, 3, bars, [choir, choir2, accord, fiddle, bass, pbass, dist, lead, drums],
-          {"choir": 0.75, "choir2": 0.5, "accord": 0.68, "fiddle": 0.6, "bass": 0.8, "pbass": 0.72,
-           "dist": 0.5, "lead": 0.56, "drums": 0.84},
-          {"choir": 140, "choir2": 140, "accord": 120, "fiddle": 160, "dist": 90, "lead": 140},
+    write("super_main", bpm, 3, bars, [choir, choir2, accord, fiddle, bass, pbass, dist, lead, hits, drums],
+          {"choir": 0.8, "choir2": 0.55, "accord": 0.66, "fiddle": 0.6, "bass": 0.8, "pbass": 0.72,
+           "dist": 0.52, "lead": 0.58, "hits": 0.45, "drums": 0.86},
+          {"choir": 140, "choir2": 140, "accord": 120, "fiddle": 160, "dist": 90, "lead": 140, "hits": 120},
           ["choir", "fiddle", "lead"], ["accord", "choir2", "dist"])
 
 

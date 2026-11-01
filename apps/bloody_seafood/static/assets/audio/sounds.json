@@ -350,65 +350,65 @@
 			60952.38,
 			true
 		],
-		"bgm_super_intro": [
-			313320.93,
-			21818.19,
-			true
-		],
-		"bgm_superspin": [
-			335389.12,
-			55384.63,
-			true
-		],
 		"bgm_win_big": [
-			391273.74,
+			313320.93,
 			4800.0,
 			false
 		],
 		"bgm_win_big_fs": [
-			396323.74,
+			318370.93,
 			5227.26,
 			false
 		],
 		"bgm_win_superwin": [
-			401801.0,
+			323848.19,
 			5769.23,
 			false
 		],
 		"bgm_win_superwin_fs": [
-			407820.23,
+			329867.41,
 			6739.12,
 			false
 		],
 		"bgm_win_mega": [
-			414809.34,
+			336856.53,
 			6545.44,
 			false
 		],
 		"bgm_win_mega_fs": [
-			421604.78,
+			343651.97,
 			8124.99,
 			false
 		],
 		"bgm_win_epic": [
-			429979.77,
+			352026.96,
 			8275.85,
 			false
 		],
 		"bgm_win_epic_fs": [
-			438505.62,
+			360552.81,
 			9276.3,
 			false
 		],
 		"bgm_win_max": [
-			448031.93,
+			370079.12,
 			9000.0,
 			false
 		],
 		"bgm_win_max_fs": [
-			457281.93,
+			379329.12,
 			10312.49,
 			false
+		],
+		"bgm_super_intro": [
+			389891.61,
+			28800.0,
+			true
+		],
+		"bgm_superspin": [
+			418941.61,
+			54000.0,
+			true
 		]
 	},
 	"src": [
