@@ -51,7 +51,7 @@
 	// The buy-bonus confirm dialog is the shared one, with nothing in its markup to say
 	// which bonus it is for except the title. Tag it with the tier (1-4, bet-mode order,
 	// titles from betModeMeta.ts) so it can wear the same art and water as that card.
-	const TIER_MODES = ['ante_bonus', 'ante_super', 'buy_bonus', 'buy_super'];
+	const TIER_MODES = ['ante_bonus', 'ante_super', 'feature_bonus', 'feature_super'];
 	const tagConfirmTier = () => {
 		// (no :has() - older iOS/Android throw on it in querySelector.) Only the popup's own
 		// copy: the page holds a second, never-shown confirm outside .pop-up-wrap, and

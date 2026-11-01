@@ -30,7 +30,7 @@ export default {
       max_win: 10000.0,
       description: 'Ante play - improved super bonus chance',
     },
-    buy_bonus: {
+    feature_bonus: {
       cost: 100.0,
       feature: false,
       buyBonus: true,
@@ -38,7 +38,7 @@ export default {
       max_win: 10000.0,
       description: 'Play the bonus round',
     },
-    buy_super: {
+    feature_super: {
       cost: 500.0,
       feature: false,
       buyBonus: true,
