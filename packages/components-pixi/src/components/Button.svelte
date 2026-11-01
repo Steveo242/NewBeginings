@@ -18,7 +18,8 @@
 		| 'onpointerover'
 		| 'onpointerout'
 		| 'onpointerdown'
-		| 'onpointerup';
+		| 'onpointerup'
+		| 'onpointerupoutside';
 
 	export type Props = Omit<ContainerProps, ContainerPropsToOmit> & {
 		sizes: Sizes;
@@ -66,17 +67,27 @@
 		hovered = true;
 	}}
 	onpointerout={() => {
-		if (disabled) return;
+		// sliding off cancels the press, like a native button
 		hovered = false;
+		pressed = false;
 	}}
-	onpointerdown={() => {
+	onpointerdown={(event) => {
+		event.stopPropagation();
 		if (disabled) return;
 		pressed = true;
 	}}
-	onpointerup={() => {
+	onpointerup={(event) => {
+		event.stopPropagation();
 		if (disabled) return;
+		// Only a press that started on this button counts. Pixi fires pointerup on whatever
+		// is under the pointer at release, so a tap that began on a neighbour (play -/+ next
+		// to the spin) and drifted a few px onto this one used to fire it.
+		const wasPressed = pressed;
 		pressed = false;
-		onpress();
+		if (wasPressed) onpress();
+	}}
+	onpointerupoutside={() => {
+		pressed = false;
 	}}
 >
 	{#if debug}

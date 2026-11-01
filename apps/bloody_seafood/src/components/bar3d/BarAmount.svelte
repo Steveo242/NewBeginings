@@ -49,15 +49,25 @@
 	);
 
 	const betDisabled = $derived(isReplay() || !context.stateXstateDerived.isIdle());
+	// the press must start on the plate (see components-pixi Button)
+	let down = false;
 	const onBetPress = () => {
-		if (betDisabled) return;
+		const wasDown = down;
+		down = false;
+		if (betDisabled || !wasDown) return;
 		context.eventEmitter.broadcast({ type: 'soundPressGeneral' });
 		stateModal.modal = { name: 'betAmountMenu' };
 	};
 </script>
 
 {#if props.kind === 'bet'}
-	<Container eventMode="static" cursor={betDisabled ? 'not-allowed' : 'pointer'} onpointerup={onBetPress}>
+	<Container
+		eventMode="static"
+		cursor={betDisabled ? 'not-allowed' : 'pointer'}
+		onpointerdown={() => (down = true)}
+		onpointerout={() => (down = false)}
+		onpointerup={onBetPress}
+	>
 		<BarLabel {label} {value} maxWidth={props.maxWidth ?? PLATE_TEXT_W} />
 	</Container>
 {:else}
