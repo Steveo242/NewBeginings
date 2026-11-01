@@ -8,11 +8,12 @@
 	import { i18nDerived } from 'components-ui-pixi/src/i18n/i18nDerived';
 
 	import BarLabel from './BarLabel.svelte';
+	import { PLATE_TEXT_W } from '../../game/barLayout';
 	import { isReplay, replayCost, replayCostMultiplier } from '../../game/replay';
 
 	// The shared LabelBalance / LabelWin / LabelBet, logic unchanged, drawn with
 	// BarLabel so the bar's amounts use the game's display face.
-	type Props = { kind: 'balance' | 'win' | 'bet'; stacked?: boolean };
+	type Props = { kind: 'balance' | 'win' | 'bet'; stacked?: boolean; maxWidth?: number };
 
 	const props: Props = $props();
 	const context = getContext();
@@ -57,8 +58,8 @@
 
 {#if props.kind === 'bet'}
 	<Container eventMode="static" cursor={betDisabled ? 'not-allowed' : 'pointer'} onpointerup={onBetPress}>
-		<BarLabel {label} {value} />
+		<BarLabel {label} {value} maxWidth={props.maxWidth ?? PLATE_TEXT_W} />
 	</Container>
 {:else}
-	<BarLabel {label} {value} />
+	<BarLabel {label} {value} maxWidth={props.maxWidth ?? PLATE_TEXT_W} />
 {/if}

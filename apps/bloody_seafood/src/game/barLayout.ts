@@ -25,9 +25,13 @@ export const STACKED = {
 	/** BarButton's buy plaque is 1.9 B wide; drawn at this factor in the row */
 	BUY_K: 0.95,
 	GAP: B * 0.2,
-	STRIP_H: B * 0.78,
+	STRIP_H: B * 0.86,
 	ROW_PAD: B * 0.16,
 };
+
+/** an amount plate (BetBar's LabelPlate, 424 wide) less its rim and padding: the caption
+ *  and value shrink to fit this, so the plate never resizes */
+export const PLATE_TEXT_W = 400 * 1.06 - 64;
 
 /** half the row: the spin's centre to the outer edge of the buy plaque / turbo */
 export const STACKED_HALF_W = Math.max(

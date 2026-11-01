@@ -13,7 +13,7 @@
 	import { isReplay } from '../game/replay';
 	import BarLabel from './bar3d/BarLabel.svelte';
 	import LabelPlate from './bar3d/LabelPlate.svelte';
-	import { STACKED, STACKED_ROW_H, STACKED_ROW_W, stackedBar } from '../game/barLayout';
+	import { PLATE_TEXT_W, STACKED, STACKED_ROW_H, STACKED_ROW_W, stackedBar } from '../game/barLayout';
 
 	const props: LayoutUiProps = $props();
 	const context = getContext();
@@ -41,6 +41,7 @@
 	const LABEL_W = 400;
 	const LABEL_H = 132;
 	const PLATE_H = LABEL_H * 1.12;
+	const PLATE_W = LABEL_W * 1.06;
 	/** play -/+, autoplay and turbo, as a share of a full UI_BASE_SIZE button */
 	const STEP_K = 0.85;
 	/** rules, paytable, settings, sound */
@@ -161,8 +162,8 @@
 		auto: S.SPIN / 2 + S.GAP * 2 + S.STEP + S.SMALL / 2,
 		turbo: S.SPIN / 2 + S.GAP * 2.6 + S.STEP + S.SMALL * 1.5,
 	};
-	/** the strip's amounts: drawn a step down from the plates' size */
-	const STRIP_LABEL_K = 0.78;
+	/** the strip's amounts: the landscape plates (same plate, rim and type, scaled as one)
+	 *  at one fixed size, a little under the strip's height and wider than any icon */
 	const stripLeft = -STACKED_ROW_W / 2;
 	const menuStripX = stripLeft + S.ICON / 2;
 	const stripAmountsLeft = stripLeft + S.ICON + S.GAP;
@@ -171,6 +172,7 @@
 	const soundStripX = -menuStripX;
 	const stripSlot = (-stripAmountsLeft - stripAmountsLeft) / 3;
 	const stripX = (i: number) => stripAmountsLeft + stripSlot * (i + 0.5);
+	const STRIP_PLATE_K = Math.min((stripSlot - S.GAP * 0.5) / PLATE_W, (S.STRIP_H - 12) / PLATE_H);
 
 	// A replay only watches one finished round: no balance, no changing the play amount,
 	// no bonus purchase or autoplay. The play slot becomes the replay-again button.
@@ -218,6 +220,7 @@
 		<BarLabel
 			label="FREE SPINS"
 			value={`${stateUi.freeSpinCounterCurrent} / ${stateUi.freeSpinCounterTotal}`}
+			maxWidth={PLATE_TEXT_W}
 		/>
 	{:else}
 		{@render props.amountBet({ stacked: true })}
@@ -226,7 +229,7 @@
 
 {#snippet amount(key: string)}
 	<Container scale={plateK}>
-		<LabelPlate width={LABEL_W * 1.06} height={PLATE_H} />
+		<LabelPlate width={PLATE_W} height={PLATE_H} />
 		{@render amountValue(key)}
 	</Container>
 {/snippet}
@@ -398,7 +401,8 @@
 			</Container>
 			{#each ['balance', 'bet', 'win'] as key, i (key)}
 				{#if shown(key)}
-					<Container x={stripX(i)} scale={STRIP_LABEL_K}>
+					<Container x={stripX(i)} scale={STRIP_PLATE_K}>
+						<LabelPlate width={PLATE_W} height={PLATE_H} />
 						{@render amountValue(key)}
 					</Container>
 				{/if}
