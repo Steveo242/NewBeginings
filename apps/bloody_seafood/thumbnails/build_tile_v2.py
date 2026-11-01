@@ -76,6 +76,11 @@ SPR = 'static/assets/sprites'
 STORM = f'{SPR}/storm'
 # hero_eyes: re-rendered 2026-11-01 with eyes, charcoal lip edges and the snout scab painted out (was hero/)
 HERO = '/root/bs-render/render/rig/h1_shark_v3/hero_eyes/win_0001.png'
+# v4: the same lunge with the jaw shut (hero_v4), so the fixed lips read cleanly; it is
+# wider and shorter, so SH_K shrinks it back to v3's footprint
+HERO = os.environ.get('HERO', HERO)
+# v4 was built with HERO=<h1_shark_v3>/hero_v4/win_0001.png VERSION=v4 and
+# tile: SH_K=0.66 SX_DX=70 SY_DY=40, cover: SH_K=0.7 SX_DX=20 SY_DY=10
 # the BS wild and the SCATTER anchor (the chest was retired and the anchor became the
 # scatter on 2026-10-31); the names keep the layout keys
 CHEST = '/root/bs-render/render/rig/sw/w_bs/final/static_hi.png'
@@ -212,10 +217,10 @@ canvas.alpha_composite(red)
 
 # ------------------------------------------------------------ the great white
 shark = tight(load(HERO))
-SH = L['SH']                                # on-tile height
+SH = round(L['SH'] * float(os.environ.get('SH_K', 1)))  # on-tile height
 shark = scaled(shark, SH / shark.height)
-SX = TX + tank_back.width // 2 - shark.width // 2 + L['SX_off']
-SY = TY + L['SY_off']                       # jaws clear the top beam
+SX = TX + tank_back.width // 2 - shark.width // 2 + L['SX_off'] + px(int(os.environ.get('SX_DX', 0)))
+SY = TY + L['SY_off'] + px(int(os.environ.get('SY_DY', 0)))  # jaws clear the top beam
 ssh, spad = shadow(shark, px(22), 150)
 canvas.alpha_composite(ssh, (SX - spad + px(14), SY - spad + px(24)))
 
