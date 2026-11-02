@@ -51,8 +51,12 @@
 		}
 		const now = performance.now();
 		const waiting = [...pending.entries()].map(([k, t]) => `  ${k} (${((now - t) / 1000).toFixed(0)} s)`);
+		const dev = (globalThis as { __BS_DEVICE?: Record<string, unknown> }).__BS_DEVICE ?? {};
+		const bundle = [...document.scripts].map((x) => x.src.split('/').pop()).find((x) => x?.startsWith('bundle')) ?? '?';
 		panel.textContent =
 			`LOAD DIAGNOSTICS - ${counter}/${assetNameList.length} done\n` +
+			`build ${bundle} | ${dev.lowMemory ? 'LOW-MEMORY (half-res art)' : 'full art'} | ` +
+			`max texture ${dev.maxTexture ?? '?'} | ${dev.renderer ?? '?'}\n` +
 			(waiting.length ? `still loading (${waiting.length}):\n${waiting.join('\n')}\n` : '') +
 			(problems.length ? `errors:\n${problems.map((p) => '  ' + p).join('\n')}` : '');
 	};
@@ -63,10 +67,13 @@
 	if (typeof window !== 'undefined') {
 		window.addEventListener('error', (e) => note('error: ' + (e.message || e.type) + (e.filename ? ` @ ${e.filename.split('/').pop()}:${e.lineno}` : '')));
 		window.addEventListener('unhandledrejection', (e) => note('rejection: ' + String((e.reason && (e.reason.stack || e.reason.message)) || e.reason)));
+		// ?diag=1 shows the panel from the start (testing)
+		if (new URLSearchParams(location.search).get('diag') === '1') setTimeout(show, 500);
 		const timer = setInterval(() => {
 			if (context.stateApp.loaded) {
 				clearInterval(timer);
-				if (panel && !problems.length) panel.remove();
+				if (panel && !problems.length && new URLSearchParams(location.search).get('diag') !== '1') panel.remove();
+				else if (panel) show();
 				return;
 			}
 			show();

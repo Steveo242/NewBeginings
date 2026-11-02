@@ -1,5 +1,7 @@
 import { Filter, loadTextures, type ResolvedAsset } from 'pixi.js';
 
+import { LOW_MEMORY } from './device';
+
 // Symbols are rendered at ~176-560px and drawn at ~55-100px (about a third of that on a
 // phone). Without mipmaps the GPU minifies with a 2x2 bilinear tap, which skips most
 // source pixels: the art looked grainy and sparkled as it moved. Mipmaps let every
@@ -10,7 +12,9 @@ import { Filter, loadTextures, type ResolvedAsset } from 'pixi.js';
 // render into those - the canvas stayed black while the audio played.
 const load = loadTextures.load!;
 loadTextures.load = function (url: string, asset: ResolvedAsset, loader) {
-	const data = { autoGenerateMipmaps: true, scaleMode: 'linear', ...asset?.data };
+	// no mipmaps on the low-memory path: they add a third to every texture, and the
+	// half-res art is already close to its on-screen size there
+	const data = { autoGenerateMipmaps: !LOW_MEMORY, scaleMode: 'linear', ...asset?.data };
 	return load.call(this, url, { ...asset, data }, loader);
 };
 

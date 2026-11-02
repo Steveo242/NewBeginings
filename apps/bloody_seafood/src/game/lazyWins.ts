@@ -3,6 +3,7 @@ import { withTimeout } from 'pixi-svelte';
 
 import { stateApp } from './stateApp';
 import assets from './assets';
+import { LOW_MEMORY } from './device';
 import type { BookEvent } from './typesBookEvent';
 
 /** every pack's frames in frame-name order (as pixi-svelte's spriteSheet processor) */
@@ -22,7 +23,8 @@ const framesOf = (sheet: PIXI.Spritesheet) => {
 // rest are released. The lows win most often, so their sheets stay warm. They stay WebP:
 // a Basis (UASTC) twin is ~2.3x the download, and with only a handful resident at a time
 // the memory it would save matters far less than for the always-resident land/idle sheets.
-const WARM = ['L1_win', 'L2_win', 'L3_win'];
+// phones keep nothing warm: only this round's winners are resident
+const WARM = LOW_MEMORY ? [] : ['L1_win', 'L2_win', 'L3_win'];
 export const LAZY_WIN_KEYS = ['H1_win', 'H2_win', 'H3_win', 'H4_win', 'L1_win', 'L2_win', 'L3_win', 'W_win', 'S_win'];
 
 const loading = new Map<string, Promise<void>>();

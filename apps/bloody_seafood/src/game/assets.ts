@@ -2,7 +2,9 @@
 // transcoder path is untested there). Every sheet loads as WebP. To re-enable: import
 // 'pixi.js/basis', setBasisTranscoderPath to static/assets/basis, and mark sheets basis: true.
 
-export default {
+import { LOW_MEMORY, lowMemoryUrl } from './device';
+
+const assets = {
 	daySky: {
 		type: 'sprite',
 		src: new URL('../../assets/sprites/storm/day_sky.webp', import.meta.url).href,
@@ -318,3 +320,14 @@ export default {
 		preload: true,
 	},
 } as const;
+
+// phones and low-memory devices: every sprite and sheet from the half-resolution mirror
+// (game/device.ts) - same keys, same logical sizes, a quarter of the GPU memory
+export default (LOW_MEMORY
+	? Object.fromEntries(
+			Object.entries(assets).map(([key, asset]) => [
+				key,
+				typeof asset.src === 'string' ? { ...asset, src: lowMemoryUrl(asset.src, asset.type) } : asset,
+			]),
+		)
+	: assets) as typeof assets;
