@@ -29,6 +29,7 @@
 	import GlassBreak from './GlassBreak.svelte';
 	import Board from './Board.svelte';
 	import Anticipations from './Anticipations.svelte';
+	import AnticipationDim from './AnticipationDim.svelte';
 	import ClusterWinAmounts from './ClusterWinAmounts.svelte';
 	import TumbleBoard from './TumbleBoard.svelte';
 	import TumbleWinAmount from './TumbleWinAmount.svelte';
@@ -81,6 +82,7 @@
 		</MainContainer>
 
 		<MainContainer>
+			<AnticipationDim />
 			<Board />
 			<Anticipations />
 			<LandFx />

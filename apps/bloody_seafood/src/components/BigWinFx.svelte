@@ -8,7 +8,8 @@
 
 	// The celebration tiers hit harder as they climb (screen space, over the dim, under the
 	// plaque): a camera shake as the title slams down, and a sweep of blood and seawater
-	// flung across the screen. MAX WIN also has the shark breach the tank (SharkBreach).
+	// flung across the screen, with gold motes welling up behind it. MAX WIN also has the
+	// shark breach the tank (SharkBreach).
 	// Code VFX only: pools of droplet and splat Graphics, no filters, gone after ~2.6 s.
 	type Props = { alias: string };
 	const props: Props = $props();
@@ -77,6 +78,28 @@
 		return { g, x: rand(0.06, 0.94) * W, y: rand(0.08, 0.8) * H, delay: rand(180, 650), slide: rand(18, 60) * k, r };
 	});
 
+	// gold motes: warm sparks welling up out of the bottom of the screen and drifting
+	// upward as the prize lands (the treasure to the blood's gore), additive so they glow
+	const motes = Array.from({ length: Math.round(tier.drops * 0.6) }, () => {
+		const g = new PIXI.Graphics()
+			.circle(0, 0, 1).fill({ color: 0xffd36a, alpha: 0.95 })
+			.circle(0, 0, 2.4).fill({ color: 0xffb03a, alpha: 0.25 });
+		g.blendMode = 'add';
+		g.visible = false;
+		root.addChild(g);
+		return {
+			g,
+			delay: rand(150, 900),
+			x: rand(0.15, 0.85) * W,
+			y: rand(0.95, 1.05) * H,
+			vy: -rand(0.25, 0.55) * H,
+			sway: rand(10, 40) * k,
+			phase: rand(0, Math.PI * 2),
+			size: rand(2.5, 6) * k,
+			life: rand(1400, 2300),
+		};
+	});
+
 	const stage = app?.stage;
 	const home = stage ? { x: stage.x, y: stage.y } : { x: 0, y: 0 };
 	let t = 0;
@@ -112,6 +135,21 @@
 			const stretch = 1 + Math.min(1.2, Math.hypot(d.vx, vy) / (H * 1.5));
 			d.g.scale.set(d.size * stretch * (1 - u * 0.3), d.size * (1 - u * 0.3));
 			d.g.alpha = Math.min(1, (1 - u) * 3);
+		}
+		for (const m of motes) {
+			const age = t - m.delay;
+			if (age < 0) {
+				alive = true;
+				continue;
+			}
+			const u = age / m.life;
+			m.g.visible = u < 1;
+			if (u >= 1) continue;
+			alive = true;
+			const s = age / 1000;
+			m.g.position.set(m.x + Math.sin(m.phase + s * 3) * m.sway, m.y + m.vy * s * (1 - u * 0.35));
+			m.g.scale.set(m.size * (0.7 + 0.3 * Math.sin(m.phase + s * 9)));
+			m.g.alpha = Math.min(1, u * 6) * (1 - u);
 		}
 		for (const sp of splats) {
 			const age = t - sp.delay;
