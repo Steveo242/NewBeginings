@@ -183,15 +183,17 @@ export const zIndexes = {
 };
 
 // Shared by every symbol - TumbleBoard sets 'explosion' on all winning symbols in a
-// cascade, so this is a generic burst: a painted blood cloud, shaded droplets, gore
-// chunks and brine spray (build_explode_v2.py). Symbol.svelte pops the symbol itself
+// cascade, so this is a generic burst: a rendered blood + brine splash - metaball blood
+// tearing into tendrils and beads, a brine crown and spray (bs-render build_splash3d.py,
+// pack_splash3d.py), lit like the symbols. Symbol.svelte pops the symbol itself
 // (swell + flash + fade) underneath it so the symbol bursts rather than vanishes.
 // SymbolAnimatedSprite fires onComplete for it, which TumbleBoard awaits per symbol -
-// a burst that never completed would hang the cascade. 20 frames, ~0.33 s.
+// a burst that never completed would hang the cascade. 28 frames, ~0.47 s. Drawn at 1.2
+// cells so the spray stays (nearly) inside the symbol's own square.
 const explosion = {
 	type: 'spriteSheet',
 	assetKey: 'symbolExplode',
-	sizeRatios: { width: 1.6, height: 1.6 },
+	sizeRatios: { width: 1.2, height: 1.2 },
 	animationSpeed: ANIM_PACE,
 };
 
