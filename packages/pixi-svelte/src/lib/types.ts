@@ -32,7 +32,15 @@ export type RawType = 'spine' | 'sprite' | 'sprites' | 'spriteSheet' | 'font' | 
 
 export type SpineSrc = { skeleton: string; atlas: string; scale?: number };
 /** lazy: never loaded up front - the game loads (and unloads) it itself via PIXI.Assets */
-export type Asset = { type: RawType; src: string | SpineSrc; preload?: boolean; lazy?: boolean };
+/** basis: a spritesheet with a compressed twin (<name>.basis.json, Basis Universal) - loaded
+ *  first, the plain sheet (src) only if the twin fails to load or transcode */
+export type Asset = {
+	type: RawType;
+	src: string | SpineSrc;
+	preload?: boolean;
+	lazy?: boolean;
+	basis?: boolean;
+};
 export type Assets = PIXI.Dict<Asset>;
 
 export type ParticleSpawnOption =

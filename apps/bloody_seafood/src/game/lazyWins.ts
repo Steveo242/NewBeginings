@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import { loadBasisTwin } from 'pixi-svelte';
 
 import { stateApp } from './stateApp';
 import assets from './assets';
@@ -30,8 +31,9 @@ const load = (key: string) => {
 		const { src } = assets[key as keyof typeof assets] as { src: string };
 		loading.set(
 			key,
-			PIXI.Assets.load<PIXI.Spritesheet>(src)
-				.then((sheet) => {
+			loadBasisTwin(src)
+				.then((raw) => {
+					const sheet = raw as unknown as PIXI.Spritesheet;
 					stateApp.loadedAssets = { ...stateApp.loadedAssets, [key]: framesOf(sheet) };
 				})
 				.catch((error) => console.error('win sheet', key, error))
@@ -46,6 +48,7 @@ const release = (key: string) => {
 	const { src } = assets[key as keyof typeof assets] as { src: string };
 	const { [key]: _, ...rest } = stateApp.loadedAssets;
 	stateApp.loadedAssets = rest;
+	PIXI.Assets.unload(src.replace(/\.json$/, '.basis.json')).catch(() => {});
 	PIXI.Assets.unload(src).catch(() => {});
 };
 

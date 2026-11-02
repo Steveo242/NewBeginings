@@ -1,4 +1,5 @@
 import * as SPINE_PIXI from '@esotericsoftware/spine-pixi-v8';
+import * as PIXI from 'pixi.js';
 import type { RawType, RawAsset, RawSpine, RawSprites, SpineSrc, RawAudio } from './types';
 
 const PROCESS_METHOD_MAP = {
@@ -31,6 +32,22 @@ const PROCESS_METHOD_MAP = {
 		return { [key]: rawAsset };
 	},
 } as const;
+
+/** A sheet's Basis twin (<name>.basis.json) first, the plain sheet if it fails. Basis sheets
+ *  are encoded premultiplied (bs-render basis_pack.py), and a compressed upload can't
+ *  premultiply, so their sources are marked so. */
+export const loadBasisTwin = async (src: string, onProgress?: (value: number) => void) => {
+	try {
+		const sheet = await PIXI.Assets.load<PIXI.Spritesheet>(src.replace(/\.json$/, '.basis.json'), onProgress);
+		for (const s of [sheet, ...(sheet.linkedSheets ?? [])]) {
+			s.textureSource.alphaMode = 'premultiplied-alpha';
+		}
+		return sheet as unknown as RawAsset;
+	} catch (error) {
+		console.warn('basis sheet failed, using the plain one', src, error);
+		return PIXI.Assets.load<RawAsset>(src, onProgress);
+	}
+};
 
 export const getProcessed = ({
 	key,

@@ -3,7 +3,7 @@
 	import * as PIXI from 'pixi.js';
 
 	import { getContextApp } from '../context.svelte';
-	import { getProcessed } from '../assetLoad';
+	import { getProcessed, loadBasisTwin } from '../assetLoad';
 	import type { LoadedAssets, RawAsset } from '../types';
 
 	type Props = { children: Snippet };
@@ -45,10 +45,12 @@
 		const loadedAssetsArray = await Promise.all(
 			nameList.map(async (key) => {
 				try {
-					const { type, src } = context.stateApp.assets![key];
+					const { type, src, basis } = context.stateApp.assets![key];
 					const loadSrc =
 						type === 'spine' ? Object.values(src).filter((item) => typeof item === 'string') : src;
-					const rawAsset = await PIXI.Assets.load<RawAsset>(loadSrc, onProgress);
+					const rawAsset = basis
+						? await loadBasisTwin(src as string, onProgress)
+						: await PIXI.Assets.load<RawAsset>(loadSrc, onProgress);
 					const processed = getProcessed({ key, rawAsset, type, src });
 					return processed;
 				} catch (error) {
