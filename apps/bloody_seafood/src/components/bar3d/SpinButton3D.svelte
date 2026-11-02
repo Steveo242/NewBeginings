@@ -26,6 +26,8 @@
 	const GLYPH_ANCHOR = { x: 182.8 / 384, y: 183.1 / 384 };
 	/** the arrow ring is drawn small in its frame (r 45 of 384); bring it up to fill the face */
 	const GLYPH_K = 1.45;
+	/** hit radius as a share of the size: inside the brass rim, a dead band round the edge */
+	const HIT_R = 0.44;
 
 	let angle = $state(0);
 	let pulse = $state(0);
@@ -51,8 +53,9 @@
 		<OnHotkey hotkey="Space" {disabled} {onpress} />
 		<!-- the hit area is the porthole itself: without it Pixi hit-tests every child's full
 		     rectangle, and the breathing halo (about twice the button) reached over the play
-		     -/+ buttons beside it, so a tap meant for them started a spin -->
-		<Button anchor={0.5} sizes={{ width: size, height: size }} hitArea={new Circle(size / 2, size / 2, size / 2)} {onpress} {disabled}>
+		     -/+ buttons beside it, so a tap meant for them started a spin. It is drawn a
+		     little inside the rim (HIT_R) so a tap on the gap next to -/+ hits nothing -->
+		<Button anchor={0.5} sizes={{ width: size, height: size }} hitArea={new Circle(size / 2, size / 2, size * HIT_R)} {onpress} {disabled}>
 			{#snippet children({ center, hovered, pressed })}
 				{@const state = greyed ? 'idle' : pressed ? 'pressed' : hovered ? 'hover' : 'idle'}
 				{#if !greyed}
