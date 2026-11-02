@@ -123,7 +123,8 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 	winInfo: async (bookEvent: BookEventOfType<'winInfo'>) => {
 		// the win sheets were set loading when the book came in (game/lazyWins.ts) - long
 		// done by now on any connection, but never animate a win on a missing sheet
-		await winsReady.promise;
+		// never more than a few seconds: a missing sheet falls back to the static symbol
+		await Promise.race([winsReady.promise, new Promise((resolve) => setTimeout(resolve, 4000))]);
 		const gm = Math.max(1, ...bookEvent.wins.map((w: any) => Number(w?.meta?.globalMult ?? 1)));
 		eventEmitter.broadcast({ type: 'globalMultiplierUpdate', multiplier: gm });
 		const promise1 = async () => {

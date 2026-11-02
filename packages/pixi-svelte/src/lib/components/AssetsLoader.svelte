@@ -3,7 +3,7 @@
 	import * as PIXI from 'pixi.js';
 
 	import { getContextApp } from '../context.svelte';
-	import { getProcessed, loadBasisTwin } from '../assetLoad';
+	import { getProcessed, loadBasisTwin, withTimeout } from '../assetLoad';
 	import type { LoadedAssets, RawAsset } from '../types';
 
 	type Props = { children: Snippet };
@@ -48,9 +48,15 @@
 					const { type, src, basis } = context.stateApp.assets![key];
 					const loadSrc =
 						type === 'spine' ? Object.values(src).filter((item) => typeof item === 'string') : src;
-					const rawAsset = basis
-						? await loadBasisTwin(src as string, onProgress)
-						: await PIXI.Assets.load<RawAsset>(loadSrc, onProgress);
+					// a hard cap per asset: one that never settles (a stalled request, a decoder
+					// that never answers) is logged and skipped instead of freezing the loader
+					const rawAsset = await withTimeout(
+						basis
+							? loadBasisTwin(src as string, onProgress)
+							: PIXI.Assets.load<RawAsset>(loadSrc, onProgress),
+						60000,
+						key,
+					);
 					const processed = getProcessed({ key, rawAsset, type, src });
 					return processed;
 				} catch (error) {

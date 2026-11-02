@@ -3,4 +3,4 @@ export * from './utils.svelte';
 export * from './types';
 export * from './createApp.svelte';
 export * from './context.svelte';
-export { loadBasisTwin } from './assetLoad';
+export { loadBasisTwin, withTimeout } from './assetLoad';

@@ -1,13 +1,6 @@
-import 'pixi.js/basis';
-import { setBasisTranscoderPath } from 'pixi.js';
-
-// Basis Universal sheets (bs-render basis_pack.py: UASTC, transcoded on the device to
-// ASTC / BC7 / ETC2 - a quarter of the GPU memory of RGBA - or RGBA where none exists).
-// The transcoder ships with the game: nothing loads from a CDN.
-setBasisTranscoderPath({
-	jsUrl: new URL('../../assets/basis/basis_transcoder.js', import.meta.url).href,
-	wasmUrl: new URL('../../assets/basis/basis_transcoder.wasm', import.meta.url).href,
-});
+// Basis Universal sheets are OFF (v5 froze on the title screen on a real device; the
+// transcoder path is untested there). Every sheet loads as WebP. To re-enable: import
+// 'pixi.js/basis', setBasisTranscoderPath to static/assets/basis, and mark sheets basis: true.
 
 export default {
 	daySky: {
@@ -184,7 +177,6 @@ export default {
 	symbolsStatic: {
 		type: 'sprites',
 		src: new URL('../../assets/sprites/symbolsStatic/symbolsStatic.json', import.meta.url).href,
-		basis: true,
 	},
 	mBackgroundLow: {
 		type: 'sprite',
@@ -251,92 +243,74 @@ export default {
 	H1_land: {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/symbolsAnim/H1_land.json', import.meta.url).href,
-		basis: true,
 	},
 	H2_land: {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/symbolsAnim/H2_land.json', import.meta.url).href,
-		basis: true,
 	},
 	H3_land: {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/symbolsAnim/H3_land.json', import.meta.url).href,
-		basis: true,
 	},
 	H4_land: {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/symbolsAnim/H4_land.json', import.meta.url).href,
-		basis: true,
 	},
 	L1_land: {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/symbolsAnim/L1_land.json', import.meta.url).href,
-		basis: true,
 	},
 	L2_land: {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/symbolsAnim/L2_land.json', import.meta.url).href,
-		basis: true,
 	},
 	L3_land: {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/symbolsAnim/L3_land.json', import.meta.url).href,
-		basis: true,
 	},
 	W_land: {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/symbolsAnim/W_land.json', import.meta.url).href,
-		basis: true,
 	},
 	S_land: {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/symbolsAnim/S_land.json', import.meta.url).href,
-		basis: true,
 	},
 	H1_idle: {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/symbolsAnim/H1_idle.json', import.meta.url).href,
-		basis: true,
 	},
 	H2_idle: {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/symbolsAnim/H2_idle.json', import.meta.url).href,
-		basis: true,
 	},
 	H3_idle: {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/symbolsAnim/H3_idle.json', import.meta.url).href,
-		basis: true,
 	},
 	H4_idle: {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/symbolsAnim/H4_idle.json', import.meta.url).href,
-		basis: true,
 	},
 	L1_idle: {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/symbolsAnim/L1_idle.json', import.meta.url).href,
-		basis: true,
 	},
 	L2_idle: {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/symbolsAnim/L2_idle.json', import.meta.url).href,
-		basis: true,
 	},
 	L3_idle: {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/symbolsAnim/L3_idle.json', import.meta.url).href,
-		basis: true,
 	},
 	W_idle: {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/symbolsAnim/W_idle.json', import.meta.url).href,
-		basis: true,
 	},
 	S_idle: {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/symbolsAnim/S_idle.json', import.meta.url).href,
-		basis: true,
 	},
 	sound: {
 		type: 'audio',

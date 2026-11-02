@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import { withTimeout } from 'pixi-svelte';
 
 import { stateApp } from './stateApp';
 import assets from './assets';
@@ -32,7 +33,7 @@ const load = (key: string) => {
 		const { src } = assets[key as keyof typeof assets] as { src: string };
 		loading.set(
 			key,
-			PIXI.Assets.load<PIXI.Spritesheet>(src)
+			withTimeout(PIXI.Assets.load<PIXI.Spritesheet>(src), 20000, key)
 				.then((sheet) => {
 					stateApp.loadedAssets = { ...stateApp.loadedAssets, [key]: framesOf(sheet) };
 				})
