@@ -1,0 +1,213 @@
+{
+	"frames": {
+		"H3_land_0001.png": {
+			"frame": {
+				"x": 2,
+				"y": 2,
+				"w": 399,
+				"h": 263
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 95,
+				"y": 163,
+				"w": 399,
+				"h": 263
+			},
+			"sourceSize": {
+				"w": 589,
+				"h": 589
+			}
+		},
+		"H3_land_0002.png": {
+			"frame": {
+				"x": 403,
+				"y": 2,
+				"w": 376,
+				"h": 276
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 104,
+				"y": 163,
+				"w": 376,
+				"h": 276
+			},
+			"sourceSize": {
+				"w": 589,
+				"h": 589
+			}
+		},
+		"H3_land_0003.png": {
+			"frame": {
+				"x": 781,
+				"y": 2,
+				"w": 389,
+				"h": 268
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 99,
+				"y": 167,
+				"w": 389,
+				"h": 268
+			},
+			"sourceSize": {
+				"w": 589,
+				"h": 589
+			}
+		},
+		"H3_land_0004.png": {
+			"frame": {
+				"x": 1172,
+				"y": 2,
+				"w": 407,
+				"h": 259
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 91,
+				"y": 165,
+				"w": 407,
+				"h": 259
+			},
+			"sourceSize": {
+				"w": 589,
+				"h": 589
+			}
+		},
+		"H3_land_0005.png": {
+			"frame": {
+				"x": 1581,
+				"y": 2,
+				"w": 409,
+				"h": 258
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 91,
+				"y": 163,
+				"w": 409,
+				"h": 258
+			},
+			"sourceSize": {
+				"w": 589,
+				"h": 589
+			}
+		},
+		"H3_land_0006.png": {
+			"frame": {
+				"x": 1992,
+				"y": 2,
+				"w": 402,
+				"h": 264
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 95,
+				"y": 158,
+				"w": 402,
+				"h": 264
+			},
+			"sourceSize": {
+				"w": 589,
+				"h": 589
+			}
+		},
+		"H3_land_0007.png": {
+			"frame": {
+				"x": 2396,
+				"y": 2,
+				"w": 396,
+				"h": 267
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 97,
+				"y": 158,
+				"w": 396,
+				"h": 267
+			},
+			"sourceSize": {
+				"w": 589,
+				"h": 589
+			}
+		},
+		"H3_land_0008.png": {
+			"frame": {
+				"x": 2794,
+				"y": 2,
+				"w": 396,
+				"h": 264
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 96,
+				"y": 162,
+				"w": 396,
+				"h": 264
+			},
+			"sourceSize": {
+				"w": 589,
+				"h": 589
+			}
+		},
+		"H3_land_0009.png": {
+			"frame": {
+				"x": 3192,
+				"y": 2,
+				"w": 400,
+				"h": 263
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 94,
+				"y": 163,
+				"w": 400,
+				"h": 263
+			},
+			"sourceSize": {
+				"w": 589,
+				"h": 589
+			}
+		},
+		"H3_land_0010.png": {
+			"frame": {
+				"x": 3594,
+				"y": 2,
+				"w": 402,
+				"h": 263
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 94,
+				"y": 163,
+				"w": 402,
+				"h": 263
+			},
+			"sourceSize": {
+				"w": 589,
+				"h": 589
+			}
+		}
+	},
+	"meta": {
+		"image": "H3_land.webp",
+		"format": "RGBA8888",
+		"size": {
+			"w": 3998,
+			"h": 280
+		},
+		"scale": "1"
+	}
+}

@@ -1,0 +1,213 @@
+{
+	"frames": {
+		"L2_land_0001.png": {
+			"frame": {
+				"x": 2,
+				"y": 2,
+				"w": 396,
+				"h": 451
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 135,
+				"y": 108,
+				"w": 396,
+				"h": 451
+			},
+			"sourceSize": {
+				"w": 666,
+				"h": 666
+			}
+		},
+		"L2_land_0002.png": {
+			"frame": {
+				"x": 400,
+				"y": 2,
+				"w": 421,
+				"h": 420
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 123,
+				"y": 143,
+				"w": 421,
+				"h": 420
+			},
+			"sourceSize": {
+				"w": 666,
+				"h": 666
+			}
+		},
+		"L2_land_0003.png": {
+			"frame": {
+				"x": 823,
+				"y": 2,
+				"w": 417,
+				"h": 434
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 125,
+				"y": 128,
+				"w": 417,
+				"h": 434
+			},
+			"sourceSize": {
+				"w": 666,
+				"h": 666
+			}
+		},
+		"L2_land_0004.png": {
+			"frame": {
+				"x": 1242,
+				"y": 2,
+				"w": 391,
+				"h": 468
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 137,
+				"y": 88,
+				"w": 391,
+				"h": 468
+			},
+			"sourceSize": {
+				"w": 666,
+				"h": 666
+			}
+		},
+		"L2_land_0005.png": {
+			"frame": {
+				"x": 1635,
+				"y": 2,
+				"w": 381,
+				"h": 466
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 142,
+				"y": 81,
+				"w": 381,
+				"h": 466
+			},
+			"sourceSize": {
+				"w": 666,
+				"h": 666
+			}
+		},
+		"L2_land_0006.png": {
+			"frame": {
+				"x": 2018,
+				"y": 2,
+				"w": 399,
+				"h": 428
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 137,
+				"y": 118,
+				"w": 399,
+				"h": 428
+			},
+			"sourceSize": {
+				"w": 666,
+				"h": 666
+			}
+		},
+		"L2_land_0007.png": {
+			"frame": {
+				"x": 2419,
+				"y": 2,
+				"w": 404,
+				"h": 429
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 132,
+				"y": 125,
+				"w": 404,
+				"h": 429
+			},
+			"sourceSize": {
+				"w": 666,
+				"h": 666
+			}
+		},
+		"L2_land_0008.png": {
+			"frame": {
+				"x": 2825,
+				"y": 2,
+				"w": 402,
+				"h": 455
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 132,
+				"y": 105,
+				"w": 402,
+				"h": 455
+			},
+			"sourceSize": {
+				"w": 666,
+				"h": 666
+			}
+		},
+		"L2_land_0009.png": {
+			"frame": {
+				"x": 3229,
+				"y": 2,
+				"w": 398,
+				"h": 463
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 134,
+				"y": 96,
+				"w": 398,
+				"h": 463
+			},
+			"sourceSize": {
+				"w": 666,
+				"h": 666
+			}
+		},
+		"L2_land_0010.png": {
+			"frame": {
+				"x": 3629,
+				"y": 2,
+				"w": 395,
+				"h": 453
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 135,
+				"y": 106,
+				"w": 395,
+				"h": 453
+			},
+			"sourceSize": {
+				"w": 666,
+				"h": 666
+			}
+		}
+	},
+	"meta": {
+		"image": "L2_land.basis",
+		"format": "RGBA8888",
+		"size": {
+			"w": 4026,
+			"h": 472
+		},
+		"scale": "1"
+	}
+}

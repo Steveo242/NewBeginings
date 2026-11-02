@@ -1,0 +1,313 @@
+{
+	"frames": {
+		"L3_idle_0001.png": {
+			"frame": {
+				"x": 2,
+				"y": 2,
+				"w": 451,
+				"h": 317
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 69,
+				"y": 136,
+				"w": 451,
+				"h": 317
+			},
+			"sourceSize": {
+				"w": 589,
+				"h": 589
+			}
+		},
+		"L3_idle_0002.png": {
+			"frame": {
+				"x": 455,
+				"y": 2,
+				"w": 451,
+				"h": 317
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 69,
+				"y": 136,
+				"w": 451,
+				"h": 317
+			},
+			"sourceSize": {
+				"w": 589,
+				"h": 589
+			}
+		},
+		"L3_idle_0003.png": {
+			"frame": {
+				"x": 908,
+				"y": 2,
+				"w": 451,
+				"h": 317
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 69,
+				"y": 136,
+				"w": 451,
+				"h": 317
+			},
+			"sourceSize": {
+				"w": 589,
+				"h": 589
+			}
+		},
+		"L3_idle_0004.png": {
+			"frame": {
+				"x": 1361,
+				"y": 2,
+				"w": 451,
+				"h": 317
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 69,
+				"y": 136,
+				"w": 451,
+				"h": 317
+			},
+			"sourceSize": {
+				"w": 589,
+				"h": 589
+			}
+		},
+		"L3_idle_0005.png": {
+			"frame": {
+				"x": 1814,
+				"y": 2,
+				"w": 451,
+				"h": 318
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 69,
+				"y": 136,
+				"w": 451,
+				"h": 318
+			},
+			"sourceSize": {
+				"w": 589,
+				"h": 589
+			}
+		},
+		"L3_idle_0006.png": {
+			"frame": {
+				"x": 2267,
+				"y": 2,
+				"w": 451,
+				"h": 320
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 69,
+				"y": 136,
+				"w": 451,
+				"h": 320
+			},
+			"sourceSize": {
+				"w": 589,
+				"h": 589
+			}
+		},
+		"L3_idle_0007.png": {
+			"frame": {
+				"x": 2720,
+				"y": 2,
+				"w": 451,
+				"h": 322
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 69,
+				"y": 136,
+				"w": 451,
+				"h": 322
+			},
+			"sourceSize": {
+				"w": 589,
+				"h": 589
+			}
+		},
+		"L3_idle_0008.png": {
+			"frame": {
+				"x": 3173,
+				"y": 2,
+				"w": 451,
+				"h": 325
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 69,
+				"y": 136,
+				"w": 451,
+				"h": 325
+			},
+			"sourceSize": {
+				"w": 589,
+				"h": 589
+			}
+		},
+		"L3_idle_0009.png": {
+			"frame": {
+				"x": 3626,
+				"y": 2,
+				"w": 451,
+				"h": 327
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 69,
+				"y": 136,
+				"w": 451,
+				"h": 327
+			},
+			"sourceSize": {
+				"w": 589,
+				"h": 589
+			}
+		},
+		"L3_idle_0010.png": {
+			"frame": {
+				"x": 2,
+				"y": 331,
+				"w": 451,
+				"h": 328
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 69,
+				"y": 136,
+				"w": 451,
+				"h": 328
+			},
+			"sourceSize": {
+				"w": 589,
+				"h": 589
+			}
+		},
+		"L3_idle_0011.png": {
+			"frame": {
+				"x": 455,
+				"y": 331,
+				"w": 451,
+				"h": 329
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 69,
+				"y": 136,
+				"w": 451,
+				"h": 329
+			},
+			"sourceSize": {
+				"w": 589,
+				"h": 589
+			}
+		},
+		"L3_idle_0012.png": {
+			"frame": {
+				"x": 908,
+				"y": 331,
+				"w": 451,
+				"h": 336
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 69,
+				"y": 136,
+				"w": 451,
+				"h": 336
+			},
+			"sourceSize": {
+				"w": 589,
+				"h": 589
+			}
+		},
+		"L3_idle_0013.png": {
+			"frame": {
+				"x": 1361,
+				"y": 331,
+				"w": 451,
+				"h": 381
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 69,
+				"y": 136,
+				"w": 451,
+				"h": 381
+			},
+			"sourceSize": {
+				"w": 589,
+				"h": 589
+			}
+		},
+		"L3_idle_0014.png": {
+			"frame": {
+				"x": 1814,
+				"y": 331,
+				"w": 451,
+				"h": 317
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 69,
+				"y": 136,
+				"w": 451,
+				"h": 317
+			},
+			"sourceSize": {
+				"w": 589,
+				"h": 589
+			}
+		},
+		"L3_idle_0015.png": {
+			"frame": {
+				"x": 2267,
+				"y": 331,
+				"w": 451,
+				"h": 317
+			},
+			"rotated": false,
+			"trimmed": true,
+			"spriteSourceSize": {
+				"x": 69,
+				"y": 136,
+				"w": 451,
+				"h": 317
+			},
+			"sourceSize": {
+				"w": 589,
+				"h": 589
+			}
+		}
+	},
+	"meta": {
+		"image": "L3_idle.basis",
+		"format": "RGBA8888",
+		"size": {
+			"w": 4079,
+			"h": 714
+		},
+		"scale": "1"
+	}
+}
