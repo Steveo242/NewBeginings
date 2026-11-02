@@ -81,6 +81,7 @@ HERO = '/root/bs-render/render/rig/h1_shark_v3/hero_eyes/win_0001.png'
 HERO = os.environ.get('HERO', HERO)
 # v4 was built with HERO=<h1_shark_v3>/hero_v4/win_0001.png VERSION=v4 and
 # tile: SH_K=0.66 SX_DX=70 SY_DY=40, cover: SH_K=0.7 SX_DX=20 SY_DY=10
+# v5 (hero_v5, side profile): see thumbnails/build_v5.sh
 # the BS wild and the SCATTER anchor (the chest was retired and the anchor became the
 # scatter on 2026-10-31); the names keep the layout keys
 CHEST = '/root/bs-render/render/rig/sw/w_bs/final/static_hi.png'
@@ -216,7 +217,11 @@ red.putalpha(blood)
 canvas.alpha_composite(red)
 
 # ------------------------------------------------------------ the great white
-shark = tight(load(HERO))
+shark = load(HERO)
+# v5's hero is the closed-mouth side profile: HERO_ROT tilts it nose-up into a rising lunge
+if os.environ.get('HERO_ROT'):
+    shark = shark.rotate(float(os.environ['HERO_ROT']), resample=Image.BICUBIC, expand=True)
+shark = tight(shark)
 SH = round(L['SH'] * float(os.environ.get('SH_K', 1)))  # on-tile height
 shark = scaled(shark, SH / shark.height)
 SX = TX + tank_back.width // 2 - shark.width // 2 + L['SX_off'] + px(int(os.environ.get('SX_DX', 0)))

@@ -201,61 +201,51 @@ export default {
 	symbolExplode: {
 		type: 'spriteSheet',
 		src: new URL('../../assets/sprites/symbolsAnim/symbol_explode.json', import.meta.url).href,
-		basis: true,
 	},
 	H1_win: {
 		type: 'spriteSheet',
 		lazy: true, // game/lazyWins.ts
 		src: new URL('../../assets/sprites/symbolsAnim/H1_win.json', import.meta.url).href,
-		basis: true,
 	},
 	H2_win: {
 		type: 'spriteSheet',
 		lazy: true, // game/lazyWins.ts
 		src: new URL('../../assets/sprites/symbolsAnim/H2_win.json', import.meta.url).href,
-		basis: true,
 	},
 	H3_win: {
 		type: 'spriteSheet',
 		lazy: true, // game/lazyWins.ts
 		src: new URL('../../assets/sprites/symbolsAnim/H3_win.json', import.meta.url).href,
-		basis: true,
 	},
 	H4_win: {
 		type: 'spriteSheet',
 		lazy: true, // game/lazyWins.ts
 		src: new URL('../../assets/sprites/symbolsAnim/H4_win.json', import.meta.url).href,
-		basis: true,
 	},
 	L1_win: {
 		type: 'spriteSheet',
 		lazy: true, // game/lazyWins.ts
 		src: new URL('../../assets/sprites/symbolsAnim/L1_win.json', import.meta.url).href,
-		basis: true,
 	},
 	L2_win: {
 		type: 'spriteSheet',
 		lazy: true, // game/lazyWins.ts
 		src: new URL('../../assets/sprites/symbolsAnim/L2_win.json', import.meta.url).href,
-		basis: true,
 	},
 	L3_win: {
 		type: 'spriteSheet',
 		lazy: true, // game/lazyWins.ts
 		src: new URL('../../assets/sprites/symbolsAnim/L3_win.json', import.meta.url).href,
-		basis: true,
 	},
 	S_win: {
 		type: 'spriteSheet',
 		lazy: true, // game/lazyWins.ts
 		src: new URL('../../assets/sprites/symbolsAnim/S_win.json', import.meta.url).href,
-		basis: true,
 	},
 	W_win: {
 		type: 'spriteSheet',
 		lazy: true, // game/lazyWins.ts
 		src: new URL('../../assets/sprites/symbolsAnim/W_win.json', import.meta.url).href,
-		basis: true,
 	},
 	// v5 rendered landings and idle loops (pack_symbol3d.py STATE=land|idle)
 	H1_land: {
