@@ -192,39 +192,121 @@ export default {
 	},
 	H1_win: {
 		type: 'spriteSheet',
+		lazy: true, // game/lazyWins.ts
 		src: new URL('../../assets/sprites/symbolsAnim/H1_win.json', import.meta.url).href,
 	},
 	H2_win: {
 		type: 'spriteSheet',
+		lazy: true, // game/lazyWins.ts
 		src: new URL('../../assets/sprites/symbolsAnim/H2_win.json', import.meta.url).href,
 	},
 	H3_win: {
 		type: 'spriteSheet',
+		lazy: true, // game/lazyWins.ts
 		src: new URL('../../assets/sprites/symbolsAnim/H3_win.json', import.meta.url).href,
 	},
 	H4_win: {
 		type: 'spriteSheet',
+		lazy: true, // game/lazyWins.ts
 		src: new URL('../../assets/sprites/symbolsAnim/H4_win.json', import.meta.url).href,
 	},
 	L1_win: {
 		type: 'spriteSheet',
+		lazy: true, // game/lazyWins.ts
 		src: new URL('../../assets/sprites/symbolsAnim/L1_win.json', import.meta.url).href,
 	},
 	L2_win: {
 		type: 'spriteSheet',
+		lazy: true, // game/lazyWins.ts
 		src: new URL('../../assets/sprites/symbolsAnim/L2_win.json', import.meta.url).href,
 	},
 	L3_win: {
 		type: 'spriteSheet',
+		lazy: true, // game/lazyWins.ts
 		src: new URL('../../assets/sprites/symbolsAnim/L3_win.json', import.meta.url).href,
 	},
 	S_win: {
 		type: 'spriteSheet',
+		lazy: true, // game/lazyWins.ts
 		src: new URL('../../assets/sprites/symbolsAnim/S_win.json', import.meta.url).href,
 	},
 	W_win: {
 		type: 'spriteSheet',
+		lazy: true, // game/lazyWins.ts
 		src: new URL('../../assets/sprites/symbolsAnim/W_win.json', import.meta.url).href,
+	},
+	// v5 rendered landings and idle loops (pack_symbol3d.py STATE=land|idle)
+	H1_land: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/H1_land.json', import.meta.url).href,
+	},
+	H2_land: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/H2_land.json', import.meta.url).href,
+	},
+	H3_land: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/H3_land.json', import.meta.url).href,
+	},
+	H4_land: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/H4_land.json', import.meta.url).href,
+	},
+	L1_land: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/L1_land.json', import.meta.url).href,
+	},
+	L2_land: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/L2_land.json', import.meta.url).href,
+	},
+	L3_land: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/L3_land.json', import.meta.url).href,
+	},
+	W_land: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/W_land.json', import.meta.url).href,
+	},
+	S_land: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/S_land.json', import.meta.url).href,
+	},
+	H1_idle: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/H1_idle.json', import.meta.url).href,
+	},
+	H2_idle: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/H2_idle.json', import.meta.url).href,
+	},
+	H3_idle: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/H3_idle.json', import.meta.url).href,
+	},
+	H4_idle: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/H4_idle.json', import.meta.url).href,
+	},
+	L1_idle: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/L1_idle.json', import.meta.url).href,
+	},
+	L2_idle: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/L2_idle.json', import.meta.url).href,
+	},
+	L3_idle: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/L3_idle.json', import.meta.url).href,
+	},
+	W_idle: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/W_idle.json', import.meta.url).href,
+	},
+	S_idle: {
+		type: 'spriteSheet',
+		src: new URL('../../assets/sprites/symbolsAnim/S_idle.json', import.meta.url).href,
 	},
 	sound: {
 		type: 'audio',

@@ -11,8 +11,9 @@ import {
 	MULTIPLIER_BACKGROUND_INFO_MAP,
 } from './constants';
 import { eventEmitter } from './eventEmitter';
-import type { Bet, BookEventOfType } from './typesBookEvent';
+import type { Bet, BookEvent, BookEventOfType } from './typesBookEvent';
 import { bookEventHandlerMap } from './bookEventHandlerMap';
+import { prepareWins, winsReady } from './lazyWins';
 import type { RawSymbol, SymbolState } from './types';
 
 // general utils
@@ -20,6 +21,8 @@ export const { getEmptyBoard } = createGetEmptyPaddedBoard({ reelsDimensions: BO
 export const { playBookEvent, playBookEvents } = createPlayBookUtils({ bookEventHandlerMap });
 export const playBet = async (bet: Bet) => {
 	stateBet.winBookEventAmount = 0;
+	// this round's win sheets start decoding now, while the reels spin (game/lazyWins.ts)
+	winsReady.promise = prepareWins(bet.state as BookEvent[]);
 	await playBookEvents(bet.state);
 	eventEmitter.broadcast({ type: 'stopButtonEnable' });
 };
@@ -84,6 +87,12 @@ export const getSymbolInfo = ({
 	}
 	const resolvedState = state === 'win' || state === 'postWinStatic' ? 'static' : state;
 	return symbolInfoMap[resolvedState];
+};
+
+/** The rendered idle loop a resting symbol plays (v5), if it has one. */
+export const getSymbolIdleInfo = ({ rawSymbol }: { rawSymbol: RawSymbol }) => {
+	const map = SYMBOL_INFO_MAP[getSymbolKey({ rawSymbol })];
+	return 'idle' in map ? map.idle : undefined;
 };
 
 export const getSymbolBackgroundInfo = ({

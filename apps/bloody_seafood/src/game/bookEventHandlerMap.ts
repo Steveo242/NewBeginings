@@ -10,6 +10,7 @@ import { stateGame, stateGameDerived } from './stateGame.svelte';
 import { startsInFeature } from './constants';
 import type { BookEvent, BookEventOfType, BookEventContext } from './typesBookEvent';
 import type { Position } from './types';
+import { winsReady } from './lazyWins';
 import { clusterSfx, ALL_MUSIC, type SoundEffectName, type WinMusicName } from './sound';
 
 // big/mega/epic get their own applause recording; superwin and max fall back
@@ -120,6 +121,9 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		eventEmitter.broadcast({ type: 'soundScatterCounterClear' });
 	},
 	winInfo: async (bookEvent: BookEventOfType<'winInfo'>) => {
+		// the win sheets were set loading when the book came in (game/lazyWins.ts) - long
+		// done by now on any connection, but never animate a win on a missing sheet
+		await winsReady.promise;
 		const gm = Math.max(1, ...bookEvent.wins.map((w: any) => Number(w?.meta?.globalMult ?? 1)));
 		eventEmitter.broadcast({ type: 'globalMultiplierUpdate', multiplier: gm });
 		const promise1 = async () => {

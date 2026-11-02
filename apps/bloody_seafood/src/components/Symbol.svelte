@@ -2,7 +2,7 @@
 	import SymbolSprite from './SymbolSprite.svelte';
 	import SymbolAnimatedSprite from './SymbolAnimatedSprite.svelte';
 	import SymbolPop from './SymbolPop.svelte';
-	import { getSymbolInfo } from '../game/utils';
+	import { getSymbolIdleInfo, getSymbolInfo } from '../game/utils';
 	import type { SymbolState, RawSymbol } from '../game/types';
 	import { getContext } from '../game/context';
 	import { HIGH_SYMBOLS, SYMBOL_SIZE } from '../game/constants';
@@ -24,8 +24,21 @@
 	const context = getContext();
 	const symbolInfo = $derived(getSymbolInfo({ rawSymbol: props.rawSymbol, state: props.state }));
 	const staticInfo = $derived(getSymbolInfo({ rawSymbol: props.rawSymbol, state: 'static' }));
-	const isSprite = $derived(symbolInfo.type === 'sprite');
-	const isSpriteSheet = $derived(symbolInfo.type === 'spriteSheet');
+	// at rest, a symbol with a rendered idle loop plays it (frame 0 is the static pose, so
+	// the hand-over from the land / the static is seamless) - once its sheet is loaded
+	const idleInfo = $derived(getSymbolIdleInfo({ rawSymbol: props.rawSymbol }));
+	const idleLoop = $derived(
+		(props.state === 'static' || props.state === 'postWinStatic') &&
+			idleInfo !== undefined &&
+			!!context.stateApp.loadedAssets?.[idleInfo.assetKey],
+	);
+	// a sheet that isn't loaded (yet) must never hold a state open: its oncomplete would
+	// never fire and the tumble waits on it. The static sprite (with its bounce) stands in.
+	const sheetMissing = $derived(
+		symbolInfo.type === 'spriteSheet' && !context.stateApp.loadedAssets?.[symbolInfo.assetKey],
+	);
+	const isSprite = $derived((symbolInfo.type === 'sprite' || sheetMissing) && !idleLoop);
+	const isSpriteSheet = $derived(symbolInfo.type === 'spriteSheet' && !sheetMissing);
 	// Only the fish (the high symbols) swim gently at rest; the chum pails, crate,
 	// anchor, BS wild and multipliers sit still until their own land/win animations.
 	const idle = $derived(
@@ -100,9 +113,11 @@
 	scale={scatterTense ? tenseScale : winScale}
 	rotation={shake}
 >
-{#if isSprite}
+{#if idleLoop && idleInfo}
+	<SymbolAnimatedSprite symbolInfo={idleInfo} loop={true} />
+{:else if isSprite}
 	<SymbolSprite
-		{symbolInfo}
+		symbolInfo={sheetMissing ? staticInfo : symbolInfo}
 		oncomplete={props.oncomplete}
 		bounce={props.state === 'land'}
 		{idle}

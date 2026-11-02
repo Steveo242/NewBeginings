@@ -18,9 +18,15 @@ const PROCESS_METHOD_MAP = {
 	},
 	sprite: ({ key, rawAsset }: { key: string; rawAsset: RawSprites }) => ({ [key]: rawAsset }),
 	sprites: ({ rawAsset }: { rawAsset: RawSprites }) => rawAsset.textures,
-	spriteSheet: ({ key, rawAsset }: { key: string; rawAsset: RawSprites }) => ({
-		[key]: Object.values(rawAsset.textures),
-	}),
+	// A multi-pack sheet (meta.related_multi_packs) loads as one Spritesheet with the other
+	// packs in linkedSheets: the animation is every pack's frames, in frame-name order (the
+	// names are zero-padded), so a long or high-res animation can span several textures.
+	spriteSheet: ({ key, rawAsset }: { key: string; rawAsset: RawSprites }) => {
+		const sheets = [rawAsset, ...((rawAsset as { linkedSheets?: RawSprites[] }).linkedSheets ?? [])];
+		if (sheets.length === 1) return { [key]: Object.values(rawAsset.textures) };
+		const all = Object.assign({}, ...sheets.map((sheet) => sheet.textures));
+		return { [key]: Object.keys(all).sort().map((name) => all[name]) };
+	},
 	audio: ({ key, rawAsset }: { key: string; rawAsset: RawAudio }) => {
 		return { [key]: rawAsset };
 	},

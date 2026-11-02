@@ -219,6 +219,15 @@ const win3d = (assetKey: string, ratio: number, animationSpeed = 1, scale = 1) =
 	animationSpeed: animationSpeed * ANIM_PACE,
 });
 
+// v5 per-symbol states (pack_symbol3d.py STATE=land|idle, same crop centre as the win):
+// land 10 frames at 30 fps as the reel stops; idle 16 frames played forward-then-back at
+// 8 fps (a 4 s loop, frame 0 = the static) for the fish, forward at 8 fps for the rest
+// (their particles must not run backwards). Crop ratios must match v5_pack.sh.
+export const LAND_RATIO = 1.3;
+export const IDLE_RATIO = 1.15;
+const land3d = (assetKey: string, scale = 1) => win3d(assetKey, LAND_RATIO, 0.5, scale);
+const idle3d = (assetKey: string, scale = 1) => ({ ...win3d(assetKey, IDLE_RATIO, 8 / 60, scale), loop: true });
+
 // The shark is the top symbol, shot as a nose-up three-quarter lunge (camera below and
 // ahead of it) and allowed to break its square a little - premium symbols should.
 const H1_SCALE = 1.24;
@@ -311,7 +320,8 @@ export const SYMBOL_INFO_MAP = {
 		postWinStatic: h1Static,
 		static: h1Static,
 		spin: h1Static,
-		land: h1Static,
+		land: land3d('H1_land', H1_SCALE),
+		idle: idle3d('H1_idle', H1_SCALE),
 	},
 	H2: {
 		explosion,
@@ -319,7 +329,8 @@ export const SYMBOL_INFO_MAP = {
 		postWinStatic: h2Static,
 		static: h2Static,
 		spin: h2Static,
-		land: h2Static,
+		land: land3d('H2_land', HIGH_SCALE),
+		idle: idle3d('H2_idle', HIGH_SCALE),
 	},
 	H3: {
 		explosion,
@@ -327,7 +338,8 @@ export const SYMBOL_INFO_MAP = {
 		postWinStatic: h3Static,
 		static: h3Static,
 		spin: h3Static,
-		land: h3Static,
+		land: land3d('H3_land', HIGH_SCALE),
+		idle: idle3d('H3_idle', HIGH_SCALE),
 	},
 	H4: {
 		explosion,
@@ -335,7 +347,8 @@ export const SYMBOL_INFO_MAP = {
 		postWinStatic: h4Static,
 		static: h4Static,
 		spin: h4Static,
-		land: h4Static,
+		land: land3d('H4_land', HIGH_SCALE),
+		idle: idle3d('H4_idle', HIGH_SCALE),
 	},
 	L1: {
 		explosion,
@@ -343,7 +356,8 @@ export const SYMBOL_INFO_MAP = {
 		postWinStatic: l1Static,
 		static: l1Static,
 		spin: l1Static,
-		land: l1Static,
+		land: land3d('L1_land', LOW_SCALE),
+		idle: idle3d('L1_idle', LOW_SCALE),
 	},
 	L2: {
 		explosion,
@@ -351,7 +365,8 @@ export const SYMBOL_INFO_MAP = {
 		postWinStatic: l2Static,
 		static: l2Static,
 		spin: l2Static,
-		land: l2Static,
+		land: land3d('L2_land', LOW_SCALE),
+		idle: idle3d('L2_idle', LOW_SCALE),
 	},
 	L3: {
 		explosion,
@@ -359,7 +374,8 @@ export const SYMBOL_INFO_MAP = {
 		postWinStatic: l3Static,
 		static: l3Static,
 		spin: l3Static,
-		land: l3Static,
+		land: land3d('L3_land', LOW_SCALE),
+		idle: idle3d('L3_idle', LOW_SCALE),
 	},
 	W: {
 		explosion,
@@ -368,7 +384,8 @@ export const SYMBOL_INFO_MAP = {
 		spin: wStatic,
 		// the blood-drenched BS letters (build_wild_bs.py): hop, pop and twist like the lows
 		win: win3d('W_win', 2.0, 0.5),
-		land: wStatic,
+		land: land3d('W_land', 1),
+		idle: idle3d('W_idle', 1),
 	},
 	S: {
 		explosion,
@@ -377,7 +394,8 @@ export const SYMBOL_INFO_MAP = {
 		spin: sStatic,
 		// the gold anchor, lettered SCATTER: swings from its ring with a glint across the gold
 		win: win3d('S_win', 1.8, 0.5),
-		land: sStatic,
+		land: land3d('S_land', 1),
+		idle: idle3d('S_idle', 1),
 	},
 	M_2: {
 		explosion,
