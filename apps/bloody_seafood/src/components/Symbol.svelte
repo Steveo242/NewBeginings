@@ -37,6 +37,10 @@
 	const sheetMissing = $derived(
 		symbolInfo.type === 'spriteSheet' && !context.stateApp.loadedAssets?.[symbolInfo.assetKey],
 	);
+	const idleJitter = $derived.by(() => {
+		const [r, c] = (props.cell ?? '0:0').split(':').map(Number);
+		return 0.88 + 0.24 * (((r * 7 + c) * 0.618034) % 1);
+	});
 	const isSprite = $derived((symbolInfo.type === 'sprite' || sheetMissing) && !idleLoop);
 	const isSpriteSheet = $derived(symbolInfo.type === 'spriteSheet' && !sheetMissing);
 	// Only the fish (the high symbols) swim gently at rest; the chum pails, crate,
@@ -114,7 +118,11 @@
 	rotation={shake}
 >
 {#if idleLoop && idleInfo}
-	<SymbolAnimatedSprite symbolInfo={idleInfo} loop={true} />
+	<!-- each cell breathes at its own pace (+-12%), so a settled board never pulses in step -->
+	<SymbolAnimatedSprite
+		symbolInfo={{ ...idleInfo, animationSpeed: idleInfo.animationSpeed * idleJitter }}
+		loop={true}
+	/>
 {:else if isSprite}
 	<SymbolSprite
 		symbolInfo={sheetMissing ? staticInfo : symbolInfo}
