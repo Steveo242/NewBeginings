@@ -21,6 +21,7 @@
 	y={props.y}
 	anchor={0.5}
 	key={props.symbolInfo.assetKey}
+	label={props.symbolInfo.assetKey}
 	width={SYMBOL_SIZE * props.symbolInfo.sizeRatios.width}
 	height={SYMBOL_SIZE * props.symbolInfo.sizeRatios.height}
 	animationSpeed={'animationSpeed' in props.symbolInfo ? props.symbolInfo.animationSpeed : 1}
