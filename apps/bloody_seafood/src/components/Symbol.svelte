@@ -72,21 +72,14 @@
 		return () => app.ticker.remove(tick);
 	});
 
-	// Win: one punch-in (1.18 -> 1, eased out over ~320 ms), then nothing - the baked win
-	// animation carries all the motion (a beat-locked scale swell on top of it doubled the
-	// baked moves and read as a shake). A warm halo behind breathes slowly (one breath per
-	// two beats); highs get the biggest punch and the hottest halo.
+	// Win: a barely-there punch-in (1.04 -> 1, eased out over ~320 ms) and NO glow. The baked
+	// win animation carries all the motion and light. (v5.4: a 1.8-cell additive warm glow
+	// sat behind every winner; in a cluster the winners are neighbours on the animate layer,
+	// so each one's glow was added over the next fish - washing them white - and the old
+	// 1.18-1.22 punch-in upscaled the 512 px frames, softening them, until they settled.)
 	const high = $derived(HIGH_SYMBOLS.includes(props.rawSymbol.name) || props.rawSymbol.name === 'W');
 	const punch = $derived(Math.max(0, 1 - now / 320));
-	const winScale = $derived(isWin ? 1 + (high ? 0.18 : 0.12) * punch * punch * punch : 1);
-	const glowAlpha = $derived(isWin ? Math.min(1, now / 160) * (0.6 + 0.3 * pulse(now, 2)) : 0);
-	const glowTint = $derived(
-		props.rawSymbol.name === 'W' || props.rawSymbol.name === 'S'
-			? 0xffc04a
-			: high
-				? 0xff5a3c
-				: 0xffd9a0,
-	);
+	const winScale = $derived(isWin ? 1 + (high ? 0.04 : 0.03) * punch * punch * punch : 1);
 	// Scatter tension: a slow, straining rock (~1.5 Hz, the rope's pull - a fast tremble read
 	// as jitter), and a gold glow throbbing on the beat
 	const shake = $derived(scatterTense ? Math.sin(now / 105) * (0.03 + Math.min(0.02, now / 60000)) : 0);
@@ -95,16 +88,16 @@
 	const tenseGlow = $derived(scatterTense ? Math.min(1, now / 150) * (0.6 + 0.4 * pulse(now, 0.5)) : 0);
 </script>
 
-{#if glowAlpha > 0 || tenseGlow > 0}
+{#if tenseGlow > 0}
 	<Sprite
 		key="fxGlow"
 		anchor={0.5}
 		x={props.x}
 		y={props.y}
-		width={SYMBOL_SIZE * (scatterTense ? 1.9 : high ? 1.8 : 1.5) * (scatterTense ? tenseScale : winScale)}
-		height={SYMBOL_SIZE * (scatterTense ? 1.9 : high ? 1.8 : 1.5) * (scatterTense ? tenseScale : winScale)}
-		tint={scatterTense ? 0xffc04a : glowTint}
-		alpha={Math.max(glowAlpha, tenseGlow)}
+		width={SYMBOL_SIZE * 1.9 * tenseScale}
+		height={SYMBOL_SIZE * 1.9 * tenseScale}
+		tint={0xffc04a}
+		alpha={tenseGlow}
 		blendMode="add"
 	/>
 {/if}
