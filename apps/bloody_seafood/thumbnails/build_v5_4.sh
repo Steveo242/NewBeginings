@@ -6,3 +6,8 @@ H=/root/bs-render/render/rig/h1_shark_v3/hero_v54side/hero_fixed.png
 HERO=$H VERSION=v5_4 CRAFT=1 HERO_ROT=-14 SH_K=0.62 SX_DX=120 SY_DY=40 python3 thumbnails/build_tile_v2.py tile
 HERO=$H VERSION=v5_4 CRAFT=1 HERO_ROT=-10 SH_K=0.72 SX_DX=0 SY_DY=10 python3 thumbnails/build_tile_v2.py cover
 for d in "" 1; do for lay in tile cover; do DAY=$d BG_ONLY=1 VERSION=v5_4 python3 thumbnails/build_tile_v2.py $lay; done; done
+# daylight tile + cover (Steve's pick, 2026-11-03): the base game's day plate, art re-graded
+for d in 1; do
+  DAY=$d HERO=$H VERSION=v5_4 CRAFT=1 HERO_ROT=-14 SH_K=0.62 SX_DX=120 SY_DY=40 python3 thumbnails/build_tile_v2.py tile
+  DAY=$d HERO=$H VERSION=v5_4 CRAFT=1 HERO_ROT=-10 SH_K=0.72 SX_DX=0 SY_DY=10 python3 thumbnails/build_tile_v2.py cover
+done

@@ -72,6 +72,22 @@ if os.environ.get('DAY'):
 # CRAFT=1 (v5.4): the shark, chest and anchor get the same hand-crafted finish as the game's
 # symbols (pack_symbol3d.py craft(): thin outline, upper-right rim, palette, unsharp mask)
 CRAFT = None
+
+
+def day_grade(img):
+    """DAY: re-grade studio-lit art (lit for the night storm: cool key, teal water rim) for
+    a sunny scene - the teal rim pulled toward neutral, a touch warmer and brighter overall"""
+    if not DAY:
+        return img
+    a = np.asarray(img).astype(np.float32)
+    r, g, b = a[..., 0], a[..., 1], a[..., 2]
+    lum = 0.299 * r + 0.587 * g + 0.114 * b
+    teal = np.clip((np.minimum(g, b) - r) / 60, 0, 1) * 0.55
+    for c in range(3):
+        a[..., c] = a[..., c] * (1 - teal) + lum * teal
+    a[..., 0] *= 1.05; a[..., 1] *= 1.02; a[..., 2] *= 0.95
+    a[..., :3] = a[..., :3] * 1.04
+    return Image.fromarray(a.clip(0, 255).astype(np.uint8), 'RGBA')
 if os.environ.get('CRAFT'):
     import ast
     import cv2
@@ -255,6 +271,7 @@ if FULL:
     shark = tight(shark)
     SH = round(L['SH'] * float(os.environ.get('SH_K', 1)))  # on-tile height
     shark = scaled(shark, SH / shark.height)
+    shark = day_grade(shark)
     if CRAFT:
         shark = CRAFT(shark, 512)
     SX = TX + tank_back.width // 2 - shark.width // 2 + L['SX_off'] + px(int(os.environ.get('SX_DX', 0)))
@@ -300,7 +317,10 @@ if FULL:
     fl.paste(255, (0, RIM - px(4), W, RIM + px(6)))
     fn = np.random.default_rng(11).random((H // px(6) + 1, W // px(6) + 1)).astype(np.float32)
     fn = Image.fromarray((fn * 255).astype(np.uint8)).resize((W, H), Image.BICUBIC)
-    band = ImageChops.multiply(body.filter(ImageFilter.MaxFilter(odd(25))), fl).filter(ImageFilter.GaussianBlur(px(3)))
+    # only where the silhouette crosses the surface (the entry points), not as a line
+    # drawn across the whole flank - that read as a white seam through the shark
+    edge = ImageChops.subtract(body.filter(ImageFilter.MaxFilter(odd(25))), body.filter(ImageFilter.MinFilter(odd(31))))
+    band = ImageChops.multiply(edge, fl).filter(ImageFilter.GaussianBlur(px(3)))
     band = ImageChops.multiply(band, fn.point(lambda v: 255 if v > 120 else v))
     froth = Image.new('RGBA', (W, H), (236, 246, 250, 0))
     froth.putalpha(band.filter(ImageFilter.GaussianBlur(1.5 * S)).point(lambda v: min(200, v)))
@@ -333,6 +353,7 @@ if FULL:
     for path, (h, x, y) in ((CHEST, L['chest']), (ANCHOR, L['anchor'])):
         obj = tight(load(path))
         obj = scaled(obj, h / obj.height)
+        obj = day_grade(obj)
         if CRAFT:
             obj = CRAFT(obj, 512)
         osh, opad = shadow(obj, px(16), 180)
