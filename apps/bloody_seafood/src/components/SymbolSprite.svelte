@@ -2,7 +2,7 @@
 	import * as PIXI from 'pixi.js';
 	import { Sprite } from 'pixi-svelte';
 	import { Tween } from 'svelte/motion';
-	import { elasticOut } from 'svelte/easing';
+	import { backOut } from 'svelte/easing';
 
 	import { getSymbolInfo } from '../game/utils';
 	import { SYMBOL_SIZE } from '../game/constants';
@@ -88,14 +88,14 @@
 	);
 
 	// Squash-and-stretch on landing: the symbol hits wide and flat on its base, then
-	// springs up through a tall overshoot and settles - width and height spring with
-	// opposite phase, so the elastic overshoot reads as a stretch, not a size wobble.
+	// springs up through ONE tall overshoot and settles (backOut: an elastic spring's
+	// repeated wobble read as a shake) - width and height spring with opposite phase.
 	// Starts pre-squashed so the impact reads as instant rather than a delayed grow-in.
 	// one beat: the landings were snappier than the music's pulse
 	const BOUNCE_DURATION = Math.round(BEAT_MS);
-	const scaleX = new Tween(1, { duration: BOUNCE_DURATION, easing: elasticOut });
-	const scaleY = new Tween(1, { duration: BOUNCE_DURATION, easing: elasticOut });
-	const rotation = new Tween(0, { duration: BOUNCE_DURATION, easing: elasticOut });
+	const scaleX = new Tween(1, { duration: BOUNCE_DURATION, easing: backOut });
+	const scaleY = new Tween(1, { duration: BOUNCE_DURATION, easing: backOut });
+	const rotation = new Tween(0, { duration: BOUNCE_DURATION, easing: backOut });
 
 	// This component instance is reused across every state a symbol passes
 	// through (static/land/win/...) rather than remounted, since the parent
@@ -105,9 +105,9 @@
 	$effect(() => {
 		props.symbolInfo;
 		if (props.bounce) {
-			scaleX.set(1.16, { duration: 0 });
-			scaleY.set(0.76, { duration: 0 });
-			rotation.set(Math.random() < 0.5 ? -0.05 : 0.05, { duration: 0 });
+			scaleX.set(1.1, { duration: 0 });
+			scaleY.set(0.84, { duration: 0 });
+			rotation.set(Math.random() < 0.5 ? -0.03 : 0.03, { duration: 0 });
 			scaleX.set(1);
 			scaleY.set(1);
 			rotation.set(0);

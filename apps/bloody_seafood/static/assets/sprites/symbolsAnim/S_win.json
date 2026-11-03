@@ -790,7 +790,7 @@
 			"rotated": false,
 			"trimmed": true,
 			"spriteSourceSize": {
-				"x": 280,
+				"x": 283,
 				"y": 234,
 				"w": 339,
 				"h": 450
@@ -804,15 +804,15 @@
 			"frame": {
 				"x": 343,
 				"y": 2031,
-				"w": 338,
+				"w": 339,
 				"h": 450
 			},
 			"rotated": false,
 			"trimmed": true,
 			"spriteSourceSize": {
-				"x": 286,
+				"x": 288,
 				"y": 234,
-				"w": 338,
+				"w": 339,
 				"h": 450
 			},
 			"sourceSize": {
@@ -822,17 +822,17 @@
 		},
 		"S_win_0042.png": {
 			"frame": {
-				"x": 683,
+				"x": 684,
 				"y": 2031,
-				"w": 339,
+				"w": 338,
 				"h": 450
 			},
 			"rotated": false,
 			"trimmed": true,
 			"spriteSourceSize": {
-				"x": 289,
+				"x": 290,
 				"y": 234,
-				"w": 339,
+				"w": 338,
 				"h": 450
 			},
 			"sourceSize": {

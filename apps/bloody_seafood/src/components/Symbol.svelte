@@ -72,14 +72,14 @@
 		return () => app.ticker.remove(tick);
 	});
 
-	// Win: a hard punch-in (1.22 -> 1 over ~180 ms) then a beat-locked swell, with a warm
-	// halo behind - highs get the biggest punch and the hottest halo.
+	// Win: one punch-in (1.18 -> 1, eased out over ~320 ms), then nothing - the baked win
+	// animation carries all the motion (a beat-locked scale swell on top of it doubled the
+	// baked moves and read as a shake). A warm halo behind breathes slowly (one breath per
+	// two beats); highs get the biggest punch and the hottest halo.
 	const high = $derived(HIGH_SYMBOLS.includes(props.rawSymbol.name) || props.rawSymbol.name === 'W');
-	const punch = $derived(Math.max(0, 1 - now / 180));
-	const winScale = $derived(
-		isWin ? 1 + (high ? 0.22 : 0.15) * punch * punch + (high ? 0.06 : 0.04) * pulse(now, 1) : 1,
-	);
-	const glowAlpha = $derived(isWin ? Math.min(1, now / 90) * (0.55 + 0.35 * pulse(now, 1)) : 0);
+	const punch = $derived(Math.max(0, 1 - now / 320));
+	const winScale = $derived(isWin ? 1 + (high ? 0.18 : 0.12) * punch * punch * punch : 1);
+	const glowAlpha = $derived(isWin ? Math.min(1, now / 160) * (0.6 + 0.3 * pulse(now, 2)) : 0);
 	const glowTint = $derived(
 		props.rawSymbol.name === 'W' || props.rawSymbol.name === 'S'
 			? 0xffc04a
@@ -87,9 +87,10 @@
 				? 0xff5a3c
 				: 0xffd9a0,
 	);
-	// Scatter tension: a nervous tremble that quickens, and a gold glow throbbing on the beat
-	const shake = $derived(scatterTense ? Math.sin(now / 28) * (0.035 + Math.min(0.03, now / 60000)) : 0);
-	const shakeX = $derived(scatterTense ? Math.sin(now / 19) * SYMBOL_SIZE * 0.025 : 0);
+	// Scatter tension: a slow, straining rock (~1.5 Hz, the rope's pull - a fast tremble read
+	// as jitter), and a gold glow throbbing on the beat
+	const shake = $derived(scatterTense ? Math.sin(now / 105) * (0.03 + Math.min(0.02, now / 60000)) : 0);
+	const shakeX = $derived(scatterTense ? Math.sin(now / 105 + 0.6) * SYMBOL_SIZE * 0.012 : 0);
 	const tenseScale = $derived(scatterTense ? 1.06 + 0.05 * pulse(now, 0.5) : 1);
 	const tenseGlow = $derived(scatterTense ? Math.min(1, now / 150) * (0.6 + 0.4 * pulse(now, 0.5)) : 0);
 </script>

@@ -144,15 +144,15 @@
 			"frame": {
 				"x": 2794,
 				"y": 2,
-				"w": 396,
+				"w": 398,
 				"h": 264
 			},
 			"rotated": false,
 			"trimmed": true,
 			"spriteSourceSize": {
-				"x": 96,
+				"x": 95,
 				"y": 162,
-				"w": 396,
+				"w": 398,
 				"h": 264
 			},
 			"sourceSize": {
@@ -162,7 +162,7 @@
 		},
 		"H3_land_0009.png": {
 			"frame": {
-				"x": 3192,
+				"x": 3194,
 				"y": 2,
 				"w": 400,
 				"h": 263
@@ -182,17 +182,17 @@
 		},
 		"H3_land_0010.png": {
 			"frame": {
-				"x": 3594,
+				"x": 3596,
 				"y": 2,
-				"w": 402,
+				"w": 399,
 				"h": 263
 			},
 			"rotated": false,
 			"trimmed": true,
 			"spriteSourceSize": {
-				"x": 94,
+				"x": 95,
 				"y": 163,
-				"w": 402,
+				"w": 399,
 				"h": 263
 			},
 			"sourceSize": {
@@ -205,7 +205,7 @@
 		"image": "H3_land.webp",
 		"format": "RGBA8888",
 		"size": {
-			"w": 3998,
+			"w": 3997,
 			"h": 280
 		},
 		"scale": "1"

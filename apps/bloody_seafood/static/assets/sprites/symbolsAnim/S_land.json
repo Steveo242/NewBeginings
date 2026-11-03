@@ -144,15 +144,15 @@
 			"frame": {
 				"x": 2385,
 				"y": 2,
-				"w": 338,
+				"w": 339,
 				"h": 449
 			},
 			"rotated": false,
 			"trimmed": true,
 			"spriteSourceSize": {
-				"x": 172,
+				"x": 168,
 				"y": 107,
-				"w": 338,
+				"w": 339,
 				"h": 449
 			},
 			"sourceSize": {
@@ -162,7 +162,7 @@
 		},
 		"S_land_0009.png": {
 			"frame": {
-				"x": 2725,
+				"x": 2726,
 				"y": 2,
 				"w": 339,
 				"h": 449
@@ -170,7 +170,7 @@
 			"rotated": false,
 			"trimmed": true,
 			"spriteSourceSize": {
-				"x": 170,
+				"x": 165,
 				"y": 107,
 				"w": 339,
 				"h": 449
@@ -182,17 +182,17 @@
 		},
 		"S_land_0010.png": {
 			"frame": {
-				"x": 3066,
+				"x": 3067,
 				"y": 2,
-				"w": 338,
+				"w": 339,
 				"h": 449
 			},
 			"rotated": false,
 			"trimmed": true,
 			"spriteSourceSize": {
-				"x": 164,
+				"x": 162,
 				"y": 107,
-				"w": 338,
+				"w": 339,
 				"h": 449
 			},
 			"sourceSize": {
@@ -205,7 +205,7 @@
 		"image": "S_land.webp",
 		"format": "RGBA8888",
 		"size": {
-			"w": 3406,
+			"w": 3408,
 			"h": 453
 		},
 		"scale": "1"

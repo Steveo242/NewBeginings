@@ -844,15 +844,15 @@
 			"frame": {
 				"x": 1754,
 				"y": 1409,
-				"w": 400,
+				"w": 399,
 				"h": 216
 			},
 			"rotated": false,
 			"trimmed": true,
 			"spriteSourceSize": {
-				"x": 203,
+				"x": 204,
 				"y": 297,
-				"w": 400,
+				"w": 399,
 				"h": 216
 			},
 			"sourceSize": {
@@ -862,18 +862,18 @@
 		},
 		"H4_win_0044.png": {
 			"frame": {
-				"x": 2156,
+				"x": 2155,
 				"y": 1409,
-				"w": 394,
-				"h": 213
+				"w": 395,
+				"h": 215
 			},
 			"rotated": false,
 			"trimmed": true,
 			"spriteSourceSize": {
-				"x": 207,
-				"y": 299,
-				"w": 394,
-				"h": 213
+				"x": 206,
+				"y": 297,
+				"w": 395,
+				"h": 215
 			},
 			"sourceSize": {
 				"w": 808,
@@ -884,16 +884,16 @@
 			"frame": {
 				"x": 2552,
 				"y": 1409,
-				"w": 394,
-				"h": 213
+				"w": 395,
+				"h": 214
 			},
 			"rotated": false,
 			"trimmed": true,
 			"spriteSourceSize": {
-				"x": 207,
-				"y": 299,
-				"w": 394,
-				"h": 213
+				"x": 206,
+				"y": 297,
+				"w": 395,
+				"h": 214
 			},
 			"sourceSize": {
 				"w": 808,

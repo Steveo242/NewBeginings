@@ -144,16 +144,16 @@
 			"frame": {
 				"x": 2741,
 				"y": 2,
-				"w": 390,
-				"h": 207
+				"w": 393,
+				"h": 210
 			},
 			"rotated": false,
 			"trimmed": true,
 			"spriteSourceSize": {
-				"x": 95,
-				"y": 190,
-				"w": 390,
-				"h": 207
+				"x": 94,
+				"y": 188,
+				"w": 393,
+				"h": 210
 			},
 			"sourceSize": {
 				"w": 584,
@@ -162,18 +162,18 @@
 		},
 		"H4_land_0009.png": {
 			"frame": {
-				"x": 3133,
+				"x": 3136,
 				"y": 2,
-				"w": 390,
-				"h": 211
+				"w": 394,
+				"h": 214
 			},
 			"rotated": false,
 			"trimmed": true,
 			"spriteSourceSize": {
 				"x": 94,
-				"y": 186,
-				"w": 390,
-				"h": 211
+				"y": 185,
+				"w": 394,
+				"h": 214
 			},
 			"sourceSize": {
 				"w": 584,
@@ -182,17 +182,17 @@
 		},
 		"H4_land_0010.png": {
 			"frame": {
-				"x": 3525,
+				"x": 3532,
 				"y": 2,
-				"w": 393,
+				"w": 396,
 				"h": 214
 			},
 			"rotated": false,
 			"trimmed": true,
 			"spriteSourceSize": {
 				"x": 94,
-				"y": 184,
-				"w": 393,
+				"y": 185,
+				"w": 396,
 				"h": 214
 			},
 			"sourceSize": {
@@ -205,7 +205,7 @@
 		"image": "H4_land.webp",
 		"format": "RGBA8888",
 		"size": {
-			"w": 3920,
+			"w": 3930,
 			"h": 222
 		},
 		"scale": "1"

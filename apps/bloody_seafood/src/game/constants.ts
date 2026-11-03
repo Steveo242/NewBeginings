@@ -385,7 +385,7 @@ export const SYMBOL_INFO_MAP = {
 		static: wStatic,
 		spin: wStatic,
 		// the blood-drenched BS letters (build_wild_bs.py): hop, pop and twist like the lows
-		win: win3d('W_win', 2.0, 0.5),
+		win: win3d('W_win', 2.15, 0.5), // 2.15: the slam reached the 2.0 crop edge (v5_pack.sh)
 		land: land3d('W_land', 1),
 		idle: idle3d('W_idle', 1),
 	},

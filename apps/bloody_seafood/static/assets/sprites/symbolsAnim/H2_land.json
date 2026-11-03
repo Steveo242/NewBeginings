@@ -150,8 +150,8 @@
 			"rotated": false,
 			"trimmed": true,
 			"spriteSourceSize": {
-				"x": 96,
-				"y": 166,
+				"x": 95,
+				"y": 165,
 				"w": 403,
 				"h": 262
 			},
@@ -165,15 +165,15 @@
 				"x": 3203,
 				"y": 2,
 				"w": 400,
-				"h": 263
+				"h": 264
 			},
 			"rotated": false,
 			"trimmed": true,
 			"spriteSourceSize": {
 				"x": 96,
-				"y": 164,
+				"y": 163,
 				"w": 400,
-				"h": 263
+				"h": 264
 			},
 			"sourceSize": {
 				"w": 591,
