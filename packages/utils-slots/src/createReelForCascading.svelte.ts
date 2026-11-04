@@ -242,6 +242,10 @@ export function createReelForCascading<TRawSymbol extends object, TSymbolState e
 		reelState.motion = 'stopped';
 		if (value) {
 			updateSymbols(value);
+			// a settled reel is at rest: if a spin's fall-out had already dropped the symbols
+			// below the reel (a play request that then failed), put them back in place
+			for (const reelSymbol of reelState.symbols)
+				reelSymbol.symbolY.set(getSymbolY(reelSymbol.symbolIndexOfBoard), { duration: 0 });
 		}
 	};
 

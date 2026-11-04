@@ -7,7 +7,9 @@
 </script>
 
 {#if stateModal.modal?.name === 'error'}
-	<Popup zIndex={zIndex.modal} persistent onclose={() => (stateModal.modal = null)}>
+	<!-- v5.10: closable - a dropped spin (network / RGS blip) leaves the game playable: the board
+	     is kept (actor onNewGameError) and the next spin just tries again -->
+	<Popup zIndex={zIndex.modal} onclose={() => (stateModal.modal = null)}>
 		<BaseContent maxWidth="100%">
 			{@const error = stateModal.modal?.error}
 			<span>Sorry, something went wrong.</span>
