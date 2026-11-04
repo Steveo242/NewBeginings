@@ -199,6 +199,11 @@ if not DAY:
     beam.putalpha(beam.getchannel('A').point(lambda v: v * 150 // 255))
     canvas.alpha_composite(beam, (round(lamp[0]), round(lamp[1] - beam.height / 2)))
 
+# FG_ALPHA=<path>: draw everything from here on onto a transparent canvas and save its
+# alpha - the coverage of the foreground layer (thumbnails/split_fg.py un-composites the
+# finished cover with it into a transparent foreground over the _bg plate)
+if os.environ.get('FG_ALPHA'):
+    canvas = Image.new('RGBA', (W, H), (0, 0, 0, 0))
 if FULL:
     # ------------------------------------------------------------------ the tank
     TK = L['TK']                                # tank art is 2240 px square
@@ -379,6 +384,11 @@ if FULL:
     LX, LY = L['logo'][0] if L['logo'][0] is not None else (W - logo.width) // 2, L['logo'][1]
     canvas.alpha_composite(lsh, (LX - lpad + px(8), LY - lpad + px(16)))
     canvas.alpha_composite(logo, (LX, LY))
+
+if os.environ.get('FG_ALPHA'):
+    canvas.getchannel('A').save(os.environ['FG_ALPHA'])
+    print('fg alpha', os.environ['FG_ALPHA'])
+    sys.exit(0)
 
 # ------------------------------------------------------------------- finish
 rgb = canvas.convert('RGB')
