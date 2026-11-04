@@ -16,6 +16,8 @@ export const { stateLayout, stateLayoutDerived } = createLayout({
 		desktop: { width: 1422, height: 1020 },
 		tablet: { width: 1000, height: 1360 },
 		landscape: { width: 1600, height: 1020 },
+		// portrait is width-bound: the grid plus a sliver of the iron pillars fills a phone's
+		// width (v5.6 tried fitting the whole frame with its lid/plinth flanges: symbols -20%)
 		portrait: { width: 800, height: 1422 },
 	},
 });

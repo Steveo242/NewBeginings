@@ -5,6 +5,7 @@
 	import { BOARD_SIZES, LOGO_ASPECT } from '../game/constants';
 	import { BEAT_MS } from '../game/tempo';
 	import { bloodDropTexture } from '../game/fxTextures';
+	import { logoMaxWidth } from '../game/barLayout';
 
 	const context = getContext();
 
@@ -14,8 +15,15 @@
 	/** logo3d.webp's aspect: the 3D logo (bs-render build_logo3d.py), tight-cropped. */
 	const BANNER_ASPECT = LOGO_ASPECT;
 	const MARGIN = 10;
-	/** Never let the banner crowd the reels by outgrowing the board itself. */
-	const MAX_WIDTH_RATIO = 0.92;
+	/** Never let the banner crowd the reels by outgrowing the board itself (portrait: the
+	 *  tank's whole span, so the logo fills the band over the tank - barLayout) */
+	const maxWidth = $derived(
+		logoMaxWidth(
+			context.stateLayoutDerived.layoutType() === 'portrait',
+			context.stateLayoutDerived.canvasSizes().width,
+			main.scale,
+		),
+	);
 
 	// The board sits above centre, so the band over it is what is left between
 	// the top of the design space and the board's own top edge. Fit the banner
@@ -25,7 +33,7 @@
 	const available = $derived(Math.max(boardTop - MARGIN * 2, 0));
 
 	const height = $derived(
-		Math.min(available, (BOARD_SIZES.width * MAX_WIDTH_RATIO) / BANNER_ASPECT),
+		Math.min(available, maxWidth / BANNER_ASPECT),
 	);
 	const width = $derived(height * BANNER_ASPECT);
 	const centerY = $derived(boardTop - MARGIN - height * 0.5);

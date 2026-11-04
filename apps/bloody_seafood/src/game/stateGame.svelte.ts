@@ -154,7 +154,7 @@ const boardCenterY = () => {
 	if (['landscape', 'desktop'].includes(stateLayoutDerived.layoutType())) return main.height - TANK_BELOW - 10;
 	if (!stateLayoutDerived.isStacked()) return main.height * BOARD_CENTER_Y_RATIO;
 	const canvas = stateLayoutDerived.canvasSizes();
-	return main.height * 0.5 + (stackedBoardCenterY(canvas, main.scale) - canvas.height * 0.5) / main.scale;
+	return main.height * 0.5 + (stackedBoardCenterY(canvas, main.scale, stateLayoutDerived.layoutType() === 'portrait') - canvas.height * 0.5) / main.scale;
 };
 
 const boardLayout = () => ({

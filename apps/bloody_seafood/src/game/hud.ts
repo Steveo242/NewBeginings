@@ -36,10 +36,10 @@ export const hudColumn = (
 		const canvas = context.stateLayoutDerived.canvasSizes();
 		const main = context.stateLayoutDerived.mainLayout();
 		const board = context.stateGameDerived.boardLayout();
-		const sq = stackedBar(canvas).scale;
+		const { scale: sq, base } = stackedBar(canvas);
 		// canvas px: the middle of the row left of the spin
 		const cx = canvas.width * 0.5 - (STACKED.SPIN * 0.5 + STACKED_HALF_W * 0.5) * sq;
-		const cy = canvas.height - (STACKED.STRIP_H + STACKED.ROW_PAD + STACKED_ROW_H * 0.5) * sq;
+		const cy = base - (STACKED.STRIP_H + STACKED.ROW_PAD + STACKED_ROW_H * 0.5) * sq;
 		// fit the panel in that slot (a little margin), never over its natural size
 		const scale = Math.min(
 			1,

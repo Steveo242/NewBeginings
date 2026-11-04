@@ -34,12 +34,16 @@
 	let counter = 0;
 
 	// On-screen load diagnostics (no DevTools on a phone / the Stake frame): every asset in
-	// flight is tracked; if loading hasn't finished after 12 s, or any error is thrown, a
-	// panel over the loading screen lists what is still pending and every error, so it can
-	// be photographed. It removes itself once loading completes.
+	// flight is tracked; only a genuine stall - loading still unfinished after 12 s - shows a
+	// panel over the loading screen listing what is pending and the errors seen so far, so it
+	// can be photographed. It removes itself once loading completes. Errors otherwise only go
+	// to the console. ?diag=1 is the verbose mode: every error, at any time, on screen.
+	const verbose =
+		typeof location !== 'undefined' && new URLSearchParams(location.search).get('diag') === '1';
 	const pending = new Map<string, number>();
 	const problems: string[] = [];
 	let panel: HTMLDivElement | undefined;
+	let stalled = false;
 	const show = () => {
 		if (typeof document === 'undefined') return;
 		if (!panel) {
@@ -58,7 +62,8 @@
 	};
 	const note = (msg: string) => {
 		problems.push(msg.slice(0, 300));
-		show();
+		console.warn('[diag]', msg);
+		if (verbose || (stalled && !context.stateApp.loaded)) show();
 	};
 	if (typeof window !== 'undefined') {
 		window.addEventListener('error', (e) => note('error: ' + (e.message || e.type) + (e.filename ? ` @ ${e.filename.split('/').pop()}:${e.lineno}` : '')));
@@ -66,9 +71,13 @@
 		const timer = setInterval(() => {
 			if (context.stateApp.loaded) {
 				clearInterval(timer);
-				if (panel && !problems.length) panel.remove();
+				if (panel && !verbose) {
+					panel.remove();
+					panel = undefined;
+				}
 				return;
 			}
+			stalled = true;
 			show();
 		}, 12000);
 	}

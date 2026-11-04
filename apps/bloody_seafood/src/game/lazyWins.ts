@@ -60,20 +60,68 @@ const load = async (key: string) => {
 
 const frame = () => new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
-/** any sprite on the stage still drawing one of these textures */
-const boundTo = (textures: Set<PIXI.Texture>) => {
+type Node = PIXI.Container & Record<string, unknown>;
+/** every texture a renderable can hand the batcher: sprites (and animated frames), tiling /
+ *  nine-slice sprites, meshes, Graphics texture fills and strokes, particles */
+const texturesOf = (node: Node): PIXI.Texture[] => {
+	const out: PIXI.Texture[] = [];
+	const add = (t: unknown) => t instanceof PIXI.Texture && out.push(t);
+	if (node instanceof PIXI.AnimatedSprite) node.textures.forEach(add);
+	if ('texture' in node && !(node instanceof PIXI.AbstractText)) add(node.texture);
+	if (node instanceof PIXI.Graphics)
+		for (const inst of node.context.instructions as { data?: { style?: { texture?: unknown }; image?: unknown } }[]) {
+			add(inst.data?.style?.texture);
+			add(inst.data?.image);
+		}
+	if (node instanceof PIXI.ParticleContainer) for (const p of node.particleChildren) add(p.texture);
+	return out;
+};
+/** texture sources / styles a node's filters bind */
+const filterResources = (node: PIXI.Container) => {
+	const out: unknown[] = [];
+	for (const filter of (node.filters ?? []) as PIXI.Filter[]) {
+		for (const res of Object.values(filter.resources ?? {})) out.push(res);
+	}
+	return out;
+};
+const walk = (visit: (node: Node) => boolean | void) => {
 	const stage = stateApp.pixiApplication?.stage;
-	if (!stage) return false;
+	if (!stage) return;
 	const stack: PIXI.Container[] = [stage];
 	while (stack.length) {
 		const node = stack.pop()!;
-		if (node instanceof PIXI.Sprite) {
-			if (textures.has(node.texture)) return true;
-			if (node instanceof PIXI.AnimatedSprite && node.textures.some((t) => textures.has(t as PIXI.Texture))) return true;
-		}
+		if (visit(node as Node) === true) return;
 		stack.push(...node.children);
 	}
-	return false;
+};
+
+/** any renderable on the stage still drawing one of these textures */
+const boundTo = (textures: Set<PIXI.Texture>) => {
+	const sources = new Set([...textures].map((t) => t.source));
+	let bound = false;
+	walk((node) => {
+		bound =
+			texturesOf(node).some((t) => textures.has(t) || sources.has(t.source)) ||
+			filterResources(node).some((r) => sources.has(r as PIXI.TextureSource) || textures.has(r as PIXI.Texture));
+		return bound;
+	});
+	return bound;
+};
+
+// THE v5.5 "render recovered (0 sprite(s))" culprit: Pixi caches each render group's batches
+// between frames and only rebuilds them when the structure changes. A sprite that swaps to a
+// texture whose source is already in its batch is patched in place (checkAndUpdateTexture),
+// so its OLD source stays in that batch's texture list. Once the win sheet was unloaded, the
+// cached batch still bound that destroyed source; its style is null and drawing it threw
+// "reading '_resourceId'" (Chrome; "addressModeU" in Firefox) - with no sprite left on it.
+// So before any unload, every render group is made to rebatch from what is really drawn.
+const rebatch = () => {
+	const group = stateApp.pixiApplication?.stage?.renderGroup;
+	const mark = (g: PIXI.RenderGroup) => {
+		g.structureDidChange = true;
+		g.renderGroupChildren.forEach(mark);
+	};
+	if (group) mark(group);
 };
 
 const release = (key: string) => {
@@ -89,6 +137,12 @@ const release = (key: string) => {
 			await frame();
 			await frame();
 			if (!boundTo(textures)) {
+				// flush the cached batches that may still list the sheet, then unload
+				rebatch();
+				await frame();
+				await frame();
+				if (boundTo(textures)) continue;
+				rebatch();
 				await PIXI.Assets.unload(src).catch(() => {});
 				return;
 			}
@@ -125,13 +179,20 @@ export const prepareWins = (bookEvents: BookEvent[]) => {
 	return Promise.all([...new Set([...need, ...WARM])].map(load));
 };
 
-// The render loop's last line of defence: if a sprite ever draws a texture whose source is
-// gone, the throw would stop every later frame (a blank board). Catch it, put the symbol's
-// STATIC texture (always resident) on any such sprite at the static's size - a reviewer
-// never sees a missing symbol - (the empty texture only if even that is unavailable),
-// report it once to the on-screen diagnostics, and go on.
+// The render loop's last line of defence: if anything ever draws a texture whose source is
+// gone, the throw would stop every later frame (a blank board). Catch it, walk EVERY
+// renderable and filter: an animated symbol goes to its STATIC texture (always resident) at
+// the static's size - a reviewer never sees a missing symbol -, anything else to the empty
+// texture, a dead filter is dropped. Then every render group rebatches (which also clears
+// a cached batch that still lists a dead source - see rebatch). Logged to the console with
+// each offender's class/label/parent chain; on screen only with ?diag=1.
 type Info = { assetKey: string; sizeRatios: { width: number; height: number } };
-const dead = (t: PIXI.Texture | undefined) => !t || t.destroyed || !t.source || t.source.destroyed;
+const dead = (t: PIXI.Texture | undefined) => !t || t.destroyed || !t.source || t.source.destroyed || !t.source.style;
+const deadResource = (r: unknown) =>
+	r === null ||
+	(r instanceof PIXI.TextureSource && (r.destroyed || !r.style)) ||
+	(r instanceof PIXI.TextureStyle && r.destroyed) ||
+	(r instanceof PIXI.Texture && dead(r));
 const toStatic = (node: PIXI.AnimatedSprite) => {
 	// SymbolAnimatedSprite labels its sprite with the sheet key: <SYMBOL>_<state>
 	const [symbol, state] = String(node.label ?? '').split('_');
@@ -148,45 +209,73 @@ const toStatic = (node: PIXI.AnimatedSprite) => {
 	node.height = h;
 	return true;
 };
+// class names survive minification only this way
+const KINDS: [string, abstract new (...a: never[]) => unknown][] = [
+	['AnimatedSprite', PIXI.AnimatedSprite],
+	['TilingSprite', PIXI.TilingSprite],
+	['NineSliceSprite', PIXI.NineSliceSprite],
+	['Sprite', PIXI.Sprite],
+	['Mesh', PIXI.Mesh],
+	['Graphics', PIXI.Graphics],
+	['BitmapText', PIXI.BitmapText],
+	['Text', PIXI.AbstractText],
+	['ParticleContainer', PIXI.ParticleContainer],
+];
+const describe = (node: PIXI.Container) => {
+	const kind = KINDS.find(([, k]) => node instanceof k)?.[0] ?? 'Container';
+	const chain: string[] = [];
+	for (let p = node.parent; p && chain.length < 6; p = p.parent) chain.push(p.label || '?');
+	return `${kind} "${node.label || ''}" < ${chain.join(' < ')}`;
+};
 let guarded = false;
 const reported = new Set<string>();
-const sanitize = (root: PIXI.Container) => {
-	let fixed = 0;
-	const stack: PIXI.Container[] = [root];
-	while (stack.length) {
-		const node = stack.pop()!;
-		if (node instanceof PIXI.Sprite) {
-			if (node instanceof PIXI.AnimatedSprite && node.textures.some((t) => dead(t as PIXI.Texture))) {
-				if (!toStatic(node)) {
-					node.stop();
-					node.textures = [PIXI.Texture.EMPTY];
-				}
-				fixed++;
-			} else if (dead(node.texture)) {
-				node.texture = PIXI.Texture.EMPTY;
-				fixed++;
-			}
+const sanitize = () => {
+	const found: string[] = [];
+	walk((node) => {
+		const filters = (node.filters ?? []) as PIXI.Filter[];
+		const live = filters.filter((f) => f.resources && !Object.values(f.resources ?? {}).some(deadResource));
+		if (live.length !== filters.length) {
+			node.filters = live;
+			found.push('filter on ' + describe(node));
 		}
-		stack.push(...node.children);
-	}
-	return fixed;
+		if (!texturesOf(node).some(dead)) return;
+		found.push(describe(node));
+		if (node instanceof PIXI.AnimatedSprite) {
+			if (!toStatic(node)) {
+				node.stop();
+				node.textures = [PIXI.Texture.EMPTY];
+			}
+		} else if (node instanceof PIXI.Sprite || node instanceof PIXI.TilingSprite || node instanceof PIXI.NineSliceSprite || node instanceof PIXI.Mesh) {
+			node.texture = PIXI.Texture.EMPTY;
+		} else if (node instanceof PIXI.ParticleContainer) {
+			for (const p of node.particleChildren) if (dead(p.texture)) p.texture = PIXI.Texture.EMPTY;
+		} else if (node instanceof PIXI.Graphics) {
+			node.visible = false;
+		}
+	});
+	rebatch();
+	return found;
 };
+const verbose = typeof location !== 'undefined' && new URLSearchParams(location.search).get('diag') === '1';
 export const installRenderGuard = () => {
 	const app = stateApp.pixiApplication;
 	if (guarded || !app?.renderer) return;
 	guarded = true;
+	// ?diag=1: a handle for forcing teardown sequences from the console / a test harness
+	if (verbose && typeof window !== 'undefined') (window as unknown as Record<string, unknown>).__bsDiag = { app, rebatch, sanitize };
 	const render = app.renderer.render.bind(app.renderer) as (...a: unknown[]) => void;
 	(app.renderer as unknown as { render: (...a: unknown[]) => void }).render = (...args: unknown[]) => {
 		try {
 			render(...args);
 		} catch (error) {
-			const fixed = sanitize(app.stage);
-			const msg = `render recovered (${fixed} sprite(s) on a destroyed texture): ${error instanceof Error ? error.message : String(error)}`;
-			console.error(msg);
-			if (!reported.has(msg) && typeof window !== 'undefined') {
-				reported.add(msg);
-				window.dispatchEvent(new ErrorEvent('error', { message: msg }));
-			}
+			const found = sanitize();
+			const msg =
+				`render recovered (${found.length ? found.join('; ') : 'stale cached batch only'}): ` +
+				(error instanceof Error ? error.message : String(error));
+			if (reported.has(msg)) return;
+			reported.add(msg);
+			console.warn(msg);
+			if (verbose && typeof window !== 'undefined') window.dispatchEvent(new ErrorEvent('error', { message: msg }));
 		}
 	};
 };

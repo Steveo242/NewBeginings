@@ -154,8 +154,8 @@
 	const stacked = $derived(stackedBar(canvas));
 	const sq = $derived(stacked.scale);
 	const S = STACKED;
-	const stripCy = $derived(canvas.height - (S.STRIP_H * sq) / 2);
-	const rowCy = $derived(canvas.height - (S.STRIP_H + S.ROW_PAD + STACKED_ROW_H / 2) * sq);
+	const stripCy = $derived(stacked.base - (S.STRIP_H * sq) / 2);
+	const rowCy = $derived(stacked.base - (S.STRIP_H + S.ROW_PAD + STACKED_ROW_H / 2) * sq);
 	/** row positions from the spin's centre, in bar units */
 	const ROW = {
 		dec: -(S.SPIN / 2 + S.GAP + S.STEP / 2),
@@ -391,16 +391,16 @@
 		<!-- the info strip along the bottom edge, as on desktop -->
 		<Rectangle
 			x={canvas.width * 0.5}
-			y={stripCy}
+			y={stripCy + stacked.bottom * 0.5}
 			anchor={0.5}
 			width={canvas.width}
-			height={S.STRIP_H * sq}
+			height={S.STRIP_H * sq + stacked.bottom}
 			backgroundColor={0x05090b}
 			backgroundAlpha={0.72}
 		/>
 		<Rectangle
 			x={canvas.width * 0.5}
-			y={canvas.height - S.STRIP_H * sq}
+			y={stacked.base - S.STRIP_H * sq}
 			anchor={0.5}
 			width={canvas.width}
 			height={2}

@@ -1,6 +1,6 @@
 import { UI_BASE_SIZE } from 'components-ui-pixi/src/constants';
 
-import { SYMBOL_SIZE } from './constants';
+import { LOGO_ASPECT, SYMBOL_SIZE } from './constants';
 
 // The stacked (portrait / near-square) bet UI, measured from the canvas alone. The bar
 // is sized first - to a fixed share of the screen - and the board is then placed in what
@@ -47,30 +47,73 @@ const MAX_HEIGHT_SHARE = 0.19;
 const WIDTH_RATIO = 0.94;
 const MAX_SCALE = 0.42;
 
+/**
+ * The device's safe-area insets (notch / camera cut-out, home bar) in CSS px, read from
+ * env() through a probe - app.html sets viewport-fit=cover, so a phone that draws under
+ * them reports them here. Zero inside the Stake frame and on desktop.
+ */
+let probe: HTMLDivElement | undefined;
+export const safeInsets = () => {
+	if (typeof document === 'undefined' || !document.body) return { top: 0, bottom: 0 };
+	if (!probe) {
+		probe = document.createElement('div');
+		probe.style.cssText =
+			'position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;pointer-events:none;' +
+			'padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)';
+		document.body.appendChild(probe);
+	}
+	const style = getComputedStyle(probe);
+	return { top: parseFloat(style.paddingTop) || 0, bottom: parseFloat(style.paddingBottom) || 0 };
+};
+
 export const stackedBar = (canvas: { width: number; height: number }) => {
 	const scale = Math.min(
 		(canvas.width * WIDTH_RATIO) / STACKED_ROW_W,
 		(canvas.height * MAX_HEIGHT_SHARE) / STACKED_H,
 		MAX_SCALE,
 	);
-	return { scale, height: STACKED_H * scale };
+	const { bottom } = safeInsets();
+	/** the bar stands on the safe area's bottom edge (its strip backing still runs to the screen's) */
+	return { scale, height: STACKED_H * scale, bottom, base: canvas.height - bottom };
 };
 
 // The tank's vertical reach round the grid's centre, in board units: the logo banner
-// over it (BoardBanner caps it at ~260 + margins) and the iron base under it.
-const TANK_ABOVE = SYMBOL_SIZE * 3.5 + SYMBOL_SIZE * 2.9;
+// over it (BoardBanner: its height + a 10-unit gap over the grid) and the iron base under it.
+const LOGO_GAP = 10;
 const TANK_BELOW = SYMBOL_SIZE * 3.5 + SYMBOL_SIZE * 1.5;
-/** share of the spare height that goes above the tank (sky); the rest sits under it */
-const SLACK_ABOVE = 0.95;
+/** portrait side margin for the logo, a share of the screen width */
+const PORTRAIT_SIDE_MARGIN = 0.025;
+/** sky kept over the logo, a share of the screen height */
+const SKY_MIN = 0.03;
+/**
+ * The logo's width in board units. Portrait gives it the tank's full span (1.25 x the
+ * grid), never wider than the screen less small margins; elsewhere 0.92 x the grid.
+ */
+export const logoMaxWidth = (portrait: boolean, canvasWidth: number, mainScale: number) =>
+	portrait
+		? Math.min(SYMBOL_SIZE * 7 * 1.25, (canvasWidth * (1 - PORTRAIT_SIDE_MARGIN * 2)) / mainScale)
+		: SYMBOL_SIZE * 7 * 0.92;
 
 /**
- * Where the grid's centre goes on a stacked canvas, in canvas px. Short of room, the
- * tank keeps standing on the bar and the logo over it shrinks (BoardBanner fits itself
- * to the band left above the grid).
+ * Where the grid's centre goes on a stacked canvas, in canvas px. v5.6: the logo + tank
+ * group fills the screen between the top safe area and the bar - in portrait the main
+ * scale is width-bound (stateLayout) and the logo grows to the screen's width, and the spare
+ * height is split evenly over the logo (never less than SKY_MIN) and under the tank, so the
+ * group sits centred in the space above the controls. (It used to nearly all go over the
+ * logo: the board sat low under a band of empty sky.) Short of room, the tank keeps
+ * standing on the bar and the logo over it shrinks (BoardBanner fits itself to the band
+ * left above the grid).
  */
-export const stackedBoardCenterY = (canvas: { width: number; height: number }, mainScale: number) => {
-	const room = canvas.height - stackedBar(canvas).height;
-	const slack = Math.max(room - (TANK_ABOVE + TANK_BELOW) * mainScale, 0);
-	const centre = room - slack * (1 - SLACK_ABOVE) - TANK_BELOW * mainScale;
-	return Math.max(centre, (SYMBOL_SIZE * 3.5 + 20) * mainScale);
+export const stackedBoardCenterY = (
+	canvas: { width: number; height: number },
+	mainScale: number,
+	portrait: boolean,
+) => {
+	const bar = stackedBar(canvas);
+	const top = safeInsets().top + canvas.height * SKY_MIN;
+	const above = SYMBOL_SIZE * 3.5 + LOGO_GAP + logoMaxWidth(portrait, canvas.width, mainScale) / LOGO_ASPECT;
+	const room = bar.base - bar.height - top;
+	const slack = Math.max(room - (above + TANK_BELOW) * mainScale, 0);
+	const centre = bar.base - bar.height - slack * 0.5 - TANK_BELOW * mainScale;
+	return Math.max(centre, safeInsets().top + (SYMBOL_SIZE * 3.5 + 20) * mainScale);
 };
