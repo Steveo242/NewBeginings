@@ -4,6 +4,7 @@
 	import { getContextParent } from 'pixi-svelte';
 
 	import { getContext } from '../game/context';
+	import { fxResolution } from '../game/textureQuality';
 	import { idleLife } from '../game/idleLife.svelte';
 
 	type Props = { x: number; y: number; width: number; height: number };
@@ -29,6 +30,7 @@
 		layers[0].alpha = 0.075 * lift;
 		layers[1].alpha = 0.055 * lift;
 		noise.position.set(-(t * 0.02) % 512, -(t * 0.015) % 512);
+		for (const f of root.filters ?? []) f.resolution = fxResolution(context.stateApp.pixiApplication);
 	};
 
 	const applyLayout = () => {

@@ -34,6 +34,7 @@
 	import { getContext } from '../game/context';
 	import { isSuperBetMode } from '../game/constants';
 	import { storm } from '../game/lightning';
+	import { fxResolution } from '../game/textureQuality';
 
 	const context = getContext();
 	const parent = getContextParent();
@@ -329,6 +330,8 @@
 				lastTitle = title;
 			}
 
+			const res = fxResolution(context.stateApp.pixiApplication);
+			grade.resolution = skyDisp.resolution = seaDisp.resolution = flashMatrix.resolution = res;
 			skyNoise.x = -(t * 0.006) % (256 * 6);
 			skyNoise.y = -(t * 0.002) % (256 * 6);
 			seaNoise.x = -(t * 0.03) % (256 * 2.2);
