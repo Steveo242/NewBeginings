@@ -16,8 +16,9 @@ export const { stateLayout, stateLayoutDerived } = createLayout({
 		desktop: { width: 1422, height: 1020 },
 		tablet: { width: 1000, height: 1360 },
 		landscape: { width: 1600, height: 1020 },
-		// portrait is width-bound: the grid plus a sliver of the iron pillars fills a phone's
-		// width (v5.6 tried fitting the whole frame with its lid/plinth flanges: symbols -20%)
-		portrait: { width: 800, height: 1422 },
+		// portrait phones are width-bound: the tank's water window (720 of its 1120 units) plus a
+		// sliver of iron fills the width, so the board and logo fill the screen down to the bet
+		// UI - the pillars and the lid/plinth flanges run off the sides (Steve, v5.7)
+		portrait: { width: 740, height: 1422 },
 	},
 });
