@@ -34,10 +34,9 @@
 	let counter = 0;
 
 	// On-screen load diagnostics (no DevTools on a phone / the Stake frame): every asset in
-	// flight is tracked; only a genuine stall - loading still unfinished after 12 s - shows a
-	// panel over the loading screen listing what is pending and the errors seen so far, so it
-	// can be photographed. It removes itself once loading completes. Errors otherwise only go
-	// to the console. ?diag=1 is the verbose mode: every error, at any time, on screen.
+	// flight is tracked, and stalls and errors are logged to the console (and from there the
+	// game's persistent error log). On screen only with ?diag=1: a panel listing what is
+	// pending and every error, so it can be photographed.
 	const verbose =
 		typeof location !== 'undefined' && new URLSearchParams(location.search).get('diag') === '1';
 	const pending = new Map<string, number>();
@@ -63,23 +62,44 @@
 	const note = (msg: string) => {
 		problems.push(msg.slice(0, 300));
 		console.warn('[diag]', msg);
-		if (verbose || (stalled && !context.stateApp.loaded)) show();
+		if (verbose) show();
 	};
 	if (typeof window !== 'undefined') {
 		window.addEventListener('error', (e) => note('error: ' + (e.message || e.type) + (e.filename ? ` @ ${e.filename.split('/').pop()}:${e.lineno}` : '')));
 		window.addEventListener('unhandledrejection', (e) => note('rejection: ' + String((e.reason && (e.reason.stack || e.reason.message)) || e.reason)));
+		// v5.9: nothing on screen in normal play. The panel used to flash up at a 12 s stall
+		// and vanish when loading completed - the small dark box Steve saw and couldn't catch.
+		// A stall is now logged (console + the game's persistent error log, Ctrl+Shift+D) at
+		// LOG_S; the panel is ?diag=1 only (from SHOW_S). This timer runs for the initial load
+		// only - it stops at 'loaded'; lazy win sheets never come through here.
+		const LOG_S = 12;
+		const SHOW_S = 30;
+		const started = performance.now();
+		let logged = false;
 		const timer = setInterval(() => {
+			const secs = (performance.now() - started) / 1000;
 			if (context.stateApp.loaded) {
 				clearInterval(timer);
+				if (logged) console.warn(`[diag] slow load finished after ${secs.toFixed(0)} s`);
 				if (panel && !verbose) {
 					panel.remove();
 					panel = undefined;
 				}
 				return;
 			}
-			stalled = true;
-			show();
-		}, 12000);
+			if (secs >= LOG_S && !logged) {
+				logged = true;
+				console.warn(
+					`[diag] load stall (${LOG_S} s): still loading ` +
+						([...pending.keys()].join(', ') || 'nothing pending') +
+						(problems.length ? ' | errors: ' + problems.join(' | ') : ''),
+				);
+			}
+			if (secs >= SHOW_S) {
+				stalled = true;
+				if (verbose) show();
+			}
+		}, 3000);
 	}
 
 	const onProgress = (value: number) => {
